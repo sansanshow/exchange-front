@@ -1,0 +1,22 @@
+<template>
+  <div class="">
+       充值
+  </div>
+</template>
+<script>
+export default {
+    components:{
+    
+    },
+    data(){
+        return {
+
+        }
+    }
+}
+</script>
+<style lang="less" scoped>
+
+</style>
+
+
