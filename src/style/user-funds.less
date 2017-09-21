@@ -1,0 +1,150 @@
+@bg: #f2f2f5;
+.user-funds{
+    .top{
+        height: 71px;
+        line-height: 71px;
+        .news {
+            .news-icon {
+                display: inline-block;
+                height: 18px;
+                width: 18px;
+                margin-right: 6px;
+                background: url('../assets/images/i-laba.png') no-repeat center;
+            }
+            span {
+                line-height: 18px;
+                vertical-align: middle;
+            }
+        }
+
+        
+    }
+    .main{
+        padding-bottom: 100px;
+        .step{
+            background: #fff;
+            width: 188px;
+            height: auto;
+            .item{
+                cursor: pointer;
+                line-height: 58px;
+                width: 100%;
+                display: inline-flex;
+                border-bottom: 1px solid #f2f2f5;
+                
+                span{
+                    display: inline-block;
+                }
+                .icon{
+                    border-left: 4px solid transparent;
+                    width: 50px;
+                    background-position: right center;
+                    background-repeat: no-repeat;
+                }
+                .title{
+                    padding-left: 14px;
+                    flex: 1;
+                }
+                .arrows{
+                    width: 38px;
+                    background-position: 17px center;
+                    background-repeat: no-repeat;
+                }
+            }
+            .on{
+                .icon{
+                    border-left-color:#0f88ed;
+                }
+                .arrows{
+                    background-image: url('../assets/images/i-arrows-right.png');
+                }
+                
+            }
+        }
+        .main-wrap{
+            margin-left: 12px;
+            background: #fff;
+        }
+    }
+    
+}
+
+@bg: #f2f2f5;
+@warn:#de211d;
+@success:#3dc18e;
+.content{
+  padding-bottom: 134px;
+  .main{
+    padding: 0 34px;
+    
+  }
+}
+
+.form{
+  .form-row{
+    width:100%;
+    display: flex;
+    flex-wrap: nowrap;
+    font-size: 14px;
+    margin-bottom: 22px;
+    .row-label{
+      text-align: right;
+      width: 300px;
+      height: 42px;
+      line-height: 42px;
+    }
+    .row-field{
+      padding-left: 28px;
+      height: 42px;
+      flex: 1;
+      overflow: hidden;
+      input{
+        padding: 0 14px;
+        border: 1px solid #ccc;
+      }
+      .btn-sms{
+        margin-left: 11px;
+        width: 151px;
+        line-height: 40px;
+        color: #0f88ed;
+        border: 1px solid #0f88ed;
+      }
+      .btn-submit{
+        border-radius: 3px;
+        color: #fff;
+        font-size: 14px;
+        width: 134px;
+        height: 42px;
+        line-height: 42px;
+        background: #0f88ed;
+      }
+    }
+    
+    .row-tips{
+      box-sizing: border-box;
+      height: 42px;
+      width: 270px;
+      line-height: 42px;
+      padding-left: 14px;
+      &.warn{
+        color: @warn;
+      }
+      &.success{
+        color: @success;
+      }
+    }
+  }
+}
+
+// 表格相关
+table{
+    width: 100%;
+    td{
+        height: 56px;
+        font-size: 14px;
+        color: #666;
+        text-align: center;
+        border-bottom: 1px solid @bg;
+    }
+    width: 100%;
+}

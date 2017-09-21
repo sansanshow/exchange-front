@@ -15,12 +15,11 @@
   "dependencies": {
     "axios": "^0.16.2",
     "echarts": "^3.7.1",
-    "less": "^2.7.2",
-    "less-loader": "^4.0.5",
     "md5": "^2.2.1",
     "qs": "^6.5.1",
     "vue": "^2.4.2",
-    "vue-router": "^2.7.0"
+    "vue-router": "^2.7.0",
+    "vuex": "^2.4.0"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
@@ -58,6 +57,7 @@
     "karma-sourcemap-loader": "^0.3.7",
     "karma-spec-reporter": "0.0.31",
     "karma-webpack": "^2.0.2",
+    "less": "^2.7.2",
     "less-loader": "^4.0.5",
     "mocha": "^3.2.0",
     "nightwatch": "^0.9.12",

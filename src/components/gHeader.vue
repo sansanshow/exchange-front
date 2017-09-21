@@ -22,69 +22,72 @@
             <div class="wrap1200 fix wrap">
                 <ul class="nav-list fix">
                     <li @click="onTabClick(0)" :class="{'on': tab==0 }"><span>首页</span></li>
-                    <li @click="onTabClick(1)" :class="{'on': tab==1 }"><span href="">交易中心</span></li>
-                    <li @click="onTabClick(2)" :class="{'on': tab==2 }"><span href="">资金管理</span></li>
+                    <li @click="onTabClick(1)" :class="{'on': tab==1 }"><span>交易中心</span></li>
+                    <li @click="onTabClick(2)" :class="{'on': tab==2 }"><span>资金管理</span></li>
                     <li v-if="!isLogin">
                         <a href="" @click.prevent="$to({path: '/login'})"><span>登录</span></a>
                         <a href="" @click.prevent="$to({path: '/register'})"><span class="reg">注册</span></a>
                     </li>
                     <li v-else class="loginname" @click="togglePopups">
-                        <span v-text="baseInfo.username"></span><span class="arrows"></span>
-                    </li>
+                        <!-- <span v-text="baseInfo.username"></span><span class="arrows"></span>userInfo -->
+                        <span v-text="$store.state.userInfo.username"></span><span class="arrows"></span>
+                 
+                    <div class="popup" v-if="popup">
+                        <!-- 箭头 -->
+                        <div class="top-arrows"></div>
+                        <div class="auth-info flex">
+                            <div class="info flex">
+                                <div class="item"><span>1</span><span>手机验证</span></div>
+                                <div class="item"><span>2</span><span>实名认证</span></div>
+                                <div class="item"><span>3</span><span>谷歌验证</span></div>
+                                <div class="item"><span>4</span><span>邮箱认证</span></div>
+                            </div>
+                            <div class="logout flex-1 t_r">
+                                <span class="btn" @click="logOut">退出登录</span>
+                            </div>
+                        </div>
+                        <div class="assets">
+                            <div class="flex all">
+                                <div class="flex-1">
+                                    <div class="line">
+                                        <span>账户总资产：</span><span>--</span><span>CNY</span>
+                                    </div>
+                                    <div class="line">
+                                        <span>账户总资产：</span><span>--</span><span>CNY</span>
+                                    </div>
+                                </div>
+                                <div class="more">
+                                    <span class="link">账单明细</span>
+                                </div>
+                            </div>
+                            <div class="detail flex">
+                                <div class="flex-1">币种</div>
+                                <div class="can">可用</div>
+                                <div class="flex-1">冻结</div>
+                            </div>
+                            <div class="detail flex">
+                                <div class="flex-1">CNY</div>
+                                <div class="can">0</div>
+                                <div class="flex-1">0</div>
+                            </div>
+                            <div class="detail flex">
+                                <div class="flex-1">CNY</div>
+                                <div class="can">0</div>
+                                <div class="flex-1">0</div>
+                            </div>
+                            <div class="btn-groups">
+                                <span class="btn" @click="recharge">充值</span><span class="btn">提现</span>
+                            </div>
+                        </div>
+                    </div>
+                   </li>
                 </ul>
-                <div class="pupup" v-if="popup">
-                    <!-- 箭头 -->
-                    <div class="top-arrows"></div>
-                    <div class="auth-info flex">
-                        <div class="info flex">
-                            <div class="item"><span>1</span><span>手机验证</span></div>
-                            <div class="item"><span>2</span><span>实名认证</span></div>
-                            <div class="item"><span>3</span><span>谷歌验证</span></div>
-                            <div class="item"><span>4</span><span>邮箱认证</span></div>
-                        </div>
-                        <div class="logout flex-1 t_r">
-                            <span class="btn" @click="logOut">退出登录</span>
-                        </div>
-                    </div>
-                    <div class="assets">
-                        <div class="flex all">
-                            <div class="flex-1">
-                                <div class="line">
-                                    <span>账户总资产：</span><span>--</span><span>CNY</span>
-                                </div>
-                                <div class="line">
-                                    <span>账户总资产：</span><span>--</span><span>CNY</span>
-                                </div>
-                            </div>
-                            <div class="more">
-                                <span class="link">账单明细</span>
-                            </div>
-                        </div>
-                        <div class="detail flex">
-                            <div class="flex-1">币种</div>
-                            <div class="can">可用</div>
-                            <div class="flex-1">冻结</div>
-                        </div>
-                        <div class="detail flex">
-                            <div class="flex-1">CNY</div>
-                            <div class="can">0</div>
-                            <div class="flex-1">0</div>
-                        </div>
-                        <div class="detail flex">
-                            <div class="flex-1">CNY</div>
-                            <div class="can">0</div>
-                            <div class="flex-1">0</div>
-                        </div>
-                        <div class="btn-groups">
-                            <span class="btn">充值</span><span class="btn">提现</span>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
 </template>
 <script>
+import { mapActions } from 'vuex'
 export default {
   name: 'my-header',
   data () {
@@ -112,6 +115,10 @@ export default {
       
     },
     methods: {
+        ...mapActions([
+            'updateUser'
+        ]),
+        // 初始化
         init(){
             if(this.store.getStore('userInfo') && this.store.getStore('_token')){
                 window.isLogin = true;
@@ -123,6 +130,7 @@ export default {
                 }else if(user.email){
                     this.baseInfo.username = user.email;
                 }
+                this.updateUser(this.baseInfo);
             }else{
                 window.isLogin = false;
                 this.isLogin = false;
@@ -157,6 +165,11 @@ export default {
                 default: 
                     break;
             }
+        },
+        // 充值
+        recharge(){
+            console.log('--recharge--updateUser');
+            this.updateUser({username: '' + new Date().getTime()});
         }
     },
     watch:{
@@ -171,6 +184,7 @@ export default {
 @main: #f2f2f5;
 .g-header-main .wrap{
     .loginname{
+        position: relative;
         color: #0f88ed;
         .arrows{
             margin: 4px 0 0 6px;
@@ -179,11 +193,17 @@ export default {
             border: 6px solid transparent;
             border-top-color: #0f88ed;
         }
+        &:hover{
+            .popup{
+                // opacity: 1;
+                // display: block;
+            }
+        }
     }
     
-    position: relative;
-    .pupup{
-        position: relative;
+    // position: relative;
+    .popup{
+        position: absolute;
         box-sizing: border-box;
         padding: 10px 0;
         position: absolute;
@@ -191,8 +211,10 @@ export default {
         height: auto;
         background: #fff;
         border: 1px solid #ccc;
-        top: 60px;
-        right: 0;
+        top: 37px;
+        right: -46px;
+        // opacity: 0;
+        transition: opacity 0.8 ease-out;
         .top-arrows{
             position: absolute;
             top: -8px;

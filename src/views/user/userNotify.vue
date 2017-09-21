@@ -1,16 +1,19 @@
 <template>
-  <div class="">
-    通知设置
+  <div class="content">
+    <ui-head :options="headOptions"></ui-head>
   </div>
 </template>
 <script>
+import UiHead from '../../components/UiHead';
 export default {
     components:{
-    
+      UiHead
     },
     data(){
         return {
-
+          headOptions:{
+            title: '通知设置 '
+          }
         }
     }
 }
@@ -18,5 +21,8 @@ export default {
 <style lang="less" scoped>
 
 </style>
+
+
+
 
 

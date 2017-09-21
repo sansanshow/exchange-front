@@ -1,5 +1,5 @@
 <template>
-<div class="container mgr">
+<div class="container user-funds funds">
     <div class="top w1200">
         <div class="news l">
             <span class="news-icon"></span><span>最新动态：关于开放ETH兑BTC的公告</span>
@@ -7,28 +7,28 @@
     </div>
     <div class="main w1200 flex">
         <div class="step">
-            <div class="item on" @click="$to({name:'fundsTotal'})">
-                <span class="icon"></span>
+            <div class="item" :class="{'on': tab==1}" @click="tab=1;$to({name:'funds'})">
+                <span class="icon icon-1"></span>
                 <span class="title">账户资产</span>
                 <span class="arrows"></span>
             </div>
-            <div class="item" @click="$to({name:'fundsRecharge'})">
-                <span class="icon"></span>
+            <div class="item" :class="{'on': tab==2}" @click="tab=2;$to({name:'fundsRecharge'})">
+                <span class="icon icon-2"></span>
                 <span class="title">充值</span>
                 <span class="arrows"></span>
             </div>
-            <div class="item" @click="$to({name:'fundsDeposit'})">
-                <span class="icon"></span>
+            <div class="item" :class="{'on': tab==3}" @click="tab=3;$to({name:'fundsDeposit'})">
+                <span class="icon icon-3"></span>
                 <span class="title">提现</span>
                 <span class="arrows"></span>
             </div>
-            <div class="item" @click="$to({name:'fundsDetail'})">
-                <span class="icon"></span>
+            <div class="item" :class="{'on': tab==4}" @click="tab=4;$to({name:'fundsDetail'})">
+                <span class="icon icon-4"></span>
                 <span class="title">账单明细</span>
                 <span class="arrows"></span>
             </div>
-            <div class="item" @click="$to({name:'fundsAudit'})">
-                <span class="icon"></span>
+            <div class="item" :class="{'on': tab==5}" @click="tab=5;$to({name:'fundsAudit'})">
+                <span class="icon icon-5"></span>
                 <span class="title">资产审计</span>
                 <span class="arrows"></span>
             </div>
@@ -46,68 +46,51 @@ export default {
     },
     data(){
         return {
-
+            tab:1
         }
     }
 }
 </script>
 <style lang="less" scoped>
-.mgr{
-    .top{
-        height: 71px;
-        line-height: 71px;
-        .news {
-            .news-icon {
-                display: inline-block;
-                height: 18px;
-                width: 18px;
-                margin-right: 6px;
-                background: url('../../assets/images/i-laba.png') no-repeat center;
-            }
-            span {
-                line-height: 18px;
-                vertical-align: middle;
-            }
-        }
-
-        
-    }
+@import '../../style/user-funds';
+.funds{
     .main{
         .step{
-            background: #fff;
-            width: 188px;
-            height: auto;
+            height: 295px;
             .item{
-                cursor: pointer;
-                line-height: 58px;
-                width: 100%;
-                display: inline-flex;
-                border-bottom: 1px solid #f2f2f5;
-                
-                span{
-                    display: inline-block;
+                .icon-1{
+                    background-image: url('../../assets/images/icon-notify.png');
                 }
-                .icon{
-                    border-left: 4px solid transparent;
-                    width: 64px;
+                .icon-2{
+                    background-image: url('../../assets/images/icon-notify.png');
                 }
-                .title{
-                    flex: 1;
+                .icon-3{
+                    background-image: url('../../assets/images/icon-file.png');
                 }
-                .arrows{
-                    width: 38px;
+                .icon-4{
+                    background-image: url('../../assets/images/icon-file.png');
+                }
+                .icon-5{
+                    background-image: url('../../assets/images/icon-file.png');
                 }
             }
             .on{
-                .icon{
-                    border-left-color:#0f88ed;
+                .icon-1{
+                    background-image: url('../../assets/images/icon-safe-fill.png');
                 }
-                
+                .icon-2{
+                    background-image: url('../../assets/images/icon-safe-fill.png');
+                }
+                .icon-3{
+                    background-image: url('../../assets/images/icon-safe-fill.png');
+                }
+                .icon-4{
+                    background-image: url('../../assets/images/icon-safe-fill.png');
+                }
+                .icon-5{
+                    background-image: url('../../assets/images/icon-safe-fill.png');
+                }
             }
-        }
-        .content{
-            margin-left: 12px;
-            background: #fff;
         }
     }
     

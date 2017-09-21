@@ -1,6 +1,6 @@
 <template>
-  <div class="">
-    资产审计audit
+  <div class="container">
+       
   </div>
 </template>
 <script>

@@ -14,6 +14,10 @@ import fundsAudit from '@/views/funds/fundsAudit'
 
 import userIndex from '@/views/user/userIndex'
 import userSecurity from '@/views/user/userSecurity'
+import securityGoogle from '@/views/user/userSecurityGoogle'
+import securityMobile from '@/views/user/userSecurityMobile'
+import securityResetPwd from '@/views/user/userSecurityResetPwd'
+import securityFundPwd from '@/views/user/userSecurityFundPwd'
 import userIdentity from '@/views/user/userIdentity'
 import userNotify from '@/views/user/userNotify'
 import userAccount from '@/views/user/userAccount'
@@ -79,7 +83,7 @@ let router = new Router({
         {
           path: '',
           component: fundsTotal,
-          name: 'fundsTotal',
+          // name: 'fundsTotal',
           meta: {
             title:'资金管理'
           }
@@ -124,8 +128,8 @@ let router = new Router({
     // 个人中心
     { 
       path: '/user', 
-      name: 'user',
-      component: fundsIndex,
+      name: 'userIndex',
+      component: userIndex,
       meta: {
         title:'个人中心'
       },
@@ -138,12 +142,45 @@ let router = new Router({
             title:'安全中心'
           }
         },
+        // 安全中心
         {
           path: 'security',
           component: userSecurity,
           name: 'userSecurity',
           meta: {
             title:'安全中心'
+          }
+        },
+        {
+          path: 'security/google',
+          component: securityGoogle,
+          name: 'securityGoogle',
+          meta: {
+            title:'安全中心-谷歌认证'
+          }
+        },
+        {
+          path: 'security/mobile',
+          component: securityMobile,
+          name: 'securityMobile',
+          meta: {
+            title:'安全中心-绑定手机'
+          }
+        },
+        {
+          path: 'security/pwd',
+          component: securityResetPwd,
+          name: 'securityResetPwd',
+          meta: {
+            title:'安全中心-重置密码'
+          }
+        },
+        {
+          path: 'security/fundpwd',
+          component: securityFundPwd,
+          name: 'securityFundPwd',
+          meta: {
+            title:'安全中心-资金密码'
           }
         },
         {
