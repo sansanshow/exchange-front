@@ -33,7 +33,7 @@
                 <span class="arrows"></span>
             </div>
         </div>
-        <router-view class="content flex-1">
+        <router-view class="main-wrap flex-1">
 
         </router-view>
     </div>
@@ -48,10 +48,11 @@ export default {
         return {
             tab:1
         }
-    }
+    },
+    
 }
 </script>
-<style lang="less" scoped>
+<style lang="less">
 @import '../../style/user-funds';
 .funds{
     .main{

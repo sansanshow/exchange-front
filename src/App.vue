@@ -17,6 +17,11 @@ export default {
         return {
             msg: ''
         }
+    },
+    created(){
+
+    },
+    methods: {
     }
 }
 </script>

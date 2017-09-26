@@ -1,4 +1,4 @@
-const store = {
+const cache = {
     /**
      * 存储localStorage
      */
@@ -32,4 +32,4 @@ const store = {
         window.localStorage.clear();
     },
 }
-export default store;
+export default cache;

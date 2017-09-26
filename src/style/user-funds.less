@@ -88,42 +88,65 @@
     font-size: 14px;
     margin-bottom: 22px;
     .row-label{
-      text-align: right;
-      width: 300px;
-      height: 42px;
-      line-height: 42px;
-    }
-    .row-field{
-      padding-left: 28px;
-      height: 42px;
-      flex: 1;
-      overflow: hidden;
-      input{
-        padding: 0 14px;
-        border: 1px solid #ccc;
-      }
-      .btn-sms{
-        margin-left: 11px;
-        width: 151px;
-        line-height: 40px;
-        color: #0f88ed;
-        border: 1px solid #0f88ed;
-      }
-      .btn-submit{
-        border-radius: 3px;
-        color: #fff;
-        font-size: 14px;
-        width: 134px;
+        text-align: right;
+    //   width: 300px;
+        flex: 1;
         height: 42px;
         line-height: 42px;
-        background: #0f88ed;
-      }
+    }
+    .row-field{
+        padding-left: 28px;
+    //   height: 42px;
+    //   flex: 1;
+        width: 374px;
+        display: flex;
+        justify-content: space-between;
+        overflow: hidden;
+        .head{
+        color: #666;
+        }
+        .country-select{ // 国家选择
+            width: 100%;
+            background: #f2f2f5;
+            p{
+            line-height: 42px;
+            padding: 0 14px;
+            }
+        }
+        .zone{  // 区号
+            width: 52px;
+            border: 1px solid #ccc;
+            line-height: 42px;
+            text-align: center;
+            border-right: none; 
+        }
+        input{
+                padding: 0 14px;
+                border: 1px solid #ccc;
+        }
+        .btn-sms{
+            margin-left: 11px;
+            width: 151px;
+            line-height: 40px;
+            color: #0f88ed;
+            border: 1px solid #0f88ed;
+        }
+        .btn-submit{
+            border-radius: 3px;
+            color: #fff;
+            font-size: 14px;
+            width: 134px;
+            height: 42px;
+            line-height: 42px;
+            background: #0f88ed;
+        }
     }
     
     .row-tips{
       box-sizing: border-box;
       height: 42px;
-      width: 270px;
+    //   width: 270px;
+    flex: 1;
       line-height: 42px;
       padding-left: 14px;
       &.warn{
@@ -147,4 +170,63 @@ table{
         border-bottom: 1px solid @bg;
     }
     width: 100%;
+}
+table{
+    width: 100%;
+    border-collapse: collapse;
+    td{
+      height: 56px;
+      font-size: 14px;
+      color: #999999;
+      text-align: center;
+    }
+    thead{
+      tr{
+        background: #f2f2f5;
+        td{
+          color: #000;
+        }
+      }
+    }
+    tbody{
+        tr{
+          border-bottom: 1px solid @bg;
+          &:nth-of-type(even){
+            background: #f2f2f5;
+            
+          }
+          
+      }
+    }
+}
+.coin-list{
+    display: flex;
+    padding-top: 15px;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    .coin-item{
+        text-align: center;
+        line-height: 34px;
+        width: 94px;
+        height: 34px;
+        border: 1px solid #ccc;
+        color: #333333;
+        margin-bottom: 6px;
+        &.select {
+            border: none;
+            background: #0f88ed;
+            color: #fff;
+        }
+    }
+}
+.sec-tips{
+    padding: 8px 26px;
+    text-align: left;
+    background: #f3faff;
+    border: 1px solid #81c6ff;
+    line-height: 30px;
+    color: #666666;
+    .line1{
+        color: #de211d;
+    }
 }

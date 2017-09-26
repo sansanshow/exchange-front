@@ -5,21 +5,21 @@
                 <div class="i-login-form r">
                     <h2 class="i-form-title">登录</h2>
                     <div class="i-form-field">
-                        <input type="text" name="" value="" placeholder="手机号">
+                        <input type="text" v-model="loginParam.username" placeholder="手机号">
                     </div>
                     <div class="i-form-field">
-                        <input type="text" name="" value="" placeholder="密码">
+                        <input type="text" v-model="loginParam.password" placeholder="密码">
                     </div>
                     <div class="i-form-field fix" style="padding-top: 6px;">
                         <a class="l" href="">验证码登录</a>
                         <a class="r" href="">忘记密码？</a>
                     </div>
                     <div class="i-form-field">
-                        <button class="login-btn">登录</button>
+                        <button class="login-btn" @click="login">登录</button>
                     </div>
                     <div class="i-form-field txt-fff" style="padding-top: 4px;">
                         <span>还没有账号？&nbsp;&nbsp;</span>
-                        <a class="a-line" href="./register.html">点此注册</a>
+                        <a class="a-line" @click="$to({path:'/sign/reg'})">点此注册</a>
                     </div>
                 </div>
             </div>
@@ -182,13 +182,20 @@
     </div>
 </template>
 <script>
+import axios from 'axios';
+import qs from 'qs';
 import echarts from 'echarts'
+import md5 from 'md5';
 export default {
     components:{
     },
     data(){
         return {
             tab:1,
+            loginParam:{
+                username:'',
+                password:''
+            },
             chartsOptions:{}
         }
     },
@@ -280,12 +287,29 @@ export default {
         myChart.setOption(option);
     },
     created(){
-
+        
     },
     methods: {
         onTab(index){
             this.tab = index;
             this.store.setStore('api',index);
+        },
+        // 登录方法
+        login(){
+            let _this = this;
+            let obj = {
+                username:_this.loginParam.username,
+                password: md5(_this.loginParam.password)
+            }
+            this.$http('login',obj).then(res => {
+                console.log(res);
+                 if(res.status==0){
+                    this.store.setStore('_token', res.dataWrapper._token);
+                    this.store.setStore('userInfo', res.dataWrapper.customerInfo);
+                    this.store.setStore('policyList', res.dataWrapper.policyList);
+                    this.$to({name: 'index'});
+                }
+            });
         }
     }
 }

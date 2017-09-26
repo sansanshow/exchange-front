@@ -4,8 +4,7 @@ Vue.use(Vuex);
 // state321321123
 const state = {
     userInfo: {
-    },
-    userTab: 1
+    }
 }
 
 // mutations
@@ -16,9 +15,6 @@ const state = {
 const mutations = {
     UPDATE_USER(state, userInfo) {
         state.userInfo = userInfo;
-    },
-    ON_CLICK_USERTAB(state, tab){
-        state.userTab = tab;
     }
 }
 // actions  -- 主要用来提交 mutations 中的事物
@@ -26,10 +22,8 @@ const actions = {
     updateUser: ({ commit,state}, newUser = {}) => {
         newUser.newProps = 'newProps'
         newUser = Object.assign({}, state.userInfo, newUser);
+        console.log(newUser);
         commit('UPDATE_USER', newUser);
-    },
-    onClickUserTab: ({ commit,state}, tab) => {
-        commit('ON_CLICK_USERTAB', tab);
     }
 }
 

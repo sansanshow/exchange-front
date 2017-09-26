@@ -2,6 +2,7 @@ import axios from 'axios'
 import qs from 'qs'  
 // let baseURL = "http://192.168.0.232:8089";
 let baseURL = "";
+import cache from '../mixin/store'
 axios.interceptors.request.use(config => {  
   // store.commit('UPDATE_LOADING',true) //显示loading  
   return config  
@@ -65,9 +66,13 @@ function successState(res) {
        })  
   }  
 }  
+
 const httpServer = (opts, data) => {  
-  
-    let Public = {}//公共参数 
+  console.log(cache);
+    let token = cache.getStore('_token');
+    let uid = JSON.parse(cache.getStore('userInfo')) ? JSON.parse(cache.getStore('userInfo')).id : '';
+    console.log(token);
+    let Public = {_token: token}//公共参数 
   
     // let httpDefaultOpts = { //http默认配置  
     //       method:opts.method,  
@@ -85,11 +90,12 @@ const httpServer = (opts, data) => {
     //         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'  
     //       }  
     // }  
+    let prefix = '/api/'
     let httpDefaultOpts = { //http默认配置  
         method:opts.method,  
         // baseURL,  
         url: opts.url,  
-        timeout: 10000,  
+        timeout: 100000,  
         params:Object.assign(Public, data),  
         data:qs.stringify(Object.assign(Public, data)),  
         headers: opts.method=='get' ? { 
@@ -99,12 +105,16 @@ const httpServer = (opts, data) => {
           // 'X-Requested-With': 'XMLHttpRequest',  
           // "Accept": "application/json",  
           // "Content-Type": "application/json; charset=UTF-8"  
+          '_token': token || '',
+          '_uuid': uid || ''
         }:{  
           // 'Access-Control-Allow-Headers': 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With, Token, Access-Control-Allow-Origin',
           // 'Access-Control-Allow-Methods': 'HEAD, GET, POST, PUT, PATCH, DELETE, OPTIONS',
           // 'Access-Control-Allow-Origin': '*',
           // 'X-Requested-With': 'XMLHttpRequest',  
           // 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'  
+          '_token': token || '',
+          '_uuid': uid || ''
         }
     }  
   

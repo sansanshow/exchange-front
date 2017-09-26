@@ -9,7 +9,7 @@
                 <ul class="list">
                     <li>BTC:<span class="up">￥28522.20</span></li>
                     <li>BTC:<span class="down">￥28522.20</span></li>
-                    <li>BTC:<span class="up">￥28522.20↓</span></li>
+                    <li>BTC:<span class="up">￥28522.20</span></li>
                 </ul>
             </div>
             <div class="wrap1200 fix">
@@ -37,10 +37,10 @@
                         <div class="top-arrows"></div>
                         <div class="auth-info flex">
                             <div class="info flex">
-                                <div class="item"><span>1</span><span>手机验证</span></div>
-                                <div class="item"><span>2</span><span>实名认证</span></div>
-                                <div class="item"><span>3</span><span>谷歌验证</span></div>
-                                <div class="item"><span>4</span><span>邮箱认证</span></div>
+                                <div class="item"><span class="icon ok"></span><span>手机验证</span></div>
+                                <div class="item"><span class="icon"></span><span>实名认证</span></div>
+                                <div class="item"><span class="icon"></span><span>谷歌验证</span></div>
+                                <div class="item"><span class="icon"></span><span>邮箱认证</span></div>
                             </div>
                             <div class="logout flex-1 t_r">
                                 <span class="btn" @click="logOut">退出登录</span>
@@ -143,9 +143,11 @@ export default {
             this.isLogin = false;
             window.isLogin = false;
             this.store.removeAll();
+            this.$to({name:'index'});
         },
         togglePopups(){
-            this.popup = !this.popup; 
+            // this.popup = !this.popup; 
+            this.$to({name:'userIndex'});
         },
         onTabClick(index){
             this.tab = index;
@@ -238,6 +240,20 @@ export default {
                     height: 26px;
                     line-height: 26px;
                     width: 105px;
+                    .icon{
+                        display: inline-block;
+                        width: 16px;
+                        height: 16px;
+                        vertical-align: middle;
+                        margin-right: 8px;
+                        background-image: url('../assets/images/icon-no.png');
+                        background-repeat: no-repeat;
+                        background-position: right center;
+                        background-size: 100%;
+                        &.ok{
+                            background-image: url('../assets/images/icon-ok.png');
+                        }
+                    }
                 }
             }
             .logout{

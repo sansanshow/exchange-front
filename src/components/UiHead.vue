@@ -15,9 +15,7 @@ export default {
             type: Object,
             default: () => {
                 return {
-                    title: '标题',
-                    sub: '副标题',
-                    back:'返回'
+                    title: '标题'
                 };
             }
         }
@@ -32,6 +30,8 @@ export default {
             // this.$emit("backEvent");
             if (this._events && this._events.backEvent) {
                 this.$emit("backEvent");
+            } else {
+                this.$router.go(-1);
             }
         },
     }

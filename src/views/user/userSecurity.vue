@@ -11,7 +11,7 @@
           +86 186*****123
         </div>
         <div class="btn-wrap">
-          <span class="btn">
+          <span class="btn" @click="$to({name: 'securityMobile'})">
             修改
           </span>
         </div>
@@ -28,7 +28,7 @@
           <span>密码强度</span><span class="level weak"></span>
         </div>
         <div class="btn-wrap">
-          <span class="btn" @click="$to({path: 'security/pwd'})">
+          <span class="btn" @click="$to({name: 'securityResetPwd'})">
             重置密码
           </span>
         </div>
@@ -45,7 +45,7 @@
           <span>密码强度</span><span class="level middle"></span>
         </div>
         <div class="btn-wrap">
-          <span class="btn" @click="$to({path: 'security/fundpwd'})">
+          <span class="btn" @click="$to({name: 'securityFundPwd'})">
             重置密码
           </span>
         </div>
@@ -62,7 +62,7 @@
           <span class="no-auth">未认证</span>
         </div>
         <div class="btn-wrap">
-          <span class="btn">
+          <span class="btn" @click="$to({name: 'securityGoogle'})">
             去认证
           </span>
         </div>
@@ -79,7 +79,7 @@
           <span class="no-auth">未认证</span>
         </div>
         <div class="btn-wrap">
-          <span class="btn">
+          <span class="btn" @click="$to({name: 'securityGoogle'})">
             去认证
           </span>
         </div>
@@ -93,7 +93,7 @@
         <table>
           <thead> 
               <tr>
-                  <td>时间</td>
+                  <td style="width: 226px;">时间</td>
                   <td>类别</td>
                   <td>IP地址</td>
                   <td>备注</td>
@@ -102,10 +102,10 @@
           </thead>
           <tbody>
               <tr v-for="i in 5" :key="i">
-                  <td>委托时间</td>
-                  <td>委托量/已成交(LTC)</td>
-                  <td>委托价格/成交均价(CNY)</td>
-                  <td>成交总额(CNY)</td>
+                  <td>2017-09-25 11:22:18</td>
+                  <td>网页端登录</td>
+                  <td><span class="ip">192.168.0.1</span><span class="area">上海</span></td>
+                  <td>成功</td>
               </tr>
           </tbody>
       </table>
@@ -125,6 +125,9 @@ export default {
           headOptions:{
             title: '资产安全',
             sub: '请不要透露短信和谷歌验证码给任何人，包括我们的客服。'
+          },
+          sendSms:{
+            time: 1
           }
         }
     },
@@ -133,7 +136,8 @@ export default {
     },
     methods: {
       backE(){
-        console.log(back);
+        console.log("userIndex");
+        this.$to({name: "userIndex"});
       }
     }
 }
@@ -228,33 +232,11 @@ export default {
       color: #333;
       font-size: 16px;
     }
-}
-table{
-    width: 100%;
-    border-collapse: collapse;
-    td{
-      height: 56px;
-      font-size: 14px;
-      color: #666;
-      text-align: center;
+    .ip{
+      color: #ff0500;
     }
-    thead{
-      tr{
-        background: #f2f2f5;
-        td{
-          color: #000;
-        }
-      }
-    }
-    tbody{
-        tr{
-          border-bottom: 1px solid @bg;
-          &:nth-of-type(even){
-            background: #f2f2f5;
-            
-          }
-          
-      }
+    .area{
+
     }
 }
 </style>

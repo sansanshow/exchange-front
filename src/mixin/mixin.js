@@ -1,7 +1,7 @@
 import Vue from "vue";
 import httpServer from '../utils/fetch'
 import API from '../utils/api'
-import store from './store'
+import cache from './store'
 
 import gHeader from '../components/gHeader';
 import gFooter from '../components/gFooter';
@@ -15,8 +15,9 @@ Vue.mixin({
         return{
             header: true,
             footer: true,
-            store: store,
-            isLogin: false
+            store: cache,
+            isLogin: false,
+            wait: 5
         }
     },
     created(){

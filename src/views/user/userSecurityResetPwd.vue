@@ -87,7 +87,8 @@ export default {
     },
     methods: {
       backE(){
-        console.log(back);
+        console.log("userIndex");
+        this.$to({name: "userIndex"});
       }
     }
 }

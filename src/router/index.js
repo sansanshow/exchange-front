@@ -217,7 +217,7 @@ let router = new Router({
 router.beforeEach((to, form, next) => {
   // 登录过滤
       // next({ name: "login", query: { path: to.fullPath } });
-      console.log('---filter--'+to.meta.title || '');
+      // console.log('---filter--'+to.meta.title || '');
       if(to.meta.title){
         document.title = to.meta.title;
       }

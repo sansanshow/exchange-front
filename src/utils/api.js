@@ -24,7 +24,27 @@ const serviceModule = {
         name: '注册-发送验证码',
         url: prefix + 'sendRegCode',  
         method: 'post'  
-    }
+    },
+    sendVCode: {
+        name: '修改-绑定-发送验证码',
+        url: prefix + 'sendVCode',  
+        method: 'post'  
+    },
+    changeMobile: {
+        name: '修改-手机',
+        url: prefix + 'account/changemobile',  
+        method: 'post'  
+    },
+    fileUpload: {
+        name: '实名认证-图片上传',
+        url: prefix + 'fileUpload/loadFile',
+        method: 'post'
+    },
+    identify: {
+        name: '实名认证',
+        url: prefix + 'account/identify',
+        method: 'post'
+    },
     
 }  
 const API = {...serviceModule }
