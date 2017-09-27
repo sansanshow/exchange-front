@@ -32,54 +32,54 @@
                         <!-- <span v-text="baseInfo.username"></span><span class="arrows"></span>userInfo -->
                         <span v-text="$store.state.userInfo.username"></span><span class="arrows"></span>
                  
-                    <div class="popup" v-if="popup">
-                        <!-- 箭头 -->
-                        <div class="top-arrows"></div>
-                        <div class="auth-info flex">
-                            <div class="info flex">
-                                <div class="item"><span class="icon ok"></span><span>手机验证</span></div>
-                                <div class="item"><span class="icon"></span><span>实名认证</span></div>
-                                <div class="item"><span class="icon"></span><span>谷歌验证</span></div>
-                                <div class="item"><span class="icon"></span><span>邮箱认证</span></div>
-                            </div>
-                            <div class="logout flex-1 t_r">
-                                <span class="btn" @click="logOut">退出登录</span>
-                            </div>
-                        </div>
-                        <div class="assets">
-                            <div class="flex all">
-                                <div class="flex-1">
-                                    <div class="line">
-                                        <span>账户总资产：</span><span>--</span><span>CNY</span>
-                                    </div>
-                                    <div class="line">
-                                        <span>账户总资产：</span><span>--</span><span>CNY</span>
-                                    </div>
+                        <div class="popup" v-if="popup">
+                            <!-- 箭头 -->
+                            <div class="top-arrows"></div>
+                            <div class="auth-info flex">
+                                <div class="info flex">
+                                    <div class="item"><span class="icon ok"></span><span>手机验证</span></div>
+                                    <div class="item"><span class="icon"></span><span>实名认证</span></div>
+                                    <div class="item"><span class="icon"></span><span>谷歌验证</span></div>
+                                    <div class="item"><span class="icon"></span><span>邮箱认证</span></div>
                                 </div>
-                                <div class="more">
-                                    <span class="link">账单明细</span>
+                                <div class="logout flex-1 t_r">
+                                    <span class="btn" @click="logOut">退出登录</span>
                                 </div>
                             </div>
-                            <div class="detail flex">
-                                <div class="flex-1">币种</div>
-                                <div class="can">可用</div>
-                                <div class="flex-1">冻结</div>
-                            </div>
-                            <div class="detail flex">
-                                <div class="flex-1">CNY</div>
-                                <div class="can">0</div>
-                                <div class="flex-1">0</div>
-                            </div>
-                            <div class="detail flex">
-                                <div class="flex-1">CNY</div>
-                                <div class="can">0</div>
-                                <div class="flex-1">0</div>
-                            </div>
-                            <div class="btn-groups">
-                                <span class="btn" @click="recharge">充值</span><span class="btn">提现</span>
+                            <div class="assets">
+                                <div class="flex all">
+                                    <div class="flex-1">
+                                        <div class="line">
+                                            <span>账户总资产：</span><span>--</span><span>CNY</span>
+                                        </div>
+                                        <div class="line">
+                                            <span>账户总资产：</span><span>--</span><span>CNY</span>
+                                        </div>
+                                    </div>
+                                    <div class="more">
+                                        <span class="link">账单明细</span>
+                                    </div>
+                                </div>
+                                <div class="detail flex">
+                                    <div class="flex-1">币种</div>
+                                    <div class="can">可用</div>
+                                    <div class="flex-1">冻结</div>
+                                </div>
+                                <div class="detail flex">
+                                    <div class="flex-1">CNY</div>
+                                    <div class="can">0</div>
+                                    <div class="flex-1">0</div>
+                                </div>
+                                <div class="detail flex">
+                                    <div class="flex-1">CNY</div>
+                                    <div class="can">0</div>
+                                    <div class="flex-1">0</div>
+                                </div>
+                                <div class="btn-groups">
+                                    <span class="btn" @click="recharge">充值</span><span class="btn">提现</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
                    </li>
                 </ul>
             </div>
@@ -93,7 +93,7 @@ export default {
   data () {
     return {
       tab: 0,
-      popup: false,
+      popup: true,
       loginStatus: this.isLogin,
       baseInfo: {
           username: null,
@@ -205,6 +205,7 @@ export default {
     
     // position: relative;
     .popup{
+        display: none;
         position: absolute;
         box-sizing: border-box;
         padding: 10px 0;

@@ -27,8 +27,8 @@ Vue.mixin({
         $to(param) {
             this.$router.push(param);
         },
-        $http(apiKey,param){
-            return httpServer(API[apiKey],param);
+        $http(apiKey,param,config = {}){
+            return httpServer(API[apiKey],param,config);
         }
     }
 })

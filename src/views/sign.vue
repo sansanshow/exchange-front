@@ -131,7 +131,7 @@ export default {
                 username:_this.loginParam.username, 
                 password: md5(_this.loginParam.password)
             }
-            this.$http('login',obj).then(res => {
+            this.$http('login',obj,{ headers:{'aaa':'bbb'} }).then(res => {
                 console.log(res);
                  if(res.status==0){
                     this.store.setStore('_token', res.dataWrapper._token);
