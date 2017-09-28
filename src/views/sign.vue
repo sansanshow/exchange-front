@@ -71,6 +71,7 @@ const wait = 5;
 import axios from 'axios';
 import qs from 'qs';
 import md5 from 'md5';
+import { mapActions } from 'vuex'
 export default {
     components:{
     
@@ -91,11 +92,11 @@ export default {
                 mcode:'',
                 imgcode:'',
                 imgsrc: imgsrc,    
-            }
+            },
+            toPath: this.$route.query.path || '/'
         }
     },
     created(){
-        console.log(md5('1111'));
         // 
         // this.$http('login',{username:'15908401995', password: 'a123456'}).then(res => {
         //     console.log(res);
@@ -124,6 +125,9 @@ export default {
         // });
     },
     methods: {
+        ...mapActions([
+            'updateUser'
+        ]),
         // 登录方法
         login(){
             let _this = this;
@@ -131,45 +135,19 @@ export default {
                 username:_this.loginParam.username, 
                 password: md5(_this.loginParam.password)
             }
-            this.$http('login',obj,{ headers:{'aaa':'bbb'} }).then(res => {
-                console.log(res);
+            this.$http('login',obj).then(res => {
                  if(res.status==0){
                     this.store.setStore('_token', res.dataWrapper._token);
                     this.store.setStore('userInfo', res.dataWrapper.customerInfo);
                     this.store.setStore('policyList', res.dataWrapper.policyList);
-                    this.$to({name: 'index'});
+                    this.$to({path: this.toPath});
+                    this.updateUser(res.dataWrapper.customerInfo);
                 }
             });
         },
         // 注册
         regist(){
-            console.log("reg--1222");
             let _this = this;
-            // axios({
-            //     method: 'post',
-            //     url: 'http://192.168.0.232:8089/login',
-            //     data: {username:'15908401995ss', password: 'a123456'}
-            // }).then(function(res){
-            //     console.log(res);
-            // }).catch(function(err){
-            //     console.log(err);
-            // });
-
-            // axios.post('http://192.168.0.232:8089/login',{
-            //     username:'15908401995ss', password: 'a123456'
-            // }).then(function(res){
-            //     console.log(res);
-            // }).catch(function(err){
-            //     console.log(err);
-            // });
-
-            // this.$ajax.post('http://192.168.0.232:8089/login',{
-            //     username:'15908401995ss', password: 'a123456'
-            // }).then(function(res){
-            //     console.log(res);
-            // }).catch(function(err){
-            //     console.log(err);
-            // });
             if(_this.reg.password !== _this.reg.cfmpwd){
                 alert('密码不一致');
                 return;
@@ -207,17 +185,7 @@ export default {
                 code: _this.reg.imgcode,
                 mobile: _this.reg.mobile,
                 type: 'nreg'
-            }
-            
-            //  axios({
-            //     method: 'post',
-            //     url: 'http://192.168.0.232:8089/sendRegCode',
-            //     data: qs.stringify(param)
-            // }).then(function(res){
-            //     console.log(res);
-            // }).catch(function(err){
-            //     console.log(err);
-            // });
+            };
 
             this.$http('sendsms', param).then(res => {
                 console.log('sendSmsCode');

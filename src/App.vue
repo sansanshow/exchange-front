@@ -17,7 +17,6 @@
     data(){
       return {
         msg: '',
-        user:this.$store.getters.getUser,
         socketInfo:{
         }
       }
@@ -26,17 +25,17 @@
       this.init()
     },
     methods: {
-      ...mapActions([
-        'updateSocketData'
-      ]),
       init(){
         let _this = this ;
+        if(_this.$websocket==null){
+          _this.$websocket = new WebSocket("ws://localhost:8080/websocket");
+        }
         // console.log(_this.user.id);
-        let ws = new WebSocket("ws://localhost:8089/websocket");
-        ws.onopen=function(){
+        // let ws = new WebSocket("ws://localhost:8080/websocket");
+        _this.$websocket.onopen=function(){
           // console.log(111);
         }
-        ws.onmessage=function(event){
+        _this.$websocket.onmessage=function(event){
           _this.socketData(event.data);
         }
 
@@ -44,21 +43,27 @@
           let assets = _this.$store.state.assets;
           for(let key in assets){
             let channel = "sub_spot_"+assets[key].code+"_cny_latestprice";//sub_spot_btc_cny_latestprice
-            ws.send("{\"channel\":\""+channel+"\"}");//btc latest price
+            _this.$websocket.send("{\"channel\":\""+channel+"\"}");//btc latest price
 
             channel = "sub_spot_"+assets[key].code+"_cny_dailydata";//sub_spot_btc_cny_dailydata
-            ws.send("{\"channel\":\""+channel+"\"}");//btc dailydata
+            _this.$websocket.send("{\"channel\":\""+channel+"\"}");//btc dailydata
           }
-
-          ws.send("{\"channel\":\"sub_customer_asset\",\"uuid\":\""+_this.user.id+"\"}");
+          let currUserid = _this.$store.getters.getUserId ;
+          // console.log(">>>>>>"+currUserid)
+          if(currUserid!=undefined && currUserid!=null){
+            _this.$websocket.send("{\"channel\":\"sub_customer_asset\",\"uuid\":\""+currUserid+"\"}");
+          }
 
         },2000);
 
         setInterval(function(){
           //心跳监测，当客户端关闭时，服务端websocketSession关闭
-          ws.send("1");
+          _this.$websocket.send("1");
         },10000);
       },
+      ...mapActions([
+        'updateSocketData'
+      ]),
       socketData(obj){
         obj = JSON.parse(obj);
         if(obj!=undefined && obj!=null){

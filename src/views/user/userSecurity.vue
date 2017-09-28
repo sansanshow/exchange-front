@@ -3,16 +3,20 @@
     <ui-head :options="headOptions" @backEvent="backE"></ui-head>
     <div class="main">
       <div class="item flex">
-        <div class="icon ok"></div>
+        <div class="icon" v-bind:class="{ok : mobileActive}"></div>
         <div class="head">
           <span>手机绑定</span>
         </div>
         <div class="content">
-          +86 186*****123
+          <span v-if="ismobile" class="btn">{{mobile}}</span>
+          <span v-else class="no-auth">未绑定</span>
         </div>
         <div class="btn-wrap">
-          <span class="btn" @click="$to({name: 'securityMobile'})">
+          <span v-if="ismobile" class="btn" @click="$to({name: 'securityMobile'})">
             修改
+          </span>
+          <span v-else class="btn">
+            绑定
           </span>
         </div>
       </div>
@@ -35,7 +39,7 @@
       </div>
 
       <div class="item flex">
-        <div class="icon ok">
+        <div class="icon" v-bind:class="{ok : payActive}">
 
         </div>
         <div class="head">
@@ -45,41 +49,50 @@
           <span>密码强度</span><span class="level middle"></span>
         </div>
         <div class="btn-wrap">
-          <span class="btn" @click="$to({name: 'securityFundPwd'})">
+          <span v-if="ispay" class="btn" @click="$to({name: 'securityFundPwd'})">
             重置密码
+          </span>
+           <span v-else class="btn"  @click="$to({name: 'securityFundPwd'})">
+            设置密码
           </span>
         </div>
       </div>
 
       <div class="item flex">
-        <div class="icon">
+        <div class="icon"  v-bind:class="{ ok: googleActive}">
 
         </div>
         <div class="head">
           <span>Google认证</span>
         </div>
         <div class="content">
-          <span class="no-auth">未认证</span>
+          <span v-if="isgoogle" class="no-auth">已认证</span>
+          <span v-else class="no-auth">未认证</span>
         </div>
         <div class="btn-wrap">
-          <span class="btn" @click="$to({name: 'securityGoogle'})">
+          <span v-if="isgoogle" class="btn"  @click="$to({name: 'securityGoogle'})">
+            修改
+          </span>
+          <span v-else class="btn" @click="$to({name: 'securityGoogle'})">
             去认证
           </span>
         </div>
       </div>
 
       <div class="item flex">
-        <div class="icon">
+        <div class="icon" v-bind:class="{ok : emailActive}">
 
         </div>
         <div class="head">
           <span>邮箱认证</span>
         </div>
         <div class="content">
-          <span class="no-auth">未认证</span>
+          <span v-if="isemail" class="no-auth">已认证</span>
+          <span v-else class="no-auth">未认证</span>
         </div>
         <div class="btn-wrap">
-          <span class="btn" @click="$to({name: 'securityGoogle'})">
+          <span v-if="isemail"></span>
+          <span v-else class="btn">
             去认证
           </span>
         </div>
@@ -122,6 +135,15 @@ export default {
     },
     data(){
         return {
+          ispay:false,
+          ismobile:false,
+          isemail:false,
+          isgoogle:false,     //为true标识认证，false表示未认证
+          mobileActive:false,
+          payActive:false,
+          googleActive:false,
+          emailActive:false,  //css样式活动标志
+          mobile:'',
           headOptions:{
             title: '资产安全',
             sub: '请不要透露短信和谷歌验证码给任何人，包括我们的客服。'
@@ -133,6 +155,27 @@ export default {
     },
     created(){
       
+    },
+    mounted(){
+      let _this = this;
+      let userInfo =  JSON.parse(_this.store.getStore("userInfo"));
+      _this.mobile = userInfo.mobile.substr(0,3)+"****"+userInfo.mobile.substr(7);
+      if(userInfo.validationGoogle=="1"){
+        _this.isgoogle=true;
+        _this.googleActive=true;
+      }
+      if(userInfo.validationEmail=="1"){
+        _this.isemail=true;
+        _this.emailActive=true;
+      }
+      if(userInfo.validationMobile=="1"){
+        _this.ismobile=true;
+        _this.mobileActive=true;
+      }
+      if(userInfo.payPassword!=null){
+        _this.ispay=true,
+        _this.payActive=true;
+      }
     },
     methods: {
       backE(){

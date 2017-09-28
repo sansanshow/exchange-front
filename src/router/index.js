@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import store from '../mixin/store'
 import Router from 'vue-router'
 import Main from '@/views/main'
 import Index from '@/views/index'
@@ -13,6 +14,7 @@ import fundsDetail from '@/views/funds/fundsDetail'
 import fundsAudit from '@/views/funds/fundsAudit'
 
 import userIndex from '@/views/user/userIndex'
+import userSafePolicy from '@/views/user/userSafePolicy'
 import userSecurity from '@/views/user/userSecurity'
 import securityGoogle from '@/views/user/userSecurityGoogle'
 import securityMobile from '@/views/user/userSecurityMobile'
@@ -68,7 +70,8 @@ let router = new Router({
       component: Trade,
       alias: '/trade',
       meta: {
-        title:'交易中心'
+        title:'交易中心',
+        requireAuth: true
       }
     },
     // 资产
@@ -77,7 +80,8 @@ let router = new Router({
       name: 'funds',
       component: fundsIndex,
       meta: {
-        title:'资金管理'
+        title:'资金管理',
+        requireAuth: true
       },
       children:[
         {
@@ -85,7 +89,8 @@ let router = new Router({
           component: fundsTotal,
           // name: 'fundsTotal',
           meta: {
-            title:'资金管理'
+            title:'资金管理',
+            requireAuth: true
           }
         },
         {
@@ -93,7 +98,8 @@ let router = new Router({
           component: fundsRecharge,
           name: 'fundsRecharge',
           meta: {
-            title:'充值'
+            title:'充值',
+            requireAuth: true
           }
         },
         {
@@ -101,7 +107,8 @@ let router = new Router({
           component: fundsDeposit,
           name: 'fundsDeposit',
           meta: {
-            title:'提现'
+            title:'提现',
+            requireAuth: true
           }
 
         },
@@ -110,7 +117,8 @@ let router = new Router({
           component: fundsDetail,
           name: 'fundsDetail',
           meta: {
-            title:'账单明细'
+            title:'账单明细',
+            requireAuth: true
           }
 
         },
@@ -119,7 +127,8 @@ let router = new Router({
           component: fundsAudit,
           name: 'fundsAudit',
           meta: {
-            title:'资产审计'
+            title:'资产审计',
+            requireAuth: true
           }
 
         },
@@ -131,7 +140,8 @@ let router = new Router({
       name: 'userIndex',
       component: userIndex,
       meta: {
-        title:'个人中心'
+        title:'个人中心',
+        requireAuth: true
       },
       children:[
         {
@@ -139,7 +149,8 @@ let router = new Router({
           component: userSecurity,
           name: 'userSecurity',
           meta: {
-            title:'安全中心'
+            title:'安全中心',
+            requireAuth: true
           }
         },
         // 安全中心
@@ -148,39 +159,17 @@ let router = new Router({
           component: userSecurity,
           name: 'userSecurity',
           meta: {
-            title:'安全中心'
+            title:'安全中心',
+            requireAuth: true
           }
         },
         {
-          path: 'security/google',
-          component: securityGoogle,
-          name: 'securityGoogle',
+          path: 'policy',
+          component: userSafePolicy,
+          name: 'userSafePolicy',
           meta: {
-            title:'安全中心-谷歌认证'
-          }
-        },
-        {
-          path: 'security/mobile',
-          component: securityMobile,
-          name: 'securityMobile',
-          meta: {
-            title:'安全中心-绑定手机'
-          }
-        },
-        {
-          path: 'security/pwd',
-          component: securityResetPwd,
-          name: 'securityResetPwd',
-          meta: {
-            title:'安全中心-重置密码'
-          }
-        },
-        {
-          path: 'security/fundpwd',
-          component: securityFundPwd,
-          name: 'securityFundPwd',
-          meta: {
-            title:'安全中心-资金密码'
+            title:'安全策略',
+            requireAuth: true
           }
         },
         {
@@ -188,15 +177,54 @@ let router = new Router({
           component: userIdentity,
           name: 'userIdentity',
           meta: {
-            title:'身份认证'
+            title:'身份认证',
+            requireAuth: true
           }
         },
+        {
+          path: 'security/google',
+          component: securityGoogle,
+          name: 'securityGoogle',
+          meta: {
+            title:'安全中心-谷歌认证',
+            requireAuth: true
+          }
+        },
+        {
+          path: 'security/mobile',
+          component: securityMobile,
+          name: 'securityMobile',
+          meta: {
+            title:'安全中心-绑定手机',
+            requireAuth: true
+          }
+        },
+        {
+          path: 'security/pwd',
+          component: securityResetPwd,
+          name: 'securityResetPwd',
+          meta: {
+            title:'安全中心-重置密码',
+            requireAuth: true
+          }
+        },
+        {
+          path: 'security/fundpwd',
+          component: securityFundPwd,
+          name: 'securityFundPwd',
+          meta: {
+            title:'安全中心-资金密码',
+            requireAuth: true
+          }
+        },
+        
         {
           path: 'notify',
           component: userNotify,
           name: 'userNotify',
           meta: {
-            title:'通知设置'
+            title:'通知设置',
+            requireAuth: true
           }
 
         },
@@ -205,7 +233,8 @@ let router = new Router({
           component: userAccount,
           name: 'userAccount',
           meta: {
-            title:'账户管理'
+            title:'账户管理',
+            requireAuth: true
           }
 
         }
@@ -215,12 +244,18 @@ let router = new Router({
 })
 //路由跳转钱操作
 router.beforeEach((to, form, next) => {
+  if(to.meta.title){
+    document.title = to.meta.title;
+  }
   // 登录过滤
-      // next({ name: "login", query: { path: to.fullPath } });
-      // console.log('---filter--'+to.meta.title || '');
-      if(to.meta.title){
-        document.title = to.meta.title;
-      }
-      next();
+  if(to.meta.requireAuth && store.getStore('userInfo') == null){
+    // if(store.getStore('userInfo') == null){
+      next({ path: "/login", query: {path: to.fullPath}});
+      return;
+    // }
+  }
+  // next({ name: "login", query: { path: to.fullPath } });
+  // console.log('---filter--'+to.meta.title || '');
+  next();
 })
 export default router;

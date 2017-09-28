@@ -2,7 +2,44 @@
     <div class="container">
        <div class="i-banner">
             <div class="wrap1200 fix">
-                <div class="i-login-form r">
+                <div class="i-login-info r" v-if="$store.state.isLogin">
+                    <div class="uname">欢迎回来，{{$store.state.username}}</div>
+                    <div class="info">
+                        <div class="flex">
+                            <div class="left">
+                                净资产:
+                            </div>
+                            <div class="flex-1">
+                                ￥123.0
+                            </div>
+                        </div>
+                        <div class="flex">
+                            <div class="left">
+                                总资产:
+                            </div>
+                            <div class="flex-1">
+                                ￥123.0
+                            </div>
+                        </div>
+                        <div class="flex curr">
+                            <div class="left">
+                                当前可用:
+                            </div>
+                            <div class="flex-1">
+                                <p>CNY:123.0</p>
+                                <p>CNY:123.0</p>
+                                <p>CNY:123.0</p>
+                                <p>CNY:123.0</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="btn-wrap">
+                        <div class="btn">
+                            进入交易中心
+                        </div>
+                    </div>
+                </div>
+                <div class="i-login-form r" v-else>
                     <h2 class="i-form-title">登录</h2>
                     <div class="i-form-field">
                         <input type="text" v-model="loginParam.username" placeholder="手机号">
@@ -22,6 +59,7 @@
                         <a class="a-line" @click="$to({path:'/sign/reg'})">点此注册</a>
                     </div>
                 </div>
+
             </div>
         </div>
         <!-- 动态 -->
@@ -43,47 +81,67 @@
                         <div class="bottom-line"></div>
                     </div>
                 </div>
-                <ul class="coin-nav fix">
-                    <li class="nav" :class="{ 'on' : tab==0 }" @click="onTab(0)">BTC</li>
-                    <li class="nav" :class="{ 'on' : tab==1 }" @click="onTab(1)">LTC</li>
-                    <li class="nav" :class="{ 'on' : tab==2 }" @click="onTab(2)">ETH</li>
-                    <li class="nav" :class="{ 'on' : tab==3 }" @click="onTab(3)">BCC</li>
-                    <li class="nav" :class="{ 'on' : tab==4 }" @click="onTab(4)">BTS</li>
+                <div class="details-table">
+                    <div class="head flex">
+                        <div class="flex-1">市场</div>
+                        <div class="flex-1">最新</div>
+                        <div class="flex-1">今日涨幅跌</div>
+                        <div class="flex-1">今日最高</div>
+                        <div class="flex-1">今日最低</div>
+                        <div class="flex-1">24小时成交量</div>
+                    </div>
+                    <div class="body">
+                        <div class="item flex" v-for="(item,index) in $store.state.assets" :key="index" :class="{'up': $store.state.socketData[item.code+'Sort']==1,'down': $store.state.socketData[item.code+'Sort']==0}">
+                            <div class="flex-1">{{item.name}}</div>
+                            <div class="flex-1 lasted">{{$store.state.socketData[item.code+'Price']}}</div>
+                            <div class="flex-1 range">{{$store.state.socketData[item.code+'Range']}}</div>
+                            <div class="flex-1">{{$store.state.socketData[item.code+'MaxPrice']}}</div>
+                            <div class="flex-1">{{$store.state.socketData[item.code+'MinPrice']}}</div>
+                            <div class="flex-1">{{$store.state.socketData[item.code+'Volume']}}</div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <!-- <ul class="coin-nav fix">
+                    <li v-for="(item,index) in $store.state.assets" :key="index" class="nav" :class="{ 'on' : tab==index }" @click="onTab(index,item.code)">{{item.name}}</li>
                 </ul>
                 <div class="c-details flex">
                     <div class="item">
                         <div class="item-title">最新</div>
                         <div class="item-data">
-                            1000
+                            {{$store.state.socketData[asset+'Price']}}
                         </div>
                     </div>
                     <div class="item">
                         <div class="item-title">今日涨幅</div>
                         <div class="item-data">
-                            1000
+                            {{$store.state.socketData[asset+'Range']}}
                         </div>
                     </div>
                     <div class="item">
                         <div class="item-title">今日最高</div>
                         <div class="item-data">
-                            1000
+                            {{$store.state.socketData[asset+'MaxPrice']}}
                         </div>
                     </div>
                     <div class="item">
                         <div class="item-title">今日最低</div>
                         <div class="item-data">
-                            1000
+                            {{$store.state.socketData[asset+'MinPrice']}}
                         </div>
                     </div>
                     <div class="item">
                         <div class="item-title">24小时成交量</div>
                         <div class="item-data">
-                            1000
+                            {{$store.state.socketData[asset+'Volume']}}
                         </div>
                     </div>
-                </div>
-                <!-- charts -->
+                </div>-->
+                <!-- charts 
                 <div id="index-chart" class="d-chart"></div>
+                -->
                 <div class="btn-wrap center">
                     <a class="btn">查看更多行情并交易&nbsp;&gt;</a>
                 </div>
@@ -191,7 +249,8 @@ export default {
     },
     data(){
         return {
-            tab:1,
+            tab:0,
+            asset:'btc',
             loginParam:{
                 username:'',
                 password:''
@@ -200,99 +259,14 @@ export default {
         }
     },
     mounted(){
-        var base = +new Date(1968, 9, 3);
-        var oneDay = 24 * 3600 * 1000;
-        var date = [];
-
-        var data = [Math.random() * 300];
-
-        for (var i = 1; i < 20000; i++) {
-            var now = new Date(base += oneDay);
-            date.push([now.getFullYear(), now.getMonth() + 1, now.getDate()].join('/'));
-            data.push(Math.round((Math.random() - 0.5) * 20 + data[i - 1]));
-        }
-
-        let option = {
-            tooltip: {
-                trigger: 'axis',
-                position: function(pt) {
-                    return [pt[0], '10%'];
-                }
-            },
-            title: {
-                left: 'center',
-                text: '大数据量面积图',
-            },
-            toolbox: {
-                feature: {
-                    dataZoom: {
-                        yAxisIndex: 'none'
-                    },
-                    restore: {},
-                    saveAsImage: {}
-                }
-            },
-            xAxis: {
-                type: 'category',
-                boundaryGap: false,
-                data: date
-            },
-            yAxis: {
-                type: 'value',
-                boundaryGap: [0, '100%']
-            },
-            dataZoom: [{
-                type: 'inside',
-                start: 0,
-                end: 10
-            }, {
-                start: 0,
-                end: 10,
-                handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
-                handleSize: '80%',
-                handleStyle: {
-                    color: '#fff',
-                    shadowBlur: 3,
-                    shadowColor: 'rgba(0, 0, 0, 0.6)',
-                    shadowOffsetX: 2,
-                    shadowOffsetY: 2
-                }
-            }],
-            series: [{
-                name: '模拟数据',
-                type: 'line',
-                smooth: true,
-                symbol: 'none',
-                sampling: 'average',
-                itemStyle: {
-                    normal: {
-                        color: 'rgb(255, 70, 131)'
-                    }
-                },
-                areaStyle: {
-                    normal: {
-                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                            offset: 0,
-                            color: 'rgb(255, 158, 68)'
-                        }, {
-                            offset: 1,
-                            color: 'rgb(255, 70, 131)'
-                        }])
-                    }
-                },
-                data: data
-            }]
-        };
-        let myChart = echarts.init(document.getElementById("index-chart"));
-        myChart.setOption(option);
     },
     created(){
         
     },
     methods: {
-        onTab(index){
+        onTab(index,assetcode){
             this.tab = index;
-            this.store.setStore('api',index);
+            this.asset = assetcode;
         },
         // 登录方法
         login(){
@@ -314,7 +288,47 @@ export default {
     }
 }
 </script>
-<style scoped>
+<style lang="less" scoped>
+
+// 登陆后
+.i-login-info{
+    box-sizing: border-box;
+    width: 300px;
+    height: 322px;
+    padding-top: 40px;
+    margin-top: 29px;
+    background: #fff;
+    .uname{
+        text-align: center;
+        font-size: 16px;
+        margin-bottom: 18px;
+    }
+    .info{
+        line-height: 30px;
+        color: #666666;
+        margin-bottom: 20px;
+        
+        .left{
+            padding-right: 6px;
+            width: 96px;
+            text-align: right;
+        }
+        .curr{
+            height: 104px;
+            overflow: hidden;
+            line-height: 26px;
+        }
+    }
+    .btn-wrap{
+        padding: 0 20px;
+        .btn{
+            color: #fff;
+            background-color: #0f88ed;
+            line-height: 34px;
+            height: 34px;
+        }
+    }
+}
 .i-banner {
     height: 380px;
     min-width: 1200px;
@@ -322,10 +336,6 @@ export default {
 }
 /* 实时动态 */
 
-.i-current {
-    background: #fff;
-    height: 878px;
-}
 
 .i-current-head {
     height: 56px;
@@ -437,6 +447,50 @@ export default {
     color: #fff;
 }
 
+.i-current {
+    background: #fff;
+    height: auto;
+    padding-bottom: 54px;
+    .details {
+        .details-table{
+            border: 1px solid #eeeeee;
+            line-height: 54px;
+            text-align: center;
+            .head{
+                height: 54px;
+                border-bottom: 1px solid #eeeeee;
+            }
+            .body{
+                font-size: 18px;
+                .item{
+                    height: 54px;
+                    &.down{
+                        .lasted{
+                            color: #3dc18e;
+                        }
+                        .range{
+                            color: #3dc18e;
+                        }
+                    }
+                    &.up{
+                        .lasted{
+                            color: #de211d;
+                        }
+                        .range{
+                            color: #de211d;
+                        }
+                    }
+                }
+                .on{
+                    background: #f9f9f9;
+                }
+                
+            }
+            
+            
+        }
+    }
+}
 .zixun {
     padding: 0 40px;
 }

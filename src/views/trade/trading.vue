@@ -8,12 +8,15 @@
             <div class="content">
                 <div class="head">
                     <ul class="coin-nav fix">
-                        <li class="nav on"><img class="icon" src="../../assets/images/coin-icon.png" alt=""><span class="name">BTC/CNY</span></li>
-                        <li class="nav"><img class="icon" src="../../assets/images/coin-icon.png" alt=""><span class="name">BTC/CNY</span></li>
-                        <li class="nav"><img class="icon" src="../../assets/images/coin-icon.png" alt=""><span class="name">BTC/CNY</span></li>
-                        <li class="nav"><img class="icon" src="../../assets/images/coin-icon.png" alt=""><span class="name">BTC/CNY</span></li>
+                        <li class="nav"><span class="name on">对CNY交易区</span></li>
+                        <li class="nav"><span class="name">对BTC交易区</span></li>
+                        <li class="nav"><span class="name">对ETH交易区</span></li>
                     </ul>
-                    <span class="open"><span>展开</span><img class="arrows" src="../../assets/images/i-arrows.png" alt=""></span>
+                    <div class="sub-nav flex">
+                        <div class="sub-nav-item" v-for="i in 10" :key="i" :class="{'t-left': (i % 8 == 1),'on': (i == 2)}">BTC</div>
+                        <span class="open"><span>收起</span><img class="arrows" src="../../assets/images/i-arrows.png" alt=""></span>
+                    </div>
+                    
                 </div>
                 <div class="main">
                     <div class="info">
@@ -299,37 +302,65 @@ export default {
         padding: 0 29px;
         background: #fff;
         padding-bottom: 10px;
+        .head {
+            position: relative;
+            border-bottom: 1px solid #f2f2f5;
+            .coin-nav{
+                border-bottom: 2px solid #f2f2f5;
+                li {
+                    text-align: center;
+                    box-sizing: border-box;
+                    float: left;
+                    height: 70px;
+                    span{
+                        box-sizing: border-box;
+                        display: inline-block;
+                        margin-top: 23px;
+                        border-radius: 4px;
+                        min-width: 78px;
+                        padding: 0 20px;
+                        line-height: 32px;
+                        &.on{
+                            background: #589cff;
+                        }
+                       
+                    }
+                }
+            }
+            .sub-nav{
+                display: flex;
+                flex-wrap: wrap;
+                padding: 0 46px 0 0;
+                position: relative;
+                .sub-nav-item{
+                    width: 132px;
+                    text-align: center;
+                    line-height: 43px;
+                    box-sizing: border-box;
+                    // &.t-left{
+                    //     text-align: left;
+                    //     padding-left: 8px;
+                    //     width: 91px;
+                    // }
+                    &.on{
+                        border-bottom: 3px solid #0f88ed;
+                    }
+                }
+                .open{
+                    position: absolute;
+                    right: -6px;
+                    top: 14px; 
+                    .arrows {
+                        width: 12px;
+                        display: inline-block;
+                        margin-left: 6px;
+                    }
+                }
+            }
+        }
     }
 
 }
-
-.p1 .content .head {
-    position: relative;
-    border-bottom: 1px solid #ccc;
-    height: 54px;
-}
-
-.p1 .content .head .open {
-    position: absolute;
-    top: 20px;
-    right: 10px;
-}
-
-.p1 .content .head .open .arrows {
-    width: 12px;
-    display: inline-block;
-    margin-left: 6px;
-}
-
-.p1 .coin-nav li {
-    text-align: center;
-    box-sizing: border-box;
-    float: left;
-    height: 54px;
-    line-height: 54px;
-    width: 112px;
-}
-
 .p1 .coin-nav .name {
     display: inline-block;
     vertical-align: middle;
@@ -339,10 +370,6 @@ export default {
     display: inline-block;
     vertical-align: middle;
     width: 26px;
-}
-
-.p1 .coin-nav li.on {
-    border-bottom: 3px solid #0f88ed;
 }
 
 .p1 .main .info {

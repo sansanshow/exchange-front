@@ -1,4 +1,4 @@
-const cache = {
+const store = {
     /**
      * 存储localStorage
      */
@@ -29,7 +29,7 @@ const cache = {
      * 删除 全部 localStorage
      */
     removeAll() {
-        window.localStorage.clear();
+        localStorage.clear();
     },
     /**
      * 存储cookie 有效期两小时
@@ -46,7 +46,7 @@ const cache = {
      * @param {*} name 
      */
     getCookie(name){
-        console.log(document.cookie);       
+        // console.log(document.cookie);       
         var arr = document.cookie.match(new RegExp("(^| )"+name+"=([^;]*)(;|$)"));  
         if(arr != null) return unescape(arr[2]); return null;  
     },
@@ -75,4 +75,4 @@ const cache = {
 
 
 }
-export default cache;
+export default store;

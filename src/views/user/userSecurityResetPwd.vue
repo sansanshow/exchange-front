@@ -8,7 +8,7 @@
             原始密码
           </div>
           <div class="row-field">
-            <input type="password" placeholder="原始密码">
+            <input v-model="change.oldpwd" type="password" placeholder="原始密码">
           </div>
           <div class="row-tips">
 
@@ -19,7 +19,7 @@
             新登录密码
           </div>
           <div class="row-field">
-            <input type="password" placeholder="新登录密码">
+            <input v-model="change.newpwd" type="password" placeholder="新登录密码">
           </div>
           <div class="row-tips">
 
@@ -30,15 +30,14 @@
             确认新登录密码
           </div>
           <div class="row-field">
-            <input type="password" placeholder="确认新登录密码">
+            <input v-model="change.cfmpwd" type="password" placeholder="确认新登录密码">
           </div>
           <div class="row-tips">
-            确认新登录密码
           </div>
         </div>
-        <div class="form-row">
+        <!-- <div class="form-row">
           <div class="row-label">
-            短信验证码
+            手机验证码
           </div>
           <div class="row-field flex">
             <input type="text" class="flex-1" placeholder="短信验证码">
@@ -47,15 +46,14 @@
             </div>
           </div>
           <div class="row-tips">
-           
           </div>
-        </div>
+        </div> -->
         <div class="form-row">
           <div class="row-label">
             
           </div>
           <div class="row-field">
-            <div class="btn btn-submit">
+            <div class="btn btn-submit" @click="changePwd">
               确认提交
             </div>
           </div>
@@ -70,6 +68,7 @@
 </template>
 <script>
 import UiHead from '../../components/UiHead';
+import md5 from 'md5';
 export default {
     components:{
       UiHead
@@ -79,6 +78,11 @@ export default {
           headOptions:{
             title: '重置登录密码',
             back: '返回安全中心'
+          },
+          change:{
+            oldpwd:null,
+            newpwd:null,
+            cfmpwd:null,
           }
         }
     },
@@ -89,7 +93,18 @@ export default {
       backE(){
         console.log("userIndex");
         this.$to({name: "userIndex"});
-      }
+      },
+      changePwd(){
+        let _this = this;
+        let param = {
+            oldpwd:md5(this.change.oldpwd),
+            password:md5(this.change.newpwd),
+            cfmpwd:md5(this.change.cfmpwd)
+        }
+        this.$http('changepwd',param).then(res => {
+            console.log(res);
+        })
+      },
     }
 }
 </script>

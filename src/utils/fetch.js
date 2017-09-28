@@ -36,11 +36,10 @@ function errorState(response) {
   
 function successState(res) {  
   if(res.status != 0){
-    console.log('--status:'+res.status)
     // alert(res.msg);
   }
 
-  return 0;
+  return;
   // store.commit('UPDATE_LOADING',false) //隐藏loading  
   //统一判断后端返回的错误码  
   if(res.status != 0){  
@@ -67,11 +66,7 @@ function successState(res) {
   }  
 }  
 
-const httpServer = (opts, data, config = {}) => { 
-  console.log(data);
-  console.log(data instanceof Object);
-  console.log(data instanceof FormData);
-  console.log(data instanceof String);
+const httpServer = (opts, data = {}, config = {}) => { 
     let token = cache.getStore('_token');
     let uid = JSON.parse(cache.getStore('userInfo')) ? JSON.parse(cache.getStore('userInfo')).id : '';
     let defaultHeaders = opts.method=='get' ? { 
@@ -96,7 +91,7 @@ const httpServer = (opts, data, config = {}) => {
       defaultHeaders = Object.assign({},defaultHeaders,config['headers']);
       delete config.headers
     }
-    let Public = {_token: token}//公共参数 
+    let Public = {}//公共参数 
     let defaultOpts = { //http默认配置  
         method:opts.method,  
         // baseURL,  

@@ -15,6 +15,11 @@ const serviceModule = {
         url: prefix + 'login',  
         method: 'post'  
     },
+    loginOut: { 
+        name: '退出登录',
+        url: prefix + 'loginOut',  
+        method: 'get'  
+    },
     register: {
         name: '注册',
         url: prefix + 'register',  
@@ -45,6 +50,31 @@ const serviceModule = {
         url: prefix + 'account/identify',
         method: 'post'
     },
+    changepwd:{
+        name:"修改-登录密码",
+        url:prefix + 'account/changepwd',
+        method: 'post'
+    },
+    setfundpwd:{
+        name:'资金密码-设置/修改',
+        url:prefix + 'account/resetasset',
+        method: 'post'
+    },
+    gauthGene:{
+        name:'谷歌验证器-信息生成',
+        url:prefix + 'account/gener',
+        method: 'post'
+    },
+    googleBind:{
+        name:'谷歌验证器-绑定',
+        url:prefix + 'account/gbind',
+        method: 'post'
+    },
+    googleChange:{
+        name:'谷歌验证器-修改',
+        url:prefix + 'account/chgbind',
+        method: 'post'
+    }
     
 }  
 const API = {...serviceModule }

@@ -10,6 +10,9 @@ import "./mixin/mixin";
 
 Vue.config.productionTip = false
 Vue.prototype.$ajax = axios;
+
+Vue.prototype.$websocket = null ;
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

@@ -7,9 +7,10 @@
                 </span>
                 <!-- 行情列表 -->
                 <ul class="list">
-                    <li>BTC:<span class="up">￥28522.20</span></li>
-                    <li>BTC:<span class="down">￥28522.20</span></li>
-                    <li>BTC:<span class="up">￥28522.20</span></li>
+                    <li v-for="(item,index) in $store.state.assets" :key="index">
+                        {{item.name}}:<span :class="{'up':$store.state.socketData[item.code+'Sort']==1,'down':$store.state.socketData[item.code+'Sort']==0}">￥{{$store.state.socketData[item.code+'Price']}}</span>
+                    </li>
+
                 </ul>
             </div>
             <div class="wrap1200 fix">
@@ -24,15 +25,15 @@
                     <li @click="onTabClick(0)" :class="{'on': tab==0 }"><span>首页</span></li>
                     <li @click="onTabClick(1)" :class="{'on': tab==1 }"><span>交易中心</span></li>
                     <li @click="onTabClick(2)" :class="{'on': tab==2 }"><span>资金管理</span></li>
-                    <li v-if="!isLogin">
+                    <li v-if="$store.state.username == null || $store.state.username == ''">
                         <a href="" @click.prevent="$to({path: '/login'})"><span>登录</span></a>
                         <a href="" @click.prevent="$to({path: '/register'})"><span class="reg">注册</span></a>
                     </li>
                     <li v-else class="loginname" @click="togglePopups">
                         <!-- <span v-text="baseInfo.username"></span><span class="arrows"></span>userInfo -->
-                        <span v-text="$store.state.userInfo.username"></span><span class="arrows"></span>
-                 
-                        <div class="popup" v-if="popup">
+                        <span v-text="$store.state.username"></span><span class="arrows"></span>
+
+                        <div class="popup">
                             <!-- 箭头 -->
                             <div class="top-arrows"></div>
                             <div class="auth-info flex">
@@ -50,11 +51,11 @@
                                 <div class="flex all">
                                     <div class="flex-1">
                                         <div class="line">
-                                            <span>账户总资产：</span><span>--</span><span>CNY</span>
+                                            <span>账户总资产：</span><span>{{$store.state.socketData.total}}</span> <span>CNY</span>
                                         </div>
-                                        <div class="line">
+                                        <!--<div class="line">
                                             <span>账户总资产：</span><span>--</span><span>CNY</span>
-                                        </div>
+                                        </div>-->
                                     </div>
                                     <div class="more">
                                         <span class="link">账单明细</span>
@@ -62,18 +63,18 @@
                                 </div>
                                 <div class="detail flex">
                                     <div class="flex-1">币种</div>
-                                    <div class="can">可用</div>
+                                    <div class="can h">可用</div>
                                     <div class="flex-1">冻结</div>
                                 </div>
                                 <div class="detail flex">
                                     <div class="flex-1">CNY</div>
-                                    <div class="can">0</div>
-                                    <div class="flex-1">0</div>
+                                    <div class="can">{{$store.state.socketData.assetcny}}</div>
+                                    <div class="flex-1">{{$store.state.socketData.freezecny}}</div>
                                 </div>
-                                <div class="detail flex">
-                                    <div class="flex-1">CNY</div>
-                                    <div class="can">0</div>
-                                    <div class="flex-1">0</div>
+                                <div class="detail flex" v-for="(item,index) in $store.state.assets" :key="index">
+                                    <div class="flex-1">{{item.name}}</div>
+                                    <div class="can">{{$store.state.socketData['asset'+item.code]}}</div>
+                                    <div class="flex-1">{{$store.state.socketData['freeze'+item.code]}}</div>
                                 </div>
                                 <div class="btn-groups">
                                     <span class="btn" @click="recharge">充值</span><span class="btn">提现</span>
@@ -112,67 +113,72 @@ export default {
         //     window.isLogin = false;
         //     this.isLogin = false;
         // }
-      
+
     },
     methods: {
         ...mapActions([
             'updateUser'
         ]),
-        // 初始化
+        // 初始�?
         init(){
-            if(this.store.getCookie('_uname')==undefined){
+            if(!this.store.getCookie('_uname')){
                 this.store.removeAll();
             }
             if(this.store.getStore('userInfo') && this.store.getStore('_token')){
                 window.isLogin = true;
                 this.isLogin = true;
                 let user = JSON.parse(this.store.getStore('userInfo'));
-                this.baseInfo.id = user.id;
-                if(user.mobile){
-                    this.baseInfo.username = user.mobile.substr(0,3)+"****"+user.mobile.substr(7);
-                }else if(user.email){
-                    this.baseInfo.username = user.email;
-                }
-                this.updateUser(this.baseInfo);
+                // this.baseInfo.id = user.id;
+                // if(user.mobile){
+                // //     this.baseInfo.username = user.mobile.substr(0,3)+"****"+user.mobile.substr(7);
+                //     this.baseInfo.username = user.mobile;
+                // }else if(user.email){
+                //     this.baseInfo.username = user.email;
+                // }
+                this.updateUser(user);
             }else{
                 window.isLogin = false;
                 this.isLogin = false;
-                this.baseInfo = null;
-                this.updateUser(this.baseInfo);
+                console.log('clearCookie');
+                this.store.clearCookie();
+                this.updateUser(null);
             }
-            
+
         },
         logOut(){
-            this.popup = false;
-            this.isLogin = false;
-            window.isLogin = false;
-            this.store.removeAll();
-            this.$to({name:'index'});
+            this.$http('loginOut').then(res => {
+                window.isLogin = false;
+                this.store.removeAll();
+                // this.$route
+                this.store.clearCookie();
+                this.updateUser(null);
+                this.$to({name:'index'});
+            });
         },
         togglePopups(){
-            // this.popup = !this.popup; 
+            // this.popup = !this.popup;
             this.$to({name:'userIndex'});
         },
         onTabClick(index){
             this.tab = index;
             this.popup = false;
             switch(index){
-                case 0: 
+                case 0:
                     this.$to({name:'index'});
                     break;
-                case 1: 
+                case 1:
                     this.$to({name:'trade'});
                     break;
-                case 2: 
+                case 2:
                     this.$to({name:'funds'});
                     break;
-                case 3: 
+                case 3:
                     break;
-                default: 
+                default:
                     break;
             }
         },
-        // 充值
+        // 充�??
         recharge(){
             console.log('--recharge--updateUser');
             this.updateUser({username: '' + new Date().getTime()});
@@ -202,11 +208,13 @@ export default {
         &:hover{
             .popup{
                 // opacity: 1;
-                // display: block;
+                // height: auto;
+                display: block;
+
             }
         }
     }
-    
+
     // position: relative;
     .popup{
         display: none;
@@ -215,11 +223,12 @@ export default {
         padding: 10px 0;
         position: absolute;
         width: 390px;
-        height: auto;
         background: #fff;
         border: 1px solid #ccc;
-        top: 37px;
+        top: 58px;
         right: -46px;
+        height: auto;
+        color: #333;
         // opacity: 0;
         transition: opacity 0.8 ease-out;
         .top-arrows{
@@ -279,12 +288,13 @@ export default {
             }
         }
         .assets{
+            color: #333;
             .all{
                 padding: 4px 10px;
                 line-height: 26px;
                 .line{
                     height: 26px;
-                   
+
                 }
 
             }
@@ -299,7 +309,11 @@ export default {
                 }
                 .can{
                     text-align: center;
+                    color: #de211d;
                     width: 150px;
+                    &.h{
+                        color: #333;
+                    }
                 }
             }
         }
@@ -428,7 +442,7 @@ export default {
 }
 
 .g-header-main .nav-list li {
-    margin-top: 22px;
+    padding: 22px 0;
     line-height: 26px;
     float: left;
     margin-right: 45px;
@@ -454,4 +468,3 @@ export default {
     color: #0f88ed;
 }
 </style>
-
