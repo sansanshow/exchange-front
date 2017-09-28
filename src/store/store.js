@@ -24,7 +24,6 @@ const mutations = {
 // actions  -- 主要用来提交 mutations 中的事物
 const actions = {
     updateUser: ({ commit,state}, newUser = {}) => {
-        newUser.newProps = 'newProps'
         newUser = Object.assign({}, state.userInfo, newUser);
         commit('UPDATE_USER', newUser);
     },

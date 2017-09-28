@@ -67,11 +67,13 @@ function successState(res) {
   }  
 }  
 
-const httpServer = (opts, data, config = {}) => {  
-    console.log(cache);
+const httpServer = (opts, data, config = {}) => { 
+  console.log(data);
+  console.log(data instanceof Object);
+  console.log(data instanceof FormData);
+  console.log(data instanceof String);
     let token = cache.getStore('_token');
     let uid = JSON.parse(cache.getStore('userInfo')) ? JSON.parse(cache.getStore('userInfo')).id : '';
-    console.log(token);
     let defaultHeaders = opts.method=='get' ? { 
       // 'Access-Control-Allow-Headers': 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With, Token, Access-Control-Allow-Origin',
       // 'Access-Control-Allow-Methods': 'HEAD, GET, POST, PUT, PATCH, DELETE, OPTIONS',
@@ -101,7 +103,7 @@ const httpServer = (opts, data, config = {}) => {
         url: opts.url,  
         timeout: 100000,  
         params:Object.assign(Public, data),  
-        data:qs.stringify(Object.assign(Public, data)),  
+        data: (data instanceof FormData) ? data : qs.stringify(Object.assign(Public, data)),  
         headers: defaultHeaders
     }  
     let httpDefaultOpts = Object.assign({},defaultOpts,config);

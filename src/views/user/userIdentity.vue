@@ -46,7 +46,8 @@
           </div>
           <div class="row-field">
             <div class="upload">
-              <input type="file" name="pic" class="file-upload" @change="upLoad($event)">
+              <input type="file" accept="image/png,image/gif,image/jpeg" name="pic" id="sfz1" class="file-upload" @change="upLoad($event,1)">
+              <img class="preview" src="" alt="">
               <span class="add"></span>
               <div class="desc">手持身份证正面</div>
             </div>
@@ -68,7 +69,7 @@
           </div>
           <div class="row-field">
             <div class="upload">
-              <input type="file" name="pic" class="file-upload">
+              <input type="file" id="sfz2" name="pic" class="file-upload">
               <span class="add"></span>
               <div class="desc">身份证正面</div>
             </div>
@@ -90,7 +91,7 @@
           </div>
           <div class="row-field">
             <div class="upload">
-              <input type="file" name="pic" class="file-upload">
+              <input type="file" id="sfz3" name="pic" class="file-upload">
               <span class="add"></span>
               <div class="desc">身份证反面</div>
             </div>
@@ -116,7 +117,7 @@
             
           </div>
           <div class="row-field">
-            <div class="btn btn-submit">
+            <div class="btn btn-submit" @click="onSubmit">
               提交
             </div>
           </div>
@@ -167,23 +168,25 @@ export default {
         this.allow = !this.allow;
       },
       upLoad(e,type){
-        let file = e.target.files[0];           
+        // let file = document.getElementById('sfz1').files[0];    
+        let file = e.target.files[0];
+        console.log(e.target.files[0]);       
         let param = new FormData(); //创建form对象
-        param.append('file',file,file.name);//通过append向form对象添加数据
-        param.append('chunk','0');//添加form表单中其他数据
-        console.log(param.get('file')); //FormData私有类对象，访问不到，可以通过get判断值是否传进去
+        param.append('file',file);//通过append向form对象添加数据
+        // param.append('chunk','0');//添加form表单中其他数据
+        // console.log(param.get('file')); //FormData私有类对象，访问不到，可以通过get判断值是否传进去
         let config = {
-          headers:{'Content-Type':'multipart/form-data'}
+          // headers:{'Content-Type':'multipart/form-data'}
         };  //添加请求头
-        this.$http('fileUpload', param, config).then(res => {
+        this.$http('fileUpload', param).then(res => {
 
         });
       },
       onSubmit(){
         let param = {
-          realname: '',
+          realname: this.page.realname || '',
           type: 'idcard',
-          code:''
+          code: this.page.code || ''
         }
         this.$http('identify',param).then(res => {
 

@@ -120,6 +120,9 @@ export default {
         ]),
         // 初始化
         init(){
+            if(this.store.getCookie('_uname')==undefined){
+                this.store.removeAll();
+            }
             if(this.store.getStore('userInfo') && this.store.getStore('_token')){
                 window.isLogin = true;
                 this.isLogin = true;
@@ -135,6 +138,7 @@ export default {
                 window.isLogin = false;
                 this.isLogin = false;
                 this.baseInfo = null;
+                this.updateUser(this.baseInfo);
             }
             
         },
