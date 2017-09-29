@@ -29,9 +29,9 @@
                         <a href="" @click.prevent="$to({path: '/login'})"><span>登录</span></a>
                         <a href="" @click.prevent="$to({path: '/register'})"><span class="reg">注册</span></a>
                     </li>
-                    <li v-else class="loginname" @click="togglePopups">
+                    <li v-else class="loginname">
                         <!-- <span v-text="baseInfo.username"></span><span class="arrows"></span>userInfo -->
-                        <span v-text="$store.state.username"></span><span class="arrows"></span>
+                        <span  @click="togglePopups" v-text="$store.state.username"></span><span class="arrows"></span>
 
                         <div class="popup">
                             <!-- 箭头 -->
@@ -180,8 +180,8 @@ export default {
         },
         // 充�??
         recharge(){
-            console.log('--recharge--updateUser');
-            this.updateUser({username: '' + new Date().getTime()});
+            // console.log('--recharge--updateUser');
+            // this.updateUser({username: '' + new Date().getTime()});
         }
     },
     watch:{

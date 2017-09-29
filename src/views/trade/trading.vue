@@ -1,19 +1,19 @@
 <template>
    <div class="container trade">
         <div class="w1200 part p1">
-            <ul class="tab-top fix">
-                <li class="tab on">主板交易区</li>
-                <li class="tab">创新板交易区</li>
+            <ul class="tab-top fix hand">
+                <li class="tab" :class="{'on': tabArgs.topTab==0}" @click="onTab(0, 0, 0)">主板交易区</li>
+                <li class="tab" :class="{'on': tabArgs.topTab==1}" @click="onTab(1, 0, 0)">创新板交易区</li>
             </ul>
             <div class="content">
                 <div class="head">
                     <ul class="coin-nav fix">
-                        <li class="nav"><span class="name on">对CNY交易区</span></li>
-                        <li class="nav"><span class="name">对BTC交易区</span></li>
-                        <li class="nav"><span class="name">对ETH交易区</span></li>
+                        <li class="nav"><span class="name hand" :class="{'on': tabArgs.coinTab==0}" @click="onTab(tabArgs.topTab, 0, 0)">对CNY交易区</span></li>
+                        <li class="nav"><span class="name hand" :class="{'on': tabArgs.coinTab==1}" @click="onTab(tabArgs.topTab, 1, 0)">对BTC交易区</span></li>
+                        <li class="nav"><span class="name hand" :class="{'on': tabArgs.coinTab==2}" @click="onTab(tabArgs.topTab, 2, 0)">对ETH交易区</span></li>
                     </ul>
                     <div class="sub-nav flex">
-                        <div class="sub-nav-item" v-for="i in 10" :key="i" :class="{'t-left': (i % 8 == 1),'on': (i == 2)}">BTC</div>
+                        <div class="sub-nav-item hand" @click="onTab(tabArgs.topTab, tabArgs.coinTab, index)" :class="{'t-left': (index % 8 == 1),'on': index==tabArgs.subTab}"  v-for="(item,index) in $store.state.assets" :key="index">{{ item.name }}</div>
                         <span class="open"><span>收起</span><img class="arrows" src="../../assets/images/i-arrows.png" alt=""></span>
                     </div>
                     
@@ -26,27 +26,27 @@
                     </div>
                     <div class="data flex">
                         <div class="flex-1">
-                            <div class="big">$147,000</div>
+                            <div class="big">${{ this.tabArgs.code ? $store.state.socketData[this.tabArgs.code+'Price'] : '--'}}</div>
                             <div class="num">
-                                <span>高：</span><span class="inb">￥152000</span>
-                                <span>低：</span><span>￥152000</span>
-                                <span>量：</span><span>152000</span>
+                                <span>高：</span><span class="inb">${{ this.tabArgs.code ? $store.state.socketData[this.tabArgs.code+'MaxPrice'] : '--'}}</span>
+                                <span>低：</span><span>${{ this.tabArgs.code ? $store.state.socketData[this.tabArgs.code+'MinPrice'] : '--'}}</span>
+                                <span>量：</span><span>{{ this.tabArgs.code ? $store.state.socketData[this.tabArgs.code+'Volume'] : '--'}}</span>
                             </div>
                         </div>
                         <div class="flex-1">
                             <div class="can">
-                                <span>可用:</span><span>--</span><span>CNY</span>
+                                <span>可用:</span><span>{{ $store.state.socketData.assetcny || '--' }}</span><span> CNY</span>
                             </div>
                             <div class="can">
-                                <span>可买:</span><span>--</span><span>CNY</span>
+                                <span>可买:</span><span>{{ $store.state.socketData.assetcny || 0 | calDivision($store.state.socketData[this.tabArgs.code+'Price']) }}</span><span> {{ $store.state.assets[tabArgs.subTab]['name']}}</span>
                             </div>
                         </div>
                         <div class="flex-1">
                             <div class="can">
-                                <span>可用:</span><span>--</span><span>CNY</span>
+                                <span>可用:</span><span>{{$store.state.socketData['asset'+this.tabArgs.code] || '--'}}</span><span>{{ $store.state.assets[tabArgs.subTab]['name']}}</span>
                             </div>
                             <div class="can">
-                                <span>可买:</span><span>--</span><span>CNY</span>
+                                <span>可卖:</span><span>{{ $store.state.socketData['asset'+this.tabArgs.code] || 0 | calMulti($store.state.socketData[this.tabArgs.code+'Price'])}}</span><span>CNY</span>
                             </div>
                         </div>
 
@@ -57,17 +57,17 @@
         <div class="w1200 part p2 flex">
             <div class="left flex ">
                 <div class="card">
-                    <p class="title red">卖出比特币</p>
+                    <p class="title red">买入比特币</p>
                     <div class="tabs flex">
-                        <div class="tab on flex-1">限价买入</div>
-                        <div class="tab flex-1">计划买入</div>
+                        <div class="tab flex-1" :class="{'on': tabArgs.tabTwo.left == 0}" @click="onTabTwo('left',0)">限价买入</div>
+                        <div class="tab flex-1" :class="{'on': tabArgs.tabTwo.left == 1}" @click="onTabTwo('left',1)">计划买入</div>
                     </div>
                     <div class="line">
-                        <span class="line-head">卖出价(CNY)</span>
+                        <span class="line-head">买入价(CNY)</span>
                         <span class="line-body red">277706.3</span>
                     </div>
                     <div class="line">
-                        <span class="line-head">卖出量(BTC)</span>
+                        <span class="line-head">买入量(BTC)</span>
                         <span class="line-body red">277706.3</span>
                     </div>
                     <div class="fix progress-wrap">
@@ -80,21 +80,21 @@
                         <span>预计交易额:</span><span class="num red">0.00</span> <span>CNY</span>
                     </div>
                     <div class="btn bg-red">
-                        立即卖出
+                        立即买入
                     </div>
                 </div>
                 <div class="card">
-                    <p class="title green">买入比特币</p>
+                    <p class="title green">卖出比特币</p>
                     <div class="tabs flex">
-                        <div class="tab on flex-1">限价买入</div>
-                        <div class="tab flex-1">计划买入</div>
+                        <div class="tab flex-1" :class="{'on': tabArgs.tabTwo.right == 0}" @click="onTabTwo('right',0)">限价卖出</div>
+                        <div class="tab flex-1" :class="{'on': tabArgs.tabTwo.right == 1}" @click="onTabTwo('right',1)">计划卖出</div>
                     </div>
                     <div class="line">
-                        <span class="line-head">买入价(CNY)</span>
+                        <span class="line-head">卖出价(CNY)</span>
                         <span class="line-body green">277706.3</span>
                     </div>
                     <div class="line">
-                        <span class="line-head">买入量(BTC)</span>
+                        <span class="line-head">卖出量(BTC)</span>
                         <span class="line-body green">277706.3</span>
                     </div>
                     <div class="fix progress-wrap">
@@ -107,14 +107,14 @@
                         <span>预计交易额:</span><span class="num green">0.00</span> <span>CNY</span>
                     </div>
                     <div class="btn bg-green">
-                        立即买入
+                        立即卖出
                     </div>
                 </div>
             </div>
             <div class="right flex-1">
                 <div class="tabs flex">
-                    <div class="tab on flex-1">限价买入</div>
-                    <div class="tab flex-1">计划买入</div>
+                    <div class="tab on flex-1">默认档位</div>
+                    <div class="tab flex-1">默认深度</div>
                 </div>
                 <div class="data">
                     <div class="block">
@@ -171,16 +171,16 @@
 
                     </thead>
                     <tbody>
-                        <tr>
-                            <td class="t_l">委托时间</td>
-                            <td>委托量/已成交(LTC)</td>
-                            <td>委托价格/成交均价(CNY)</td>
-                            <td>成交总额(CNY)</td>
-                            <td>状态</td>
-                            <td>订单来源</td>
+                        <tr v-if="$store.state.isLogin">
+                            <td class="t_l">2017-09-29 14:02:28</td>
+                            <td>100</td>
+                            <td>1500(CNY)</td>
+                            <td>150,000(CNY)</td>
+                            <td>等待</td>
+                            <td>网页</td>
                             <td class="t_r">操作<span>[批量撤单]</span></td>
                         </tr>
-                        <tr class="no-login">
+                        <tr v-else class="no-login">
                             <td colspan="7">
                                 您还没有登录，请<span class="hand green"> 登录 </span>或<span class="hand red"> 注册 </span>后重试
                             </td>
@@ -198,7 +198,57 @@ export default {
     },
     data(){
         return {
+            tabArgs:{
+                topTab: 0,
+                coinTab: 0,
+                subTab: 0,
+                code: null,
+                tabTwo:{
+                    left: 0,
+                    right: 0
+                }
+            }
+        }
+    },
+    mounted(){
+        this.tabArgs.code = this.$store.state.assets[0] ? this.$store.state.assets[0]['code'] : null;
+    },
+    methods: {
+        onTab(topTab, coinTab, subTab){
+            this.tabArgs.topTab = topTab;
+            this.tabArgs.coinTab = coinTab;
+            this.tabArgs.subTab = subTab;
+            this.tabArgs.code = this.$store.state.assets[subTab] ? this.$store.state.assets[subTab]['code'] : null;
+        },
+        onTabTwo(type,index){
+            this.tabArgs['tabTwo'][type] = index;
+        },
+        createOrder(){ // 挂单order/createorder
+            let param = {
+                category: null,
+                price: null,
+                quantity: null,
+                type: null,
+                paypwd: null,
+                _token: null  
+            }
+            this.$http('createorder', param).then(res => {
 
+            });
+        }
+    },
+    filters: {
+        formatDate: function(value) {
+            return 'formatDate';
+        },
+        calDivision: function(value, single){
+            return Math.floor((value / single)* 1000) / 1000;
+        },
+        calDivision2: function(value, single){
+            return (value / single);
+        },
+        calMulti(value, single){
+            return Math.floor((value * single)* 1000) / 1000;            
         }
     }
 }

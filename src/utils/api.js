@@ -1,8 +1,8 @@
 /**
  * 请求地址总入口
  */ 
-// let prefix = "http://192.168.0.232:8089/"
-let prefix = "/api/"
+let prefix = "http://192.168.0.232:8089/"
+// let prefix = "/api/"
 // let prefix = "/"
 const serviceModule = {  
     test: {
@@ -74,7 +74,12 @@ const serviceModule = {
         name:'谷歌验证器-修改',
         url:prefix + 'account/chgbind',
         method: 'post'
-    }
+    },
+    createorder: {
+        name:'挂单接口',
+        url:prefix + 'order/createorder',
+        method: 'post'
+    },
     
 }  
 const API = {...serviceModule }

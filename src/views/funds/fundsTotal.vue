@@ -2,7 +2,7 @@
   <div class="content">
     <div class="main">
       <div class="total">
-        账户资产：<span class="num">1823</span><span>CNY</span>
+        账户资产：<span class="num">{{$store.state.socketData.total}}</span><span>CNY</span>
       </div>
       <div class="records">
         <table>
@@ -16,10 +16,19 @@
 
           </thead>
           <tbody>
-              <tr v-for="i in 10" :key="i">
-                  <td>BTC</td>
-                  <td>网页端登录</td>
-                  <td><span class="ip">192.168.0.1</span><span class="area">上海</span></td>
+              <tr>
+                  <td>CNY</td>
+                  <td>{{$store.state.socketData.assetcny}}</td>
+                  <td>{{$store.state.socketData.freezecny}}</td>
+                  <td>
+                    <span class="recharge btn">充值</span>
+                    <span class="deposit btn">提现</span>
+                  </td>
+              </tr>
+              <tr v-for="(item,index) in $store.state.assets" :key="index">
+                  <td>{{item.name}}</td>
+                  <td>{{$store.state.socketData['asset'+item.code]}}</td>
+                  <td>{{$store.state.socketData['freeze'+item.code]}}</td>
                   <td>
                     <span class="recharge btn">充值</span>
                     <span class="deposit btn">提现</span>
@@ -28,7 +37,7 @@
           </tbody>
         </table>
       </div>
-      <ui-pagination class="pageIndex" @goPage="goPage"></ui-pagination>
+      <ui-pagination v-show="false" class="pageIndex" @goPage="goPage"></ui-pagination>
     </div>
     
   </div>

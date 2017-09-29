@@ -28,7 +28,7 @@
       init(){
         let _this = this ;
         if(_this.$websocket==null){
-          _this.$websocket = new WebSocket("ws://localhost:8080/websocket");
+          _this.$websocket = new WebSocket("ws://localhost:8089/websocket");
         }
         // console.log(_this.user.id);
         // let ws = new WebSocket("ws://localhost:8080/websocket");

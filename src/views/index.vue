@@ -10,7 +10,7 @@
                                 净资产:
                             </div>
                             <div class="flex-1">
-                                ￥123.0
+                                CNY:￥{{$store.state.socketData.total}}
                             </div>
                         </div>
                         <div class="flex">
@@ -18,7 +18,7 @@
                                 总资产:
                             </div>
                             <div class="flex-1">
-                                ￥123.0
+                                 CNY:￥{{$store.state.socketData.total}}
                             </div>
                         </div>
                         <div class="flex curr">
@@ -26,15 +26,27 @@
                                 当前可用:
                             </div>
                             <div class="flex-1">
-                                <p>CNY:123.0</p>
-                                <p>CNY:123.0</p>
-                                <p>CNY:123.0</p>
-                                <p>CNY:123.0</p>
+                                <p>
+                                    <span>CNY:</span>
+                                    <span>{{ $store.state.socketData.assetcny }}</span>
+                                </p>
+                                <p v-for="(item,index) in $store.state.assets" :key="index">
+                                    <span>{{item.name}}:</span>
+                                    <span>{{$store.state.socketData['asset'+item.code]}}</span>
+                                </p>
+                                <p v-for="(item,index) in $store.state.assets" :key="index+3">
+                                    <span>{{item.name}}:</span>
+                                    <span>{{$store.state.socketData['asset'+item.code]}}</span>
+                                </p>
+                                 <p v-for="(item,index) in $store.state.assets" :key="index+6">
+                                    <span>{{item.name}}:</span>
+                                    <span>{{$store.state.socketData['asset'+item.code]}}</span>
+                                </p>
                             </div>
                         </div>
                     </div>
                     <div class="btn-wrap">
-                        <div class="btn">
+                        <div class="btn" @click="$to({name: 'trade'})">
                             进入交易中心
                         </div>
                     </div>

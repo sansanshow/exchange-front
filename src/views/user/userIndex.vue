@@ -23,12 +23,12 @@
                 <span class="arrows"></span>
             </div>
             <div class="item" :class="{'on': tab==4}" @click="onClickTab(4)">
-                <span class="icon icon-3"></span>
+                <span class="icon icon-4"></span>
                 <span class="title">通知设置</span>
                 <span class="arrows"></span>
             </div>
             <div class="item" :class="{'on': tab==5}" @click="onClickTab(5)">
-                <span class="icon icon-4"></span>
+                <span class="icon icon-5"></span>
                 <span class="title">账户管理</span>
                 <span class="arrows"></span>
             </div>
