@@ -1,44 +1,45 @@
 /**
- * 请求地址总入口
- */ 
-let prefix = "http://192.168.0.232:8089/"
+ * 请求地址总入�?
+ */
+import project from '../../config/project.js'
+let prefix = project.projectConfig['default'].baseURL + '/' + ( project.projectConfig['default'].rootPath ? project.projectConfig['default'].rootPath + '/' : '')
 // let prefix = "/api/"
 // let prefix = "/"
-const serviceModule = {  
+const serviceModule = {
     test: {
         name: '说明文字',
         url: 'http://baike.baidu.com/api/openapi/BaikeLemmaCardApi?scope=103&format=json&appid=379020&bk_key=%E9%93%B6%E9%AD%82&bk_length=600',
         method: 'get'
     },
-    login: { 
+    login: {
         name: '登录',
-        url: prefix + 'login',  
-        method: 'post'  
+        url: prefix + 'login',
+        method: 'post'
     },
-    loginOut: { 
-        name: '退出登录',
-        url: prefix + 'loginOut',  
-        method: 'get'  
+    loginOut: {
+        name: '�?出登�?',
+        url: prefix + 'loginOut',
+        method: 'get'
     },
     register: {
         name: '注册',
-        url: prefix + 'register',  
-        method: 'post'  
+        url: prefix + 'register',
+        method: 'post'
     },
     sendsms: {
-        name: '注册-发送验证码',
-        url: prefix + 'sendRegCode',  
-        method: 'post'  
+        name: '注册-发�?�验证码',
+        url: prefix + 'sendRegCode',
+        method: 'post'
     },
     sendVCode: {
-        name: '修改-绑定-发送验证码',
-        url: prefix + 'sendVCode',  
-        method: 'post'  
+        name: '修改-绑定-发�?�验证码',
+        url: prefix + 'sendVCode',
+        method: 'post'
     },
     changeMobile: {
         name: '修改-手机',
-        url: prefix + 'account/changemobile',  
-        method: 'post'  
+        url: prefix + 'account/changemobile',
+        method: 'post'
     },
     fileUpload: {
         name: '实名认证-图片上传',
@@ -61,17 +62,17 @@ const serviceModule = {
         method: 'post'
     },
     gauthGene:{
-        name:'谷歌验证器-信息生成',
+        name:'谷歌验证�?-信息生成',
         url:prefix + 'account/gener',
         method: 'post'
     },
     googleBind:{
-        name:'谷歌验证器-绑定',
+        name:'谷歌验证�?-绑定',
         url:prefix + 'account/gbind',
         method: 'post'
     },
     googleChange:{
-        name:'谷歌验证器-修改',
+        name:'谷歌验证�?-修改',
         url:prefix + 'account/chgbind',
         method: 'post'
     },
@@ -80,7 +81,12 @@ const serviceModule = {
         url:prefix + 'order/createorder',
         method: 'post'
     },
-    
-}  
+    userAsset:{
+        name:'账户资产',
+        url:prefix+'customerAsset/cnySpotAssetQuery',
+        method:'post'
+    }
+
+}
 const API = {...serviceModule }
 export default API;

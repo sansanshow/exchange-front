@@ -16,7 +16,7 @@
                         <div class="sub-nav-item hand" @click="onTab(tabArgs.topTab, tabArgs.coinTab, index)" :class="{'t-left': (index % 8 == 1),'on': index==tabArgs.subTab}"  v-for="(item,index) in $store.state.assets" :key="index">{{ item.name }}</div>
                         <span class="open"><span>收起</span><img class="arrows" src="../../assets/images/i-arrows.png" alt=""></span>
                     </div>
-                    
+
                 </div>
                 <div class="main">
                     <div class="info">
@@ -26,27 +26,27 @@
                     </div>
                     <div class="data flex">
                         <div class="flex-1">
-                            <div class="big">${{ this.tabArgs.code ? $store.state.socketData[this.tabArgs.code+'Price'] : '--'}}</div>
+                            <div class="big">￥{{ this.tabArgs.code ? $store.state.socketData[this.tabArgs.code].price : '--'}}</div>
                             <div class="num">
-                                <span>高：</span><span class="inb">${{ this.tabArgs.code ? $store.state.socketData[this.tabArgs.code+'MaxPrice'] : '--'}}</span>
-                                <span>低：</span><span>${{ this.tabArgs.code ? $store.state.socketData[this.tabArgs.code+'MinPrice'] : '--'}}</span>
-                                <span>量：</span><span>{{ this.tabArgs.code ? $store.state.socketData[this.tabArgs.code+'Volume'] : '--'}}</span>
+                                <span>高：</span><span class="inb">￥{{ this.tabArgs.code ? $store.state.socketData[this.tabArgs.code].maxPrice : '--'}}</span>
+                                <span>低：</span><span>￥{{ this.tabArgs.code ? $store.state.socketData[this.tabArgs.code].minPrice : '--'}}</span>
+                                <span>量：</span><span>{{ this.tabArgs.code ? $store.state.socketData[this.tabArgs.code].volume : '--'}}</span>
                             </div>
                         </div>
                         <div class="flex-1">
                             <div class="can">
-                                <span>可用:</span><span>{{ $store.state.socketData.assetcny || '--' }}</span><span> CNY</span>
+                                <span>可用:</span><span>{{ $store.state.socketData.cny.usable || '--' }}</span><span> CNY</span>
                             </div>
                             <div class="can">
-                                <span>可买:</span><span>{{ $store.state.socketData.assetcny || 0 | calDivision($store.state.socketData[this.tabArgs.code+'Price']) }}</span><span> {{ $store.state.assets[tabArgs.subTab]['name']}}</span>
+                                <span>可买:</span><span>{{ $store.state.socketData.cny.usable || 0 | calDivision($store.state.socketData[this.tabArgs.code].price) }}</span><span> {{ $store.state.assets[tabArgs.subTab]['name']}}</span>
                             </div>
                         </div>
                         <div class="flex-1">
                             <div class="can">
-                                <span>可用:</span><span>{{$store.state.socketData['asset'+this.tabArgs.code] || '--'}}</span><span>{{ $store.state.assets[tabArgs.subTab]['name']}}</span>
+                                <span>可用:</span><span>{{$store.state.socketData[this.tabArgs.code].usable || '--'}}</span><span>{{ $store.state.assets[tabArgs.subTab]['name']}}</span>
                             </div>
                             <div class="can">
-                                <span>可卖:</span><span>{{ $store.state.socketData['asset'+this.tabArgs.code] || 0 | calMulti($store.state.socketData[this.tabArgs.code+'Price'])}}</span><span>CNY</span>
+                                <span>可卖:</span><span>{{ $store.state.socketData[this.tabArgs.code].usable || 0 | calMulti($store.state.socketData[this.tabArgs.code].price)}}</span><span>CNY</span>
                             </div>
                         </div>
 
@@ -154,11 +154,11 @@
                 <div class="flex-1 t_r">
                     <span class="more hand">更多记录</span>
                 </div>
-               
+
             </div>
             <div class="main">
                 <table>
-                    <thead> 
+                    <thead>
                         <tr>
                             <td class="t_l">委托时间</td>
                             <td>委托量/已成交(LTC)</td>
@@ -194,7 +194,7 @@
 <script>
 export default {
     components:{
-    
+
     },
     data(){
         return {
@@ -230,7 +230,7 @@ export default {
                 quantity: null,
                 type: null,
                 paypwd: null,
-                _token: null  
+                _token: null
             }
             this.$http('createorder', param).then(res => {
 
@@ -248,7 +248,7 @@ export default {
             return (value / single);
         },
         calMulti(value, single){
-            return Math.floor((value * single)* 1000) / 1000;            
+            return Math.floor((value * single)* 1000) / 1000;
         }
     }
 }
@@ -259,7 +259,7 @@ export default {
 @bg: #f2f2f5;
 .trade{
     .part {
-        margin-top: 20px;
+        margin-top: 14px;
         box-sizing: border-box;
     }
     .bg-red {
@@ -274,14 +274,14 @@ export default {
     .green {
         color: @green;
     }
-} 
+}
 .p3{
     background: #fff;
     padding: 0 20px 10px 18px;
     margin-bottom: 100px;
     .main{
        table{
-           
+
            .t_r{
                 text-align: right;
             }
@@ -303,10 +303,10 @@ export default {
                height: 112px;
                text-align: center;
            }
-           
+
        }
     }
-    
+
 }
 .p3{
     .head{
@@ -323,12 +323,12 @@ export default {
             box-sizing: border-box;
             border-bottom: 3px solid transparent;
             text-align: center;
-    
+
             &.on{
-            border-bottom-color: #0f88ed; 
+            border-bottom-color: #0f88ed;
         }
         }
-        
+
     }
 }
 .p1{
@@ -371,9 +371,10 @@ export default {
                         padding: 0 20px;
                         line-height: 32px;
                         &.on{
+                            color: #fff;
                             background: #589cff;
                         }
-                       
+
                     }
                 }
             }
@@ -399,7 +400,8 @@ export default {
                 .open{
                     position: absolute;
                     right: -6px;
-                    top: 14px; 
+                    top: 14px;
+                    color: #999999;
                     .arrows {
                         width: 12px;
                         display: inline-block;
@@ -592,14 +594,14 @@ export default {
                 }
                 .text4{
                     width: 74px;
-        
+
                     .bar{
                         margin-top: 8px;
                         height: 14px;
-                       
+
                     }
                 }
-                
+
            }
            .red{
                .text1{
@@ -619,7 +621,7 @@ export default {
            }
         }
     }
-    
+
 }
 .num {
     display: inline-block;

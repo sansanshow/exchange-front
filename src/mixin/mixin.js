@@ -3,6 +3,8 @@ import httpServer from '../utils/fetch'
 import API from '../utils/api'
 import store from './store'
 
+import project from '../../config/project'
+
 import gHeader from '../components/gHeader';
 import gFooter from '../components/gFooter';
 //全局混合
@@ -17,7 +19,9 @@ Vue.mixin({
             footer: true,
             store: store,
             isLogin: false,
-            wait: 5
+            wait: 5,
+            VerifyImg: project.VerifyImgSrc, //
+            WsUrl: project.WsUrl, //
         }
     },
     created(){

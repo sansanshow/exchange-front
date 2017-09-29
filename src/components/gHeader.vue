@@ -8,7 +8,7 @@
                 <!-- 行情列表 -->
                 <ul class="list">
                     <li v-for="(item,index) in $store.state.assets" :key="index">
-                        {{item.name}}:<span :class="{'up':$store.state.socketData[item.code+'Sort']==1,'down':$store.state.socketData[item.code+'Sort']==0}">￥{{$store.state.socketData[item.code+'Price']}}</span>
+                        {{item.name}}:<span :class="{'up':$store.state.socketData[item.code].sort==1,'down':$store.state.socketData[item.code].sort==0}">￥{{$store.state.socketData[item.code].price}}</span>
                     </li>
 
                 </ul>
@@ -68,13 +68,13 @@
                                 </div>
                                 <div class="detail flex">
                                     <div class="flex-1">CNY</div>
-                                    <div class="can">{{$store.state.socketData.assetcny}}</div>
-                                    <div class="flex-1">{{$store.state.socketData.freezecny}}</div>
+                                    <div class="can">{{$store.state.socketData.cny.usable}}</div>
+                                    <div class="flex-1">{{$store.state.socketData.cny.freeze}}</div>
                                 </div>
                                 <div class="detail flex" v-for="(item,index) in $store.state.assets" :key="index">
                                     <div class="flex-1">{{item.name}}</div>
-                                    <div class="can">{{$store.state.socketData['asset'+item.code]}}</div>
-                                    <div class="flex-1">{{$store.state.socketData['freeze'+item.code]}}</div>
+                                    <div class="can">{{$store.state.socketData[item.code].usable}}</div>
+                                    <div class="flex-1">{{$store.state.socketData[item.code].freeze}}</div>
                                 </div>
                                 <div class="btn-groups">
                                     <span class="btn" @click="recharge">充值</span><span class="btn">提现</span>

@@ -15,7 +15,7 @@
                         </div>
                         <div class="flex">
                             <div class="left">
-                                总资产:
+                                总资产: 
                             </div>
                             <div class="flex-1">
                                  CNY:￥{{$store.state.socketData.total}}
@@ -28,19 +28,11 @@
                             <div class="flex-1">
                                 <p>
                                     <span>CNY:</span>
-                                    <span>{{ $store.state.socketData.assetcny }}</span>
+                                    <span>{{ $store.state.socketData.cny.usable }}</span>
                                 </p>
                                 <p v-for="(item,index) in $store.state.assets" :key="index">
                                     <span>{{item.name}}:</span>
-                                    <span>{{$store.state.socketData['asset'+item.code]}}</span>
-                                </p>
-                                <p v-for="(item,index) in $store.state.assets" :key="index+3">
-                                    <span>{{item.name}}:</span>
-                                    <span>{{$store.state.socketData['asset'+item.code]}}</span>
-                                </p>
-                                 <p v-for="(item,index) in $store.state.assets" :key="index+6">
-                                    <span>{{item.name}}:</span>
-                                    <span>{{$store.state.socketData['asset'+item.code]}}</span>
+                                    <span>{{$store.state.socketData[item.code].usable}}</span>
                                 </p>
                             </div>
                         </div>
@@ -57,7 +49,7 @@
                         <input type="text" v-model="loginParam.username" placeholder="手机号">
                     </div>
                     <div class="i-form-field">
-                        <input type="text" v-model="loginParam.password" placeholder="密码">
+                        <input type="password" v-model="loginParam.password" placeholder="密码">
                     </div>
                     <div class="i-form-field fix" style="padding-top: 6px;">
                         <a class="l" href="">验证码登录</a>
@@ -103,13 +95,13 @@
                         <div class="flex-1">24小时成交量</div>
                     </div>
                     <div class="body">
-                        <div class="item flex" v-for="(item,index) in $store.state.assets" :key="index" :class="{'up': $store.state.socketData[item.code+'Sort']==1,'down': $store.state.socketData[item.code+'Sort']==0}">
+                        <div class="item flex" v-for="(item,index) in $store.state.assets" :key="index" :class="{'up': $store.state.socketData[item.code].sort==1,'down': $store.state.socketData[item.code].sort==0}">
                             <div class="flex-1">{{item.name}}</div>
-                            <div class="flex-1 lasted">{{$store.state.socketData[item.code+'Price']}}</div>
-                            <div class="flex-1 range">{{$store.state.socketData[item.code+'Range']}}</div>
-                            <div class="flex-1">{{$store.state.socketData[item.code+'MaxPrice']}}</div>
-                            <div class="flex-1">{{$store.state.socketData[item.code+'MinPrice']}}</div>
-                            <div class="flex-1">{{$store.state.socketData[item.code+'Volume']}}</div>
+                            <div class="flex-1 lasted">{{$store.state.socketData[item.code].price}}</div>
+                            <div class="flex-1 range">{{$store.state.socketData[item.code].range}}</div>
+                            <div class="flex-1">{{$store.state.socketData[item.code].maxPrice}}</div>
+                            <div class="flex-1">{{$store.state.socketData[item.code].minPrice}}</div>
+                            <div class="flex-1">{{$store.state.socketData[item.code].volume}}</div>
                         </div>
                     </div>
                 </div>
@@ -293,7 +285,7 @@ export default {
                     this.store.setStore('_token', res.dataWrapper._token);
                     this.store.setStore('userInfo', res.dataWrapper.customerInfo);
                     this.store.setStore('policyList', res.dataWrapper.policyList);
-                    this.$to({name: 'index'});
+                    this.updateUser(res.dataWrapper.customerInfo);
                 }
             });
         }

@@ -21,14 +21,50 @@
         }
       }
     },
-    mounted(){
+    created(){
       this.init()
     },
     methods: {
+      ...mapActions([
+        'updateSocketData'
+      ]),
       init(){
         let _this = this ;
+
+        if(_this.socketInfo.cny==undefined || _this.socketInfo.cny==null){
+              _this.socketInfo.cny = new Object();
+              _this.socketInfo.cny.usable=0;
+              _this.socketInfo.cny.freeze=0;
+              // _this.updateSocketData(_this.socketInfo);
+        }
+
+        if(_this.socketInfo.total==undefined || _this.socketInfo.total==null){
+          _this.socketInfo.total=0;
+          // _this.updateSocketData(_this.socketInfo);
+        }
+
+      let assets = _this.$store.state.assets;
+
+      for(let key in assets){
+          if(_this.socketInfo[assets[key].code]==undefined || _this.socketInfo[assets[key].code]==null){
+              _this.socketInfo[assets[key].code] = new Object();
+              _this.socketInfo[assets[key].code].price=0;//price default 0
+              _this.socketInfo[assets[key].code].sort=1;//sort default asc
+              _this.socketInfo[assets[key].code].range=0+"%";
+              _this.socketInfo[assets[key].code].volume=0;//24 hours transations volume
+              _this.socketInfo[assets[key].code].maxPrice=0;
+              _this.socketInfo[assets[key].code].minPrice=0;
+              _this.socketInfo[assets[key].code].usable=0;
+              _this.socketInfo[assets[key].code].freeze=0;
+              // _this.updateSocketData(_this.socketInfo);
+          }
+      }
+
+      _this.updateSocketData(_this.socketInfo);
+
+
         if(_this.$websocket==null){
-          _this.$websocket = new WebSocket("ws://localhost:8089/websocket");
+          _this.$websocket = new WebSocket(_this.WsUrl);
         }
         // console.log(_this.user.id);
         // let ws = new WebSocket("ws://localhost:8080/websocket");
@@ -40,7 +76,6 @@
         }
 
         setTimeout(function(){
-          let assets = _this.$store.state.assets;
           for(let key in assets){
             let channel = "sub_spot_"+assets[key].code+"_cny_latestprice";//sub_spot_btc_cny_latestprice
             _this.$websocket.send("{\"channel\":\""+channel+"\"}");//btc latest price
@@ -61,9 +96,6 @@
           _this.$websocket.send("1");
         },10000);
       },
-      ...mapActions([
-        'updateSocketData'
-      ]),
       socketData(obj){
         obj = JSON.parse(obj);
         if(obj!=undefined && obj!=null){
@@ -87,19 +119,13 @@
         let _this = this ;
         if(obj.channel.indexOf("_cny_")>-1){
           let asset = obj.channel.replace('sub_spot_','').replace('_cny_latestprice','');
-          let fieldName1 = asset+"Price";
-          let fieldName2 = asset+"Sort";
-          if(_this.socketInfo[fieldName1]==undefined || _this.socketInfo[fieldName1]==null){
-            _this.socketInfo[fieldName1]=0;//price default 0
-            _this.socketInfo[fieldName2]=1;//sort default asc
-          }
-          let lastPrice = _this.socketInfo[fieldName1];
+          let lastPrice = _this.socketInfo[asset].price;
           if(lastPrice>=obj.data.latestprice){
-            _this.socketInfo[fieldName2]=0;//sort desc
+            _this.socketInfo[asset].sort=0;//sort desc
           }else{
-            _this.socketInfo[fieldName2]=1;//sort asc
+            _this.socketInfo[asset].sort=1;//sort asc
           }
-          _this.socketInfo[fieldName1] = obj.data.latestprice;
+          _this.socketInfo[asset].price = obj.data.latestprice;
           // console.log(_this.socketInfo[fieldName1]+">>>>>"+_this.socketInfo[fieldName2]+">>>>>"+obj.channel);
           _this.updateSocketData(_this.socketInfo);
         }
@@ -109,26 +135,11 @@
         let _this = this ;
         if(obj.channel.indexOf("_cny_")>-1){
           let asset = obj.channel.replace('sub_spot_','').replace('_cny_dailydata','');
-          let fieldName1 = asset+"Range";
-          let fieldName2 = asset+"Price";
-          let fieldName3 = asset+"Volume";
-          let fieldName4 = asset+"MaxPrice";
-          let fieldName5 = asset+"MinPrice";
-
-          if(_this.socketInfo[fieldName1]==undefined || _this.socketInfo[fieldName1]==null){
-            _this.socketInfo[fieldName1]=0+"%"
-            _this.socketInfo[fieldName2]=0
-            _this.socketInfo[fieldName3]=0
-            _this.socketInfo[fieldName4]=0
-            _this.socketInfo[fieldName5]=0
-          }
-
-
-          _this.socketInfo[fieldName1]=obj.data.changePercent+"%"
-          _this.socketInfo[fieldName2]=obj.data.closingPrice
-          _this.socketInfo[fieldName3]=obj.data.volumeQuantity
-          _this.socketInfo[fieldName4]=obj.data.maxPrice
-          _this.socketInfo[fieldName5]=obj.data.minPrice
+         _this.socketInfo[asset].range=obj.data.changePercent+"%";
+          _this.socketInfo[asset].price=obj.data.closingPrice;
+          _this.socketInfo[asset].volume=obj.data.volumeQuantity;
+          _this.socketInfo[asset].maxPrice=obj.data.maxPrice;
+          _this.socketInfo[asset].minPrice=obj.data.minPrice;
 
           _this.updateSocketData(_this.socketInfo);
         }
@@ -137,30 +148,23 @@
       getUserAsset(obj){
         // console.log(obj.data);
         let _this = this ;
-        let fieldName1 = "assetcny";
-        let fieldName2 = "freezecny";
-        let fieldName3 = "total";
-        if(_this.socketInfo[fieldName1]==undefined || _this.socketInfo[fieldName1]==null){
-          _this.socketInfo[fieldName1]=0;
-          _this.socketInfo[fieldName2]=0;
-          _this.socketInfo[fieldName3]=0;
-        }
-        _this.socketInfo[fieldName1] = obj.data.assetcny ;
-        _this.socketInfo[fieldName2] = obj.data.freezecny ;
-        _this.socketInfo[fieldName3] = obj.data.total ;
+        _this.socketInfo.cny.usable = obj.data.assetcny ;
+        _this.socketInfo.cny.freeze = obj.data.freezecny ;
+        _this.socketInfo.total = obj.data.total ;
 
         let assets = _this.$store.state.assets;
         for(let key in assets){
           let fieldName1 = "asset"+assets[key].code;
           let fieldName2 = "freeze"+assets[key].code;
 
-          if(_this.socketInfo[fieldName1]==undefined || _this.socketInfo[fieldName1]==null){
-            _this.socketInfo[fieldName1]=0;
-            _this.socketInfo[fieldName2]=0;
+          if(_this.socketInfo[assets[key].code]==undefined || _this.socketInfo[assets[key].code]==null){
+            _this.socketInfo[assets[key].code]={};
+            _this.socketInfo[assets[key].code].usable=0;
+            _this.socketInfo[assets[key].code].freeze=0;
           }
 
-          _this.socketInfo[fieldName1] = obj.data["asset"+assets[key].code] ;
-          _this.socketInfo[fieldName2] = obj.data["freeze"+assets[key].code] ;
+          _this.socketInfo[assets[key].code].usable = obj.data["asset"+assets[key].code] ;
+          _this.socketInfo[assets[key].code].freeze = obj.data["freeze"+assets[key].code] ;
 
           // console.log(obj.data["asset"+assets[key].code]);
         }

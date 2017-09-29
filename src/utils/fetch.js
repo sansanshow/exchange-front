@@ -1,7 +1,7 @@
 import axios from 'axios'  
 import qs from 'qs'  
-// let baseURL = "http://192.168.0.232:8089";
-let baseURL = "";
+let baseURL = "http://192.168.0.100:8089";
+// let baseURL = "";
 import cache from '../mixin/store'
 axios.interceptors.request.use(config => {  
   // store.commit('UPDATE_LOADING',true) //显示loading  
@@ -26,43 +26,21 @@ function errorState(response) {
       // 如果不需要除了data之外的数据，可以直接 return response.data  
   }else{  
     aleralert("网络异常");
-    // Vue.prototype.$msg.alert.show({  
-    //         title: '提示',  
-    //         content: '网络异常'  
-    // })  
   }  
     
 }  
   
 function successState(res) {  
-  if(res.status != 0){
-    // alert(res.msg);
+  if(res.data.status != 0){
+    alert(res.data.msg);
   }
-
   return;
   // store.commit('UPDATE_LOADING',false) //隐藏loading  
   //统一判断后端返回的错误码  
   if(res.status != 0){  
-       Vue.prototype.$msg.alert.show({  
-            title: '提示',  
-            content: res.data.errDesc||'网络异常',  
-            onShow () {  
-            },  
-            onHide () {  
-              console.log('确定')  
-            }  
-       })  
+       
   }else if(res.data.errCode != '000002'&&res.data.errCode != '000000') {  
-      Vue.prototype.$msg.alert.show({  
-            title: '提示',  
-            content: res.data.errDesc||'网络异常',  
-            onShow () {  
-  
-            },  
-            onHide () {  
-              console.log('确定')  
-            }  
-       })  
+      
   }  
 }  
 

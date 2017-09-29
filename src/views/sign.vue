@@ -62,11 +62,10 @@
                 </div>
             </div>
         </div>
-            
+
     </div>
 </template>
 <script>
-const imgsrc = 'http://localhost:8089/pVerifyCode.ok';
 const wait = 5;
 import axios from 'axios';
 import qs from 'qs';
@@ -74,7 +73,7 @@ import md5 from 'md5';
 import { mapActions } from 'vuex'
 export default {
     components:{
-    
+
     },
     data(){
         return {
@@ -91,23 +90,24 @@ export default {
                 cfmpwd: '',
                 mcode:'',
                 imgcode:'',
-                imgsrc: imgsrc,    
+                imgsrc: null,
             },
             toPath: this.$route.query.path || '/'
         }
     },
     created(){
-        // 
+        this.reg.imgsrc = this.VerifyImg
+        //
         // this.$http('login',{username:'15908401995', password: 'a123456'}).then(res => {
         //     console.log(res);
         // });
 
         // let reqOptions = {
-        //     method:'post',  
-        //     baseURL: 'http://192.168.0.232:8089',  
-        //     url: 'login',  
-        //     timeout: 10000, 
-        //     data:{username:'15908401995', password: 'a123456'}  
+        //     method:'post',
+        //     baseURL: 'http://192.168.0.232:8089',
+        //     url: 'login',
+        //     timeout: 10000,
+        //     data:{username:'15908401995', password: 'a123456'}
         // }
         // this.$ajax(reqOptions).then(res => {
         //     console.log(res);
@@ -132,7 +132,7 @@ export default {
         login(){
             let _this = this;
             let obj = {
-                username:_this.loginParam.username, 
+                username:_this.loginParam.username,
                 password: md5(_this.loginParam.password)
             }
             this.$http('login',obj).then(res => {
@@ -167,7 +167,7 @@ export default {
         },
         // 刷新验证码
         refresh(){
-            this.reg.imgsrc = imgsrc + '?r=' + new Date().getTime();
+            this.reg.imgsrc = this.VerifyImg + '?r=' + new Date().getTime();
         },
         sendSmsCode(){
             let _this = this;
@@ -255,7 +255,7 @@ export default {
         .disable{
             background: #ccc;
         }
-    } 
+    }
 </style>
 
 
