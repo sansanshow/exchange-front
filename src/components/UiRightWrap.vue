@@ -1,9 +1,11 @@
 <template>
     <div class="content security">
-        <ui-head :options="headOptions" @backEvent="backE"></ui-head>
+        <header>
+            <slot name="header"></slot>
+        </header>
         <div class="main">
              <slot>
-                嗖嗖嗖
+                
              </slot>
         </div>
     </div>
@@ -11,16 +13,6 @@
 <script>
 import UiHead from './UiHead';
 export default {
-    props:{
-        headOptions:{
-            type: Object,
-            default: () => {
-                return {
-                    title: '标题'
-                };
-            }
-        }
-    },
     components:{
         UiHead
     },
@@ -30,9 +22,6 @@ export default {
         }
     },
     methods: {
-        backE(){
-            this.$emit('headBack');
-        }
     }
 }
 </script>

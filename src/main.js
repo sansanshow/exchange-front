@@ -5,6 +5,7 @@ import App from './App'
 import router from './router'
 import axios from 'axios'
 import store from './store/store'
+import i18n from './common/i18n'
 
 import "./mixin/mixin";
 
@@ -15,6 +16,7 @@ Vue.prototype.$websocket = null ;
 
 /* eslint-disable no-new */
 new Vue({
+  i18n,
   el: '#app',
   router,
   store,

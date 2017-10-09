@@ -154,30 +154,30 @@ export default {
         }
     },
     created(){
-      
-    },
-    mounted(){
-      let _this = this;
-      let userInfo =  JSON.parse(_this.store.getStore("userInfo"));
-      _this.mobile = userInfo.mobile.substr(0,3)+"****"+userInfo.mobile.substr(7);
-      if(userInfo.validationGoogle=="1"){
-        _this.isgoogle=true;
-        _this.googleActive=true;
-      }
-      if(userInfo.validationEmail=="1"){
-        _this.isemail=true;
-        _this.emailActive=true;
-      }
-      if(userInfo.validationMobile=="1"){
-        _this.ismobile=true;
-        _this.mobileActive=true;
-      }
-      if(userInfo.payPassword!=null){
-        _this.ispay=true,
-        _this.payActive=true;
-      }
+      this.init();
     },
     methods: {
+      init(){
+        let _this = this;
+        let userInfo =  JSON.parse(_this.store.getStore("userInfo"));
+        _this.mobile = userInfo.mobile.substr(0,3)+"****"+userInfo.mobile.substr(7);
+        if(userInfo.validationGoogle=="1"){
+          _this.isgoogle=true;
+          _this.googleActive=true;
+        }
+        if(userInfo.validationEmail=="1"){
+          _this.isemail=true;
+          _this.emailActive=true;
+        }
+        if(userInfo.validationMobile=="1"){
+          _this.ismobile=true;
+          _this.mobileActive=true;
+        }
+        if(userInfo.payPassword!=null){
+          _this.ispay=true,
+          _this.payActive=true;
+        }
+      },
       backE(){
         console.log("userIndex");
         this.$to({name: "userIndex"});

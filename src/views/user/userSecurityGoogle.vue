@@ -117,25 +117,25 @@ export default {
         }
     },
     created(){
-      
+      this.init();
     },
-    mounted(){
-      let _this = this;
-      let userInfo =  JSON.parse(_this.store.getStore("userInfo"));
-      if(userInfo.googleIdentifier!=null){
-        this.isGoogle = true;
-        this.headOptions.title = "修改Google认证";
-      }
-      //谷歌验证密匙二维码生成
-      this.$http('gauthGene').then(res =>{
+    methods: {
+      init(){
+        let _this = this;
+        let userInfo =  JSON.parse(_this.store.getStore("userInfo"));
+        if(userInfo.googleIdentifier!=null){
+          this.isGoogle = true;
+          this.headOptions.title = "修改Google认证";
+        }
+        //谷歌验证密匙二维码生成
+        this.$http('gauthGene').then(res =>{
         console.log(res);
         if(res.status == 0){
           this.secret = res.dataWrapper.secret;
           this.qrcodeSrc=res.dataWrapper.qrcode;
-        }
-      })
-    },
-    methods: {
+          }
+        })
+      },
       backE(){
         console.log("userIndex");
         this.$to({name: "userIndex"});

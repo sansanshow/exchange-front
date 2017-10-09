@@ -3,11 +3,11 @@
        <div class="i-banner">
             <div class="wrap1200 fix">
                 <div class="i-login-info r" v-if="$store.state.isLogin">
-                    <div class="uname">{{$t('message.welcome_text')}}，{{$store.state.username}}</div>
+                    <div class="uname">欢迎回来，{{$store.state.username}}</div>
                     <div class="info">
                         <div class="flex">
                             <div class="left">
-                                {{$t('message.net_assets_text')}}:
+                                净资产:
                             </div>
                             <div class="flex-1">
                                 CNY:￥{{$store.state.socketData.total}}
@@ -15,7 +15,7 @@
                         </div>
                         <div class="flex">
                             <div class="left">
-                                {{$t('message.total_assets_text')}}: 
+                                总资产: 
                             </div>
                             <div class="flex-1">
                                  CNY:￥{{$store.state.socketData.total}}
@@ -23,7 +23,7 @@
                         </div>
                         <div class="flex curr">
                             <div class="left">
-                                {{$t('message.usable_assets_text')}}:
+                                当前可用:
                             </div>
                             <div class="flex-1">
                                 <p>
@@ -39,28 +39,28 @@
                     </div>
                     <div class="btn-wrap">
                         <div class="btn" @click="$to({name: 'trade'})">
-                            {{$t('message.home_link_text')}}
+                            进入交易中心
                         </div>
                     </div>
                 </div>
                 <div class="i-login-form r" v-else>
-                    <h2 class="i-form-title">{{ $t('message.login_title_text') }}</h2>
+                    <h2 class="i-form-title">登录</h2>
                     <div class="i-form-field">
                         <input type="text" v-model="loginParam.username" placeholder="手机号">
                     </div>
                     <div class="i-form-field">
-                        <input type="text" v-model="loginParam.password" placeholder="密码">
+                        <input type="password" v-model="loginParam.password" placeholder="密码">
                     </div>
                     <div class="i-form-field fix" style="padding-top: 6px;">
-                        <!--<a class="l" href="">验证码登录</a>-->
-                        <a class="r" href="">{{$t('message.forgot_pwd_text')}}</a>
+                        <a class="l" href="">验证码登录</a>
+                        <a class="r" href="">忘记密码？</a>
                     </div>
                     <div class="i-form-field">
-                        <button class="login-btn" @click="login">{{$t('message.login_text')}}</button>
+                        <button class="login-btn" @click="login">登录</button>
                     </div>
                     <div class="i-form-field txt-fff" style="padding-top: 4px;">
-                        <span>{{$t('message.noaccount_title')}}&nbsp;&nbsp;</span>
-                        <a class="a-line" @click="$to({path:'/sign/reg'})">{{$t('message.register_title')}}</a>
+                        <span>还没有账号？&nbsp;&nbsp;</span>
+                        <a class="a-line" @click="$to({path:'/sign/reg'})">点此注册</a>
                     </div>
                 </div>
 
@@ -74,25 +74,25 @@
                         <span class="news-icon"></span><span>最新动态：关于开放ETH兑BTC的公告</span>
                     </div>
                     <div class="more r">
-                        <a href="">{{$t('message.more_text')}}&nbsp;&gt;</a>
+                        <a href="">更多动态&nbsp;&gt;</a>
                     </div>
                 </div>
             </div>
             <div class="wrap1200 details">
                 <div class="i-title">
                     <div class="head-outer center">
-                        <h2>{{$t('message.home_page_title1')}}</h2>
+                        <h2>实时行情</h2>
                         <div class="bottom-line"></div>
                     </div>
                 </div>
                 <div class="details-table">
                     <div class="head flex">
-                        <div class="flex-1">{{$t('message.market')}}</div>
-                        <div class="flex-1">{{$t('message.latest_price')}}</div>
-                        <div class="flex-1">{{$t('message.change_24hr')}}</div>
-                        <div class="flex-1">{{$t('message.high_24hr')}}</div>
-                        <div class="flex-1">{{$t('message.low_24hr')}}</div>
-                        <div class="flex-1">{{$t('message.volume_24hr')}}</div>
+                        <div class="flex-1">市场</div>
+                        <div class="flex-1">最新</div>
+                        <div class="flex-1">今日涨幅跌</div>
+                        <div class="flex-1">今日最高</div>
+                        <div class="flex-1">今日最低</div>
+                        <div class="flex-1">24小时成交量</div>
                     </div>
                     <div class="body">
                         <div class="item flex" v-for="(item,index) in $store.state.assets" :key="index" :class="{'up': $store.state.socketData[item.code].sort==1,'down': $store.state.socketData[item.code].sort==0}">
@@ -147,7 +147,7 @@
                 <div id="index-chart" class="d-chart"></div>
                 -->
                 <div class="btn-wrap center">
-                    <a class="btn">{{$t('message.home_link_text1')}}&nbsp;&gt;</a>
+                    <a class="btn">查看更多行情并交易&nbsp;&gt;</a>
                 </div>
             </div>
         </div>
@@ -156,7 +156,7 @@
             <div class="wrap1200 zixun">
                 <div class="i-title">
                     <div class="head-outer center">
-                        <h2>{{$t('message.home_page_title2')}}</h2>
+                        <h2>最新资讯</h2>
                         <div class="bottom-line"></div>
                     </div>
                 </div>
@@ -197,7 +197,7 @@
                     </div>
                 </div>
                 <div class='a-more'>
-                    <a href="">{{$t('message.more_text')}}&nbsp;&gt;</a>
+                    <a href="">查看更多资讯&nbsp;&gt;</a>
                 </div>
             </div>
         </div>
@@ -206,7 +206,7 @@
             <div class="wrap1200 guides">
                 <div class="i-title">
                     <div class="head-outer center">
-                        <h2>{{$t('message.home_page_title3')}}</h2>
+                        <h2>新手指导</h2>
                         <div class="bottom-line"></div>
                     </div>
                 </div>
@@ -237,7 +237,7 @@
                     </div>
                 </div>
                 <div class='a-more'>
-                    <a href="">{{$t('message.more_text')}}&nbsp;&gt;</a>
+                    <a href="">查看更多&nbsp;&gt;</a>
                 </div>
             </div>
         </div>

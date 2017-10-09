@@ -26,11 +26,11 @@
                     </div>
                     <div class="data flex">
                         <div class="flex-1">
-                            <div class="big">￥{{ this.tabArgs.code ? $store.state.socketData[this.tabArgs.code].price : '--'}}</div>
+                            <div class="big">￥{{ tabArgs.code ? $store.state.socketData[tabArgs.code].price : '--'}}</div>
                             <div class="num">
-                                <span>高：</span><span class="inb">￥{{ this.tabArgs.code ? $store.state.socketData[this.tabArgs.code].maxPrice : '--'}}</span>
-                                <span>低：</span><span>￥{{ this.tabArgs.code ? $store.state.socketData[this.tabArgs.code].minPrice : '--'}}</span>
-                                <span>量：</span><span>{{ this.tabArgs.code ? $store.state.socketData[this.tabArgs.code].volume : '--'}}</span>
+                                <span>高：</span><span class="inb">￥{{ tabArgs.code ? $store.state.socketData[tabArgs.code].maxPrice : '--'}}</span>
+                                <span>低：</span><span>￥{{ tabArgs.code ? $store.state.socketData[tabArgs.code].minPrice : '--'}}</span>
+                                <span>量：</span><span>{{ tabArgs.code ? $store.state.socketData[tabArgs.code].volume : '--'}}</span>
                             </div>
                         </div>
                         <div class="flex-1">
@@ -38,15 +38,15 @@
                                 <span>可用:</span><span>{{ $store.state.socketData.cny.usable || '--' }}</span><span> CNY</span>
                             </div>
                             <div class="can">
-                                <span>可买:</span><span>{{ $store.state.socketData.cny.usable || 0 | calDivision($store.state.socketData[this.tabArgs.code].price) }}</span><span> {{ $store.state.assets[tabArgs.subTab]['name']}}</span>
+                                <span>可买:</span><span>{{ $store.state.socketData.cny.usable || 0 | calDivision($store.state.socketData[tabArgs.code].price) }}</span><span> {{ $store.state.assets[tabArgs.subTab]['name']}}</span>
                             </div>
                         </div>
                         <div class="flex-1">
                             <div class="can">
-                                <span>可用:</span><span>{{$store.state.socketData[this.tabArgs.code].usable || '--'}}</span><span>{{ $store.state.assets[tabArgs.subTab]['name']}}</span>
+                                <span>可用:</span><span>{{$store.state.socketData[tabArgs.code].usable || '--'}}</span><span>{{ $store.state.assets[tabArgs.subTab]['name']}}</span>
                             </div>
                             <div class="can">
-                                <span>可卖:</span><span>{{ $store.state.socketData[this.tabArgs.code].usable || 0 | calMulti($store.state.socketData[this.tabArgs.code].price)}}</span><span>CNY</span>
+                                <span>可卖:</span><span>{{ $store.state.socketData[tabArgs.code].usable || 0 | calMulti($store.state.socketData[tabArgs.code].price)}}</span><span>CNY</span>
                             </div>
                         </div>
 
@@ -57,18 +57,20 @@
         <div class="w1200 part p2 flex">
             <div class="left flex ">
                 <div class="card">
-                    <p class="title red">买入比特币</p>
+                    <p class="title red">买入{{$store.state.assets[tabArgs.subTab].name || ''}}</p>
                     <div class="tabs flex">
                         <div class="tab flex-1" :class="{'on': tabArgs.tabTwo.left == 0}" @click="onTabTwo('left',0)">限价买入</div>
                         <div class="tab flex-1" :class="{'on': tabArgs.tabTwo.left == 1}" @click="onTabTwo('left',1)">计划买入</div>
                     </div>
                     <div class="line">
                         <span class="line-head">买入价(CNY)</span>
-                        <span class="line-body red">277706.3</span>
+                        <!-- <span class="line-body red">277706.3</span> -->
+                        <input type="text" class="line-body red" v-model="orderInfo.buy.price"/>
                     </div>
                     <div class="line">
-                        <span class="line-head">买入量(BTC)</span>
-                        <span class="line-body red">277706.3</span>
+                        <span class="line-head">买入量({{$store.state.assets[tabArgs.subTab].name || ''}})</span>
+                        <!-- <span class="line-body red">277706.3</span> -->
+                        <input type="text" class="line-body red" v-model="orderInfo.buy.quantity"/>
                     </div>
                     <div class="fix progress-wrap">
                         <div class="progress">
@@ -77,25 +79,32 @@
                         <span class="r percent">50%</span>
                     </div>
                     <div class="willtrade">
-                        <span>预计交易额:</span><span class="num red">0.00</span> <span>CNY</span>
+                        <span>预计交易额:</span><span class="num red">{{ buyTotal | formatNum }}</span> <span>CNY</span>
                     </div>
-                    <div class="btn bg-red">
+                    <div class="line" v-if="validMap['trade'].securityId != 6">
+                        <span class="line-head">资金密码</span>
+                        <!-- <span class="line-body red">277706.3</span> -->
+                        <input type="password" class="line-body"/>
+                    </div>
+                    <div class="btn bg-red" @click="createOrder('buy')">
                         立即买入
                     </div>
                 </div>
                 <div class="card">
-                    <p class="title green">卖出比特币</p>
+                    <p class="title green">卖出{{$store.state.assets[tabArgs.subTab].name || ''}}</p>
                     <div class="tabs flex">
                         <div class="tab flex-1" :class="{'on': tabArgs.tabTwo.right == 0}" @click="onTabTwo('right',0)">限价卖出</div>
                         <div class="tab flex-1" :class="{'on': tabArgs.tabTwo.right == 1}" @click="onTabTwo('right',1)">计划卖出</div>
                     </div>
                     <div class="line">
                         <span class="line-head">卖出价(CNY)</span>
-                        <span class="line-body green">277706.3</span>
+                        <!-- <span class="line-body green">277706.3</span> -->
+                        <input type="text" class="line-body green" v-model="orderInfo.sell.price"/>
                     </div>
                     <div class="line">
-                        <span class="line-head">卖出量(BTC)</span>
-                        <span class="line-body green">277706.3</span>
+                        <span class="line-head">卖出量({{$store.state.assets[tabArgs.subTab].name || ''}})</span>
+                        <!-- <span class="line-body green">277706.3</span> -->
+                        <input type="text" class="line-body green" v-model="orderInfo.sell.quantity"/>
                     </div>
                     <div class="fix progress-wrap">
                         <div class="progress">
@@ -104,9 +113,14 @@
                         <span class="r percent">50%</span>
                     </div>
                     <div class="willtrade">
-                        <span>预计交易额:</span><span class="num green">0.00</span> <span>CNY</span>
+                        <span>预计交易额:</span><span class="num green">{{ sellTotal | formatNum }}</span> <span>CNY</span>
                     </div>
-                    <div class="btn bg-green">
+                    <div class="line" v-if="validMap['trade'].securityId != 6">
+                        <span class="line-head">资金密码</span>
+                        <!-- <span class="line-body red">277706.3</span> -->
+                        <input type="password" class="line-body"/>
+                    </div>
+                    <div class="btn bg-green" @click="createOrder('sell')">
                         立即卖出
                     </div>
                 </div>
@@ -207,28 +221,79 @@ export default {
                     left: 0,
                     right: 0
                 }
+            },
+            validMap: null,
+            orderInfo: {
+                'buy': {
+                    price: null,
+                    quantity: null,
+                    typ: 'buy'
+                },
+                'sell': {
+                    price: null,
+                    quantity: null,
+                    typ: 'sell'
+                }
             }
         }
     },
     mounted(){
         this.tabArgs.code = this.$store.state.assets[0] ? this.$store.state.assets[0]['code'] : null;
+        this.init();
     },
     methods: {
+        init(){
+            // 初始化 权限列表
+            let validMap = new Map();
+            let policyList = JSON.parse(this.store.getStore('policyList'));
+            for(let po of policyList){
+                validMap[po.validationMode] = po;
+            }
+            this.validMap = validMap;
+        },
+        initList(type,page){
+            let _this = this;
+            let param = {
+                pageSize: 5,
+                pageNo: 1,
+                category: _this.$store.state.assets[_this.tabArgs.subTab]['code'] + '_' + 'cny',
+            };
+            this.$http(type == 'record' ? 'orderRecordList' : 'orderList',param).then(res => {
+
+            });
+        },
         onTab(topTab, coinTab, subTab){
             this.tabArgs.topTab = topTab;
             this.tabArgs.coinTab = coinTab;
             this.tabArgs.subTab = subTab;
             this.tabArgs.code = this.$store.state.assets[subTab] ? this.$store.state.assets[subTab]['code'] : null;
+            this.resetOrderInfo(subTab);
         },
         onTabTwo(type,index){
             this.tabArgs['tabTwo'][type] = index;
         },
-        createOrder(){ // 挂单order/createorder
+        resetOrderInfo(subTab){
+            this.orderInfo = {
+                'buy': {
+                    price: null,
+                    quantity: null,
+                    typ: 'buy'
+                },
+                'sell': {
+                    price: null,
+                    quantity: null,
+                    typ: 'sell'
+                }
+            }
+        },
+        // 挂单order/createorder
+        createOrder(type){ 
+            let _this = this;
             let param = {
-                category: null,
-                price: null,
-                quantity: null,
-                type: null,
+                category: _this.$store.state.assets[_this.tabArgs.subTab]['code'] + '_' + 'cny',
+                price: _this.orderInfo[type].price,
+                quantity: _this.orderInfo[type].quantity,
+                type: type,
                 paypwd: null,
                 _token: null
             }
@@ -237,9 +302,17 @@ export default {
             });
         }
     },
+    computed: {
+        buyTotal(){
+            return this.orderInfo.buy.price * this.orderInfo.buy.quantity
+        },
+        sellTotal(){
+            return this.orderInfo.sell.price * this.orderInfo.sell.quantity
+        },
+    },
     filters: {
-        formatDate: function(value) {
-            return 'formatDate';
+        formatNum: function(value) {
+            return Math.floor(value * 1000) / 1000;
         },
         calDivision: function(value, single){
             return Math.floor((value / single)* 1000) / 1000;

@@ -41,6 +41,11 @@ const serviceModule = {
         url: prefix + 'account/changemobile',
         method: 'post'
     },
+    bindAccount:{
+        name: '绑定-手机或邮箱',
+        url: prefix + 'account/bind',
+        method: 'post'
+    },
     fileUpload: {
         name: '实名认证-图片上传',
         url: prefix + 'fileUpload/loadFile',
@@ -85,7 +90,17 @@ const serviceModule = {
         name:'账户资产',
         url:prefix+'customerAsset/cnySpotAssetQuery',
         method:'post'
-    }
+    },
+    orderList: {
+        name: '限价委托-交易记录',
+        url: prefix+'order/list',
+        method:'post'
+    },
+    orderRecordList: {
+        name: '计划委托-委托历史接口',
+        url: prefix+'order/recordList',
+        method:'post'
+    },
 
 }
 const API = {...serviceModule }

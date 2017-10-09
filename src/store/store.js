@@ -10,6 +10,7 @@ const state = {
     isLogin: false,
     socketData:{
     },
+    langType: 0,
     assets:[
         {name:'BTC',code:'btc'},
         {name:'ETH',code:'eth'}
@@ -50,7 +51,10 @@ const mutations = {
     UPDATE_SOCKETDATA(state, data){
         let newData = Object.assign({}, state.socketData, data);
         state.socketData = newData;
-    }
+    },
+    UPDATE_LANGTYPE(state, data){
+        state.langType = data;
+    },
 }
 // actions  -- 主要用来提交 mutations 中的事物
 const actions = {
@@ -63,7 +67,10 @@ const actions = {
     },
     onClickUserTab: ({ commit,state}, tab) => {
         commit('ON_CLICK_USERTAB', tab);
-    }
+    },
+    updateLangType: ({ commit,state}, index) => {
+        commit('UPDATE_LANGTYPE', index);
+    },
 }
 
 // getters

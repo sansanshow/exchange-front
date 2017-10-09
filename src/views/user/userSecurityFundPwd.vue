@@ -146,17 +146,17 @@ export default {
         }
     },
     created(){
-      
+      this.init();
     },
-    mounted(){
+    methods: {
+      init(){
         let _this = this;
         let userInfo =  JSON.parse(_this.store.getStore("userInfo"));
         if(userInfo.payPassword==null){
           this.ispay = false;
           this.headOptions.title='设置资金密码';
         }
-    },
-    methods: {
+      },
       backE(){
         console.log("userIndex");
         this.$to({name: "userIndex"});

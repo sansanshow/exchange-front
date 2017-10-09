@@ -8,30 +8,23 @@
                 <!-- 行情列表 -->
                 <ul class="list">
                     <li v-for="(item,index) in $store.state.assets" :key="index">
-                        {{item.name}}:<span :class="{'up':$store.state.socketData[item.code].sort==1,'down':$store.state.socketData[item.code].sort==0}">￥{{$store.state.socketData[item.code].price}}</span>
+                        {{item.name}}:<span :class="{'up':$store.state.socketData[item.code+'Sort']==1,'down':$store.state.socketData[item.code+'Sort']==0}">￥{{$store.state.socketData[item.code+'Price']}}</span>
                     </li>
 
                 </ul>
             </div>
             <div class="wrap1200 fix">
                 <div class="language r">
-                    <p @click="showLang"><img class="lang-icon" :src="langList[$store.state.langType].icon" alt=""><span class="lang-text">{{ langList[$store.state.langType].name }}</span><img class="lang" src="../assets/images/i-down-arrows.png" alt=""></p>
-                    <ul v-if="langShow" class="lang-list">
-                        <li v-for="(item,index) in langList" :key="index">
-                            <img v-if="index == $store.state.langType" class="icon-slected" :src="iconOk" alt=""><img class="lang-icon" :src="item.icon" alt=""><span class="lang-text" @click="selectLang(item.code,index)">{{item.name}}</span>
-                        </li>                        
-                        <!-- <li><img class="lang-icon" src="../assets/images/i-zh.png" alt=""><span class="lang-text">中文</span></li>
-                        <li><img class="lang-icon" src="../assets/images/i-en.png" alt=""><span class="lang-text">English</span></li> -->
-                    </ul>
+                    <p><img class="lang-icon" src="../assets/images/i-zh.png" alt=""><span class="lang-text">中文</span><img class="lang" src="../assets/images/i-down-arrows.png" alt=""></p>
                 </div>
             </div>
         </div>
         <div class="g-header-main">
             <div class="wrap1200 fix wrap">
                 <ul class="nav-list fix">
-                    <li @click="onTabClick(0)" :class="{'on': tab==0 }"><span>{{$t('message.header_title1')}}</span></li>
-                    <li @click="onTabClick(1)" :class="{'on': tab==1 }"><span>{{$t('message.header_title2')}}</span></li>
-                    <li @click="onTabClick(2)" :class="{'on': tab==2 }"><span>{{$t('message.header_title3')}}</span></li>
+                    <li @click="onTabClick(0)" :class="{'on': tab==0 }"><span>首页</span></li>
+                    <li @click="onTabClick(1)" :class="{'on': tab==1 }"><span>交易中心</span></li>
+                    <li @click="onTabClick(2)" :class="{'on': tab==2 }"><span>资金管理</span></li>
                     <li v-if="$store.state.username == null || $store.state.username == ''">
                         <a href="" @click.prevent="$to({path: '/login'})"><span>登录</span></a>
                         <a href="" @click.prevent="$to({path: '/register'})"><span class="reg">注册</span></a>
@@ -45,46 +38,46 @@
                             <div class="top-arrows"></div>
                             <div class="auth-info flex">
                                 <div class="info flex">
-                                    <div class="item"><span class="icon ok"></span><span>{{$t('message.header_account_text1')}}</span></div>
-                                    <div class="item"><span class="icon"></span><span>{{$t('message.header_account_text2')}}</span></div>
-                                    <div class="item"><span class="icon"></span><span>{{$t('message.header_account_text3')}}</span></div>
-                                    <div class="item"><span class="icon"></span><span>{{$t('message.header_account_text4')}}</span></div>
+                                    <div class="item"><span class="icon ok"></span><span>手机验证</span></div>
+                                    <div class="item"><span class="icon"></span><span>实名认证</span></div>
+                                    <div class="item"><span class="icon"></span><span>谷歌验证</span></div>
+                                    <div class="item"><span class="icon"></span><span>邮箱认证</span></div>
                                 </div>
                                 <div class="logout flex-1 t_r">
-                                    <span class="btn" @click="logOut">{{$t('message.header_loginout_text')}}</span>
+                                    <span class="btn" @click="logOut">退出登录</span>
                                 </div>
                             </div>
                             <div class="assets">
                                 <div class="flex all">
                                     <div class="flex-1">
                                         <div class="line">
-                                            <span>{{$t('message.header_total_assets')}}：</span><span>{{$store.state.socketData.total}}</span> <span>CNY</span>
+                                            <span>账户总资产：</span><span>{{$store.state.socketData.total}}</span> <span>CNY</span>
                                         </div>
                                         <!--<div class="line">
                                             <span>账户总资产：</span><span>--</span><span>CNY</span>
                                         </div>-->
                                     </div>
                                     <div class="more">
-                                        <span class="link">{{$t('message.header_assets_detail')}}</span>
+                                        <span class="link">账单明细</span>
                                     </div>
                                 </div>
                                 <div class="detail flex">
-                                    <div class="flex-1">{{$t('message.header_assets_type')}}</div>
-                                    <div class="can h">{{$t('message.header_assets_usable')}}</div>
-                                    <div class="flex-1">{{$t('message.header_assets_freeze')}}</div>
+                                    <div class="flex-1">币种</div>
+                                    <div class="can h">可用</div>
+                                    <div class="flex-1">冻结</div>
                                 </div>
                                 <div class="detail flex">
                                     <div class="flex-1">CNY</div>
-                                    <div class="can">{{$store.state.socketData.cny.usable}}</div>
-                                    <div class="flex-1">{{$store.state.socketData.cny.freeze}}</div>
+                                    <div class="can">{{$store.state.socketData.assetcny}}</div>
+                                    <div class="flex-1">{{$store.state.socketData.freezecny}}</div>
                                 </div>
                                 <div class="detail flex" v-for="(item,index) in $store.state.assets" :key="index">
                                     <div class="flex-1">{{item.name}}</div>
-                                    <div class="can">{{$store.state.socketData[item.code].usable}}</div>
-                                    <div class="flex-1">{{$store.state.socketData[item.code].freeze}}</div>
+                                    <div class="can">{{$store.state.socketData['asset'+item.code]}}</div>
+                                    <div class="flex-1">{{$store.state.socketData['freeze'+item.code]}}</div>
                                 </div>
                                 <div class="btn-groups">
-                                    <span class="btn" @click="recharge">{{$t('message.header_recharge_text')}}</span><span class="btn">{{$t('message.header_draw_text')}}</span>
+                                    <span class="btn" @click="recharge">充值</span><span class="btn">提现</span>
                                 </div>
                             </div>
                         </div>
@@ -95,28 +88,18 @@
     </div>
 </template>
 <script>
-import { mapActions } from 'vuex';
-import iconZh from '../assets/images/i-zh.png';
-import iconEn from '../assets/images/i-en.png';
-import iconOk from '../assets/images/icon-ok.png';
+import { mapActions } from 'vuex'
 export default {
   name: 'my-header',
   data () {
     return {
       tab: 0,
       popup: true,
-      langShow: false,
       loginStatus: this.isLogin,
       baseInfo: {
           username: null,
           id: null
-      },
-      iconOk: iconOk,
-      langSelectIndex: 0,
-      langList: [
-          {name: '中文', icon: iconZh,code: 'zh',chked: true},
-          {name: 'English', icon: iconEn,code: 'en'}
-      ]
+      }
     }
   },
   created(){
@@ -134,35 +117,10 @@ export default {
     },
     methods: {
         ...mapActions([
-            'updateUser',
-            'updateLangType'
+            'updateUser'
         ]),
         // 初始�?
         init(){
-            
-            let locale = this.store.getStore('locale');
-            // alert(locale)
-            if(locale){
-                this.$i18n.locale = locale;
-            }else{
-                var language = navigator.browserLanguage?navigator.browserLanguage:navigator.language; 
-                if(language.indexOf('zh') > -1){
-                    locale = 'zh'
-                }else{
-                    locale = 'en'
-                }
-                
-                this.$i18n.locale = locale;
-            }
-            //更新vuex->langType
-            this.langList.forEach( (value, index, array) =>{
-                // ...
-                if(value.code == locale){
-                    this.updateLangType(index);
-                }
-            });
-            // ----end----
-                        
             if(!this.store.getCookie('_uname')){
                 this.store.removeAll();
             }
@@ -187,7 +145,6 @@ export default {
             }
 
         },
-
         logOut(){
             this.$http('loginOut').then(res => {
                 window.isLogin = false;
@@ -225,18 +182,6 @@ export default {
         recharge(){
             // console.log('--recharge--updateUser');
             // this.updateUser({username: '' + new Date().getTime()});
-        },
-        // 
-        showLang(){
-            this.langShow = !this.langShow;
-        },
-        // 选择语言
-        selectLang(code,index){
-            this.$i18n.locale=code;
-            this.store.setStore('locale',code);
-            // this.langSelectIndex = index;
-            this.updateLangType(index);
-            this.langShow = false;
         }
     },
     watch:{
@@ -491,35 +436,7 @@ export default {
 .g-header-top .language p {
     text-align: right;
 }
-.g-header-top{
-    .language{
-        position: relative;
-        .lang-list{
-            box-sizing: border-box;
-            width: 100%;
-            color: #333;
-            padding-right: 10px;
-            position: absolute;
-            background: #f2f2f5;
-            text-align: right;
-            border: 1px solid #ccc;
-            z-index: 8;
-            right: 0px;
-            li{
-                cursor: pointer;
-                .lang-text{
-                    width: 48px;
-                    color: #333;
-                }
-                .icon-slected{
-                    vertical-align: middle;
-                    width: 16px;
-                    margin-right: 16px;
-                }
-            }
-        }
-    }
-} 
+
 .g-header-main .nav-list {
     float: right;
 }
