@@ -15,6 +15,8 @@ const messagesEn = {
     header_assets_freeze:'Freeze',
     header_recharge_text:'Recharge',
     header_draw_text:'Draw',
+    header_login:'Login',
+    header_register:'Register',
     //index
     welcome_text:'Welcome',
     net_assets_text:'Net',

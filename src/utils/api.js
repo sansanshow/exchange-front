@@ -101,7 +101,11 @@ const serviceModule = {
         url: prefix+'order/recordList',
         method:'post'
     },
-
+    addBankCard: {
+        name: '银行卡添加',
+        url: prefix+'bankInfo/add',
+        method:'post'
+    },
 }
 const API = {...serviceModule }
 export default API;

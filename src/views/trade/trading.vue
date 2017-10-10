@@ -162,8 +162,8 @@
         <div class="w1200 part p3">
             <div class="head flex">
                 <div class="tabs hand flex">
-                    <div class="tab flex-1 on">限价委托</div>
-                    <div class="tab flex-1">计划委托</div>
+                    <div class="tab flex-1" :class="{on: list.tab == 'list'}" @click="onTabList('list')">限价委托</div>
+                    <div class="tab flex-1" :class="{on: list.tab == 'record'}" @click="onTabList('record')">计划委托</div>
                 </div>
                 <div class="flex-1 t_r">
                     <span class="more hand">更多记录</span>
@@ -179,21 +179,50 @@
                             <td>委托价格/成交均价(CNY)</td>
                             <td>成交总额(CNY)</td>
                             <td>状态</td>
-                            <td>订单来源</td>
+                            <!-- <td>订单来源</td> -->
                             <td class="t_r">操作<span class="bitch">[批量撤单]</span></td>
                         </tr>
 
                     </thead>
                     <tbody>
-                        <tr v-if="$store.state.isLogin">
-                            <td class="t_l">2017-09-29 14:02:28</td>
-                            <td>100</td>
-                            <td>1500(CNY)</td>
-                            <td>150,000(CNY)</td>
-                            <td>等待</td>
-                            <td>网页</td>
-                            <td class="t_r">操作<span>[批量撤单]</span></td>
-                        </tr>
+                        <template v-if="$store.state.isLogin">
+                            <template v-if="list.tab == 'list'">
+                                <template v-if="list.hisList.length > 0">
+                                    <tr v-for="(item,index) in list.hisList" :key="'list'+index">
+                                        <td class="t_l">{{ item.ordertime }}</td>
+                                        <td>{{ item.freezeAmt }} / {{ item.realAmount }}</td>
+                                        <td>{{ item.price }} / {{ item.avgPrice }}</td>
+                                        <td>{{ item.avgPrice * item.realAmount }}(CNY)</td>
+                                        <td>{{ item.orderStatus }}</td>
+                                        <!-- <td>网页</td> -->
+                                        <td class="t_r">操作<span>[批量撤单]</span></td>
+                                    </tr>
+                                </template>
+                                <tr v-else class="no-login">
+                                    <td colspan="7">
+                                        还没有限价委托记录~
+                                    </td>
+                                </tr>
+                            </template>
+                            <template v-if="list.tab == 'record'">
+                                <template v-if="list.recordList.length > 0">
+                                    <tr v-for="(item,index) in list.recordList" :key="'record'+index">
+                                        <td class="t_l">2017-09-29 14:02:28</td>
+                                        <td>计划100</td>
+                                        <td>1500(CNY)</td>
+                                        <td>item.price(CNY)</td>
+                                        <td>等待</td>
+                                        <td>网页</td>
+                                        <td class="t_r">操作<span>[批量撤单]</span></td>
+                                    </tr>
+                                </template>
+                                <tr v-else class="no-login">
+                                    <td colspan="7">
+                                        还没有计划委托记录~
+                                    </td>
+                                </tr>
+                            </template>
+                        </template>
                         <tr v-else class="no-login">
                             <td colspan="7">
                                 您还没有登录，请<span class="hand green"> 登录 </span>或<span class="hand red"> 注册 </span>后重试
@@ -234,12 +263,21 @@ export default {
                     quantity: null,
                     typ: 'sell'
                 }
+            },
+            // 限价委托、计划委托
+            list: {
+                tab: 'list',
+                hisList: [], // 限价
+                recordList: [], // 委托接口
             }
+           
         }
     },
     mounted(){
         this.tabArgs.code = this.$store.state.assets[0] ? this.$store.state.assets[0]['code'] : null;
         this.init();
+        this.initList('list',1);        
+        this.initList('record',1);
     },
     methods: {
         init(){
@@ -255,11 +293,15 @@ export default {
             let _this = this;
             let param = {
                 pageSize: 5,
-                pageNo: 1,
+                pageNo: page,
                 category: _this.$store.state.assets[_this.tabArgs.subTab]['code'] + '_' + 'cny',
             };
             this.$http(type == 'record' ? 'orderRecordList' : 'orderList',param).then(res => {
-
+                if(type == 'record'){
+                    this.list.recordList = res.dataWrapper.list.resultList;
+                } else {
+                    this.list.hisList = res.dataWrapper.list.resultList;
+                }
             });
         },
         onTab(topTab, coinTab, subTab){
@@ -271,6 +313,9 @@ export default {
         },
         onTabTwo(type,index){
             this.tabArgs['tabTwo'][type] = index;
+        },
+        onTabList(type){
+             this.list.tab = type || 'list';
         },
         resetOrderInfo(subTab){
             this.orderInfo = {
@@ -298,7 +343,7 @@ export default {
                 _token: null
             }
             this.$http('createorder', param).then(res => {
-
+                 alert(res.data.msg);
             });
         }
     },

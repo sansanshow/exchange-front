@@ -7,7 +7,7 @@
     </div>
     <div class="main w1200 flex">
         <div class="step">
-            <div class="item" :class="{'on': tab==1}" @click="tab=1;$to({name:'funds'})">
+            <div class="item" :class="{'on': tab==1}" @click="tab=1;$to({path:'/funds'})">
                 <span class="icon icon-1"></span>
                 <span class="title">账户资产</span>
                 <span class="arrows"></span>
@@ -49,7 +49,60 @@ export default {
             tab:1
         }
     },
-    
+    created(){
+        console.log(this.$route);
+        this.initTabIndex(); // 刷新初始化tab
+    },
+    methods: {
+        initTabIndex(){
+            let route = this.$route.name;
+            switch(route){
+                case 'fundsTotal':
+                    this.tab = 1;
+                    break;
+                case 'fundsRecharge':
+                    this.tab = 2;
+                    break;
+                case 'fundsDeposit':
+                    this.tab = 3;
+                    break;
+                case 'fundsDetail':
+                    this.tab = 4;
+                    break;
+                case 'fundsAudit':
+                    this.tab = 5;
+                    break;
+                default: //
+                    this.tab = 1;
+                    break;
+            }
+        }
+    },
+    watch: {
+        '$route' (to, from) {
+            // 对路由变化作出响应...
+            // console.log(to);
+            switch(to.name){
+                case 'fundsTotal':
+                    this.tab = 1;
+                    break;
+                case 'fundsRecharge':
+                    this.tab = 2;
+                    break;
+                case 'fundsDeposit':
+                    this.tab = 3;
+                    break;
+                case 'fundsDetail':
+                    this.tab = 4;
+                    break;
+                case 'fundsAudit':
+                    this.tab = 5;
+                    break;
+                default: //
+                    break;
+            }
+        }
+    }
 }
 </script>
 <style lang="less">

@@ -15,6 +15,8 @@ const messagesZh = {
     header_assets_freeze:'冻结',
     header_recharge_text:'充值',
     header_draw_text:'提现',
+    header_login:'登录',
+    header_register:'注册',
     //index
     welcome_text:'欢迎回来',
     net_assets_text:'净资产',

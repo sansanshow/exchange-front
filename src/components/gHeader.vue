@@ -33,8 +33,8 @@
                     <li @click="onTabClick(1)" :class="{'on': tab==1 }"><span>{{$t('message.header_title2')}}</span></li>
                     <li @click="onTabClick(2)" :class="{'on': tab==2 }"><span>{{$t('message.header_title3')}}</span></li>
                     <li v-if="$store.state.username == null || $store.state.username == ''">
-                        <a href="" @click.prevent="$to({path: '/login'})"><span>登录</span></a>
-                        <a href="" @click.prevent="$to({path: '/register'})"><span class="reg">注册</span></a>
+                        <a href="" @click.prevent="$to({path: '/login'})"><span>{{$t('message.header_login')}}</span></a>
+                        <a href="" @click.prevent="$to({path: '/register'})"><span class="reg">{{$t('message.header_register')}}</span></a>
                     </li>
                     <li v-else class="loginname">
                         <!-- <span v-text="baseInfo.username"></span><span class="arrows"></span>userInfo -->
@@ -84,7 +84,7 @@
                                     <div class="flex-1">{{$store.state.socketData[item.code].freeze}}</div>
                                 </div>
                                 <div class="btn-groups">
-                                    <span class="btn" @click="recharge">{{$t('message.header_recharge_text')}}</span><span class="btn">{{$t('message.header_draw_text')}}</span>
+                                    <span class="btn" @click="recharge">{{$t('message.header_recharge_text')}}</span><span class="btn">{{$t('message.header_recharge_text')}}</span>
                                 </div>
                             </div>
                         </div>
@@ -130,7 +130,7 @@ export default {
         //     window.isLogin = false;
         //     this.isLogin = false;
         // }
-
+        this.initTabIndex();
     },
     methods: {
         ...mapActions([
@@ -237,6 +237,18 @@ export default {
             // this.langSelectIndex = index;
             this.updateLangType(index);
             this.langShow = false;
+        },
+        initTabIndex(){
+            let path = this.$route.path;
+            if(path.indexOf('funds') > -1){ // 资金
+                this.tab = 2;
+            } else if(path.indexOf('user') > -1){ // 用户中心
+                this.tab = 3;
+            }else if(path.indexOf('trade') > -1){
+                this.tab = 1;
+            }else{
+                this.tab = 0;
+            }
         }
     },
     watch:{

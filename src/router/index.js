@@ -87,7 +87,16 @@ let router = new Router({
         {
           path: '',
           component: fundsTotal,
-          // name: 'fundsTotal',
+          name: 'fundsTotal',
+          meta: {
+            title:'资金管理',
+            requireAuth: true
+          }
+        },
+        {
+          path: 'total',
+          component: fundsTotal,
+          name: 'fundsTotal',
           meta: {
             title:'资金管理',
             requireAuth: true

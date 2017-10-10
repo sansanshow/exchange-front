@@ -50,6 +50,9 @@ export default {
             tab:1
         }
     },
+    created(){
+        this.initTabIndex();
+    },
     methods: {
         ...mapActions([
             'onClickUserTab'
@@ -72,6 +75,29 @@ export default {
                     break;
                 case 5: 
                     this.$to({name:'userAccount'});
+                    break;
+            }
+        },
+        initTabIndex(){
+            let route = this.$route.name;
+            switch(route){
+                case 'userSecurity':
+                    this.tab = 1;
+                    break;
+                case 'userSafePolicy':
+                    this.tab = 2;
+                    break;
+                case 'userIdentity':
+                    this.tab = 3;
+                    break;
+                case 'userNotify':
+                    this.tab = 4;
+                    break;
+                case 'userAccount':
+                    this.tab = 5;
+                    break;
+                default: //
+                    this.tab = 1;
                     break;
             }
         }

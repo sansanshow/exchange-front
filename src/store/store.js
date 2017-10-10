@@ -14,7 +14,7 @@ const state = {
     assets:[
         {name:'BTC',code:'btc'},
         {name:'ETH',code:'eth'}
-    ]
+    ],
 }
 
 // mutations
