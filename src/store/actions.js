@@ -18,5 +18,8 @@ const actions = {
     changeIdCountryList: ({ commit, state }, type) => {
         commit('CHANGE_ID_COUNTRY_LIST',type);
     },
+    toggleAccountList: ( {commit, state}, type) => {
+        commit('TOGGLE_ACCOUNT_LIST',type);
+    }
 }
 export default actions;

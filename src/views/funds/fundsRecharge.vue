@@ -128,9 +128,13 @@
                                     <div class="name">付款人:xx <span class="tips">(仅支持您本人银行卡充值)</span></div>
                                     <div class="account">
                                         <span>选择银行:</span>
-                                        <span class="input">
+                                        <span class="input" @click.stop="onClickSelect">
                                             <span>招商银行</span>
                                             <span class="code">尾号:8888</span>
+                                            <ul class="account-list" v-if="$store.state.rootClick.accountShow">
+                                                <li v-for="i in 5" :key="i" @click.stop="selectAccount(i)">建行 尾号5542</li>
+                                                <li @click.stop="onClickAddBankCard">添加银行</li>
+                                            </ul>
                                         </span>
                                     </div>
                                     <p class="last">请选择银行并使用相应网银/手机银行进行转账充值</p>
@@ -190,6 +194,7 @@
 </template>
 <script>
 import UiHead from '../../components/UiHead';
+import { mapActions } from 'vuex';
 export default {
     components:{
       UiHead
@@ -199,7 +204,7 @@ export default {
             headOptions:{
                 title: '充值/充币'
             },
-            type: 3,
+            type: 4,
             coinType: -1,
             bankInfoParam:{
                 bankName: '招商',
@@ -222,20 +227,34 @@ export default {
 
     },
     methods: {
-       onCoinTab(index){
-           this.coinType = index;
-           if(index > -1){
-               this.type = 2
-           }else{
-              this.type = 3 
-           }
-       },
-       // 添加银行卡
-       addBankCard(){           
-           this.$http('addBankCard',this.bankInfoParam).then(res => {
+        
+        ...mapActions([
+            'toggleAccountList'
+        ]),
+        onCoinTab(index){
+            this.coinType = index;
+            if(index > -1){
+                this.type = 2
+            }else{
+                this.type = 3 
+            }
+        },
+        // 添加银行卡
+        addBankCard(){           
+            this.$http('addBankCard',this.bankInfoParam).then(res => {
 
-           });
-       }
+            });
+        },
+        onClickAddBankCard(){
+            this.type = 3;
+        },
+        // 点击选择银行卡
+        onClickSelect(){
+            this.toggleAccountList(true);
+        },
+        selectAccount(index){
+            this.toggleAccountList(false);
+        }
     }
 }
 </script>
@@ -375,6 +394,7 @@ export default {
                     line-height: 42px;
                     margin-bottom: 50px;
                     .input{
+                        position: relative;
                         display: inline-block;
                         line-height: 42px;
                         width: 268px;
@@ -389,6 +409,30 @@ export default {
                         }
                         .code{
                             color: #999;
+                        }
+                        .account-list{
+                            left: -1px;
+                            top: 46px;
+                            background: #fff;
+                            position: absolute;
+                            width: 100%;
+                            max-height: 210px;
+                            overflow-y: auto;
+                            border: 1px solid #81c6ff;
+                            z-index: 1;
+                            li{
+                                box-sizing: border-box;
+                                padding: 0 16px;
+                                &:not(:last-child){
+                                    border-bottom: 1px solid #ccc;
+                                }
+                                .on{
+                                    background: #f2f2f5;
+                                }
+                                &:hover{
+                                    background: #f2f2f5;
+                                }
+                            }
                         }
                     }
                 }

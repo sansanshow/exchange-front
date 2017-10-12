@@ -13,6 +13,7 @@ const state = {
     isLogin: false,
     socketData:{
     },
+    isAuth: 1,
     langType: 0,
     assets:[
         {name:'BTC',code:'btc'},
@@ -20,6 +21,7 @@ const state = {
     ],
     rootClick: { // 控制根上面的事件，使用注意冒泡影响
         countryShow: false,
+        accountShow: false,
     }
 }
 

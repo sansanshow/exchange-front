@@ -27,7 +27,7 @@
             <div class="country-select">
               <p class="showSelect" v-html="countrySelect.name" @click.stop="onClickSelect"></p>
               <ul v-if="$store.state.rootClick.countryShow" class="country-list">
-                <li><input class="search-input" type="text" placeholder="搜索"></li>
+                <li @click.stop="changeIdCountryList(true)"><input class="search-input" type="text" placeholder="搜索"></li>
                 <li class="item" v-for="(item, index) in countryList" :key="index" data-val="item.code" v-html="item.name" @click.stop="doSelect(index, item.code)"></li>
               </ul>
             </div>
@@ -174,8 +174,7 @@ export default {
       },
       upLoad(e,type){
         // let file = document.getElementById('sfz1').files[0];    
-        let file = e.target.files[0];
-        console.log(e.target.files[0]);       
+        let file = e.target.files[0];     
         let param = new FormData(); //创建form对象
         param.append('file',file);//通过append向form对象添加数据
         // param.append('chunk','0');//添加form表单中其他数据
@@ -220,7 +219,7 @@ export default {
   }
   .country-list{
     position: absolute;
-    z-index: 999;
+    z-index: 1;
     max-height: 294px;
     width: 100%;
     overflow-y: scroll;

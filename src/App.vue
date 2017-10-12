@@ -27,11 +27,15 @@
     methods: {
       ...mapActions([
         'updateSocketData',
-        'changeIdCountryList'
+        'changeIdCountryList',
+        'toggleAccountList'
       ]),
       rootClick(){ // 根上面的事件
         if(this.$store.state.rootClick.countryShow){ // 隐藏国家选择
           this.changeIdCountryList(false);
+        }
+        if(this.$store.state.rootClick.accountShow){ // 隐藏账户选择
+          this.toggleAccountList(false);
         }
         
       },

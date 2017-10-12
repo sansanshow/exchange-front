@@ -39,5 +39,8 @@ const mutations = {
     CHANGE_ID_COUNTRY_LIST(state,type){ // 隐藏国家选择
         state.rootClick.countryShow = type;
     },
+    TOGGLE_ACCOUNT_LIST(state,type){ // 显示/隐藏银行卡列表
+        state.rootClick.accountShow = type;
+    }
 }
 export default mutations;
