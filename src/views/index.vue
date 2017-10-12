@@ -46,10 +46,10 @@
                 <div class="i-login-form r" v-else>
                     <h2 class="i-form-title">{{ $t('message.login_title_text') }}</h2>
                     <div class="i-form-field">
-                        <input type="text" v-model="loginParam.username" placeholder="手机号">
+                        <input type="text" v-model="loginParam.username" :placeholder="$t('message.mobile_text')">
                     </div>
                     <div class="i-form-field">
-                        <input type="text" v-model="loginParam.password" placeholder="密码">
+                        <input type="text" v-model="loginParam.password" :placeholder="$t('message.pwd_text')">
                     </div>
                     <div class="i-form-field fix" style="padding-top: 6px;">
                         <!--<a class="l" href="">验证码登录</a>-->
@@ -248,6 +248,7 @@ import axios from 'axios';
 import qs from 'qs';
 import echarts from 'echarts'
 import md5 from 'md5';
+import { mapActions } from 'vuex'
 export default {
     components:{
     },
@@ -259,7 +260,8 @@ export default {
                 username:'',
                 password:''
             },
-            chartsOptions:{}
+            chartsOptions:{},
+            toPath: this.$route.query.path || '/'
         }
     },
     mounted(){
@@ -268,6 +270,9 @@ export default {
         
     },
     methods: {
+        ...mapActions([
+            'updateUser'
+        ]),
         onTab(index,assetcode){
             this.tab = index;
             this.asset = assetcode;
@@ -286,6 +291,7 @@ export default {
                     this.store.setStore('userInfo', res.dataWrapper.customerInfo);
                     this.store.setStore('policyList', res.dataWrapper.policyList);
                     this.updateUser(res.dataWrapper.customerInfo);
+                    this.$to({path: this.toPath});
                 }
             });
         }

@@ -81,6 +81,16 @@ const serviceModule = {
         url:prefix + 'account/chgbind',
         method: 'post'
     },
+    auth:{
+        name:'获取登录会员安全级别',
+        url:prefix + 'account/auth',
+        method: 'get'
+    },
+    getInfo:{
+        name:'获取用户安全认证信息',
+        url:prefix + 'account/getInfo',
+        method: 'post'
+    },
     createorder: {
         name:'挂单接口',
         url:prefix + 'order/createorder',

@@ -19,12 +19,18 @@
            
           </div>
         </div>
-        <div class="form-row">
+        <div class="form-row" style="overflow: visible;">
           <div class="row-label">
             国籍
           </div>
-          <div class="row-field">
-            <div class="country-select"><p>中国(China)</p></div>
+          <div class="row-field" style="overflow: visible;">
+            <div class="country-select">
+              <p class="showSelect" v-html="countrySelect.name" @click.stop="onClickSelect"></p>
+              <ul v-if="$store.state.rootClick.countryShow" class="country-list">
+                <li><input class="search-input" type="text" placeholder="搜索"></li>
+                <li class="item" v-for="(item, index) in countryList" :key="index" data-val="item.code" v-html="item.name" @click.stop="doSelect(index, item.code)"></li>
+              </ul>
+            </div>
           </div>
           <div class="row-tips">
             
@@ -131,6 +137,8 @@
 </template>
 <script>
 import UiHead from '../../components/UiHead';
+import country from '../../utils/country-list';
+import { mapActions } from 'vuex';
 export default {
     components:{
       UiHead
@@ -145,25 +153,22 @@ export default {
             realname: '',
             type: 'idcard',
             code:''
+          },
+          countryList: country,
+          countrySelect: {
+            name: '--请选择国籍--',
+            code: 0,
+            show: false
           }
         }
     },
     created(){
-      let a = {
-        b: {
-          b1: 'b1',
-          b2: 'b2',
-          b3: 'b3'
-        }
-      }
-      let c = Object.assign(a,{
-        b: {
-          b4: 'b4'
-        }
-      })
-      console.log(c);
+
     },
     methods: {
+      ...mapActions([
+        'changeIdCountryList'
+      ]),
       toggleCheck(){
         this.allow = !this.allow;
       },
@@ -191,11 +196,50 @@ export default {
         this.$http('identify',param).then(res => {
 
         });
+      },
+      onClickSelect(){
+        this.changeIdCountryList(true);
+        // this.countrySelect.show = !this.countrySelect.show;        
+      },
+      doSelect(index,code){
+        // this.countrySelect = Object.assign({},this.countryList[index]);
+        this.countrySelect.name = this.countryList[index].name;
+        this.countrySelect.code = this.countryList[index].code;
+        this.changeIdCountryList(false);
       }
     }
 }
 </script>
 <style lang="less" scoped>
+.country-select{
+  position: relative;
+  .showSelect{
+    height: 42px;
+    box-sizing: border-box;
+    border: 1px solid #d6d6d6;
+  }
+  .country-list{
+    position: absolute;
+    z-index: 999;
+    max-height: 294px;
+    width: 100%;
+    overflow-y: scroll;
+    background: #fff;
+    border: 1px solid #d6d6d6;
+    li{
+      padding: 0 14px;
+      // border-bottom: 1px solid #d6d6d6;
+      line-height: 42px;
+      .search-input{
+        height: 42px;
+        border: 1px solid #d6d6d6;
+      }
+      &.item:hover{
+        background: #f2f2f5;
+      }
+    }
+  }
+}
 .content{
   padding-bottom: 134px;
   .main{

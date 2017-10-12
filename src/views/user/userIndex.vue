@@ -109,7 +109,7 @@ export default {
 .user{
     .main{
         .step{
-            height: 294px;
+            height: 303px;
             .item{
                 .icon-1{
                     background-image: url('../../assets/images/icon/icon-safe.png');

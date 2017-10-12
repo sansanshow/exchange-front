@@ -26,7 +26,7 @@
                 <div class="text r">
                     <p class="line p1">客服电话</p>
                     <p class="line p2">40055698521</p>
-                    <p class="line p3">www,bugduo.com</p>
+                    <p class="line p3">www.51bi.com</p>
                 </div>
 
             </div>

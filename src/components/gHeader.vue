@@ -45,10 +45,10 @@
                             <div class="top-arrows"></div>
                             <div class="auth-info flex">
                                 <div class="info flex">
-                                    <div class="item"><span class="icon ok"></span><span>{{$t('message.header_account_text1')}}</span></div>
-                                    <div class="item"><span class="icon"></span><span>{{$t('message.header_account_text2')}}</span></div>
-                                    <div class="item"><span class="icon"></span><span>{{$t('message.header_account_text3')}}</span></div>
-                                    <div class="item"><span class="icon"></span><span>{{$t('message.header_account_text4')}}</span></div>
+                                    <div class="item"><span :class="{'icon ok' : isMobile,'icon' : !isMobile}"></span><span>{{$t('message.header_account_text1')}}</span></div>
+                                    <div class="item"><span :class="{'icon ok' : isIdentity,'icon' : !isIdentity}"></span><span>{{$t('message.header_account_text2')}}</span></div>
+                                    <div class="item"><span :class="{'icon ok' : isGoogle,'icon' : !isGoogle}"></span><span>{{$t('message.header_account_text3')}}</span></div>
+                                    <div class="item"><span :class="{'icon ok' : isEmail,'icon' : !isEmail}"></span><span>{{$t('message.header_account_text4')}}</span></div>
                                 </div>
                                 <div class="logout flex-1 t_r">
                                     <span class="btn" @click="logOut">{{$t('message.header_loginout_text')}}</span>
@@ -84,7 +84,7 @@
                                     <div class="flex-1">{{$store.state.socketData[item.code].freeze}}</div>
                                 </div>
                                 <div class="btn-groups">
-                                    <span class="btn" @click="recharge">{{$t('message.header_recharge_text')}}</span><span class="btn">{{$t('message.header_recharge_text')}}</span>
+                                    <span class="btn" @click="recharge">{{$t('message.header_recharge_text')}}</span><span class="btn">{{$t('message.header_draw_text')}}</span>
                                 </div>
                             </div>
                         </div>
@@ -107,6 +107,10 @@ export default {
       popup: true,
       langShow: false,
       loginStatus: this.isLogin,
+      isMobile:false,
+      isIdentity:false ,
+      isGoogle:false,
+      isEmail:false,
       baseInfo: {
           username: null,
           id: null
@@ -121,15 +125,6 @@ export default {
   },
   created(){
         this.init();
-        // if(this.store.getStore('userInfo') && this.store.getStore('_token')){
-        //     window.isLogin = true;
-        //     this.isLogin = true;
-        //     this.init();
-
-        // }else{
-        //     window.isLogin = false;
-        //     this.isLogin = false;
-        // }
         this.initTabIndex();
     },
     methods: {
@@ -139,7 +134,6 @@ export default {
         ]),
         // 初始�?
         init(){
-            
             let locale = this.store.getStore('locale');
             // alert(locale)
             if(locale){
@@ -170,13 +164,18 @@ export default {
                 window.isLogin = true;
                 this.isLogin = true;
                 let user = JSON.parse(this.store.getStore('userInfo'));
-                // this.baseInfo.id = user.id;
-                // if(user.mobile){
-                // //     this.baseInfo.username = user.mobile.substr(0,3)+"****"+user.mobile.substr(7);
-                //     this.baseInfo.username = user.mobile;
-                // }else if(user.email){
-                //     this.baseInfo.username = user.email;
-                // }
+                if(user.isAuth==1){
+                    this.isIdentity=true;
+                }
+                if(user.validationMobile==1){
+                    this.isMobile=true;
+                }
+                if(user.validationGoogle==1){
+                    this.isGoogle=true;
+                }
+                if(user.validationEmail==1){
+                    this.isEmail=true;
+                }
                 this.updateUser(user);
             }else{
                 window.isLogin = false;
@@ -200,6 +199,7 @@ export default {
         },
         togglePopups(){
             // this.popup = !this.popup;
+            this.tab = 3;
             this.$to({name:'userIndex'});
         },
         onTabClick(index){
@@ -552,7 +552,7 @@ export default {
 
 .g-header .reg {
     display: inline-block;
-    width: 50px;
+    width: 56px;
     text-align: center;
     border: 1px solid #0f88ed;
     margin-left: 18px;

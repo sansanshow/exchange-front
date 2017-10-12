@@ -2,62 +2,62 @@
     <div class="container sign">
         <div v-if="signType=='login'" class="wrap1200 login-wrap">
             <div class="i-login-form mr-auto">
-                <h2 class="i-form-title">登录</h2>
+                <h2 class="i-form-title">{{ $t('message.login_title_text') }}</h2>
                 <div class="i-form-field">
-                    <input type="text" v-model="loginParam.username" placeholder="手机号">
+                    <input type="text" v-model="loginParam.username" :placeholder="$t('message.mobile_text')">
                 </div>
                 <div class="i-form-field">
-                    <input type="password" v-model="loginParam.password"  placeholder="密码">
+                    <input type="password" v-model="loginParam.password"  :placeholder="$t('message.pwd_text')">
                 </div>
                 <div class="i-form-field fix" style="padding-top: 6px;">
-                    <a class="l" href="">验证码登录</a>
-                    <a class="r" href="">忘记密码？</a>
+                    <!--<a class="l" href="">验证码登录</a>-->
+                    <a class="r" href="">{{$t('message.forgot_pwd_text')}}</a>
                 </div>
                 <div class="i-form-field">
-                    <button class="login-btn" @click="login">登录</button>
+                    <button class="login-btn" @click="login">{{$t('message.login_text')}}</button>
                 </div>
                 <div class="i-form-field txt-fff" style="padding-top: 4px;">
-                    <span>还没有账号？&nbsp;&nbsp;</span>
-                    <span class="a-line"  @click="$to({path:'/sign/reg'})">点此注册</span>
+                    <span>{{$t('message.noaccount_title')}}&nbsp;&nbsp;</span>
+                    <span class="a-line"  @click="$to({path:'/sign/reg'})">{{$t('message.register_title')}}</span>
                 </div>
             </div>
         </div>
         <div v-else class="wrap1200 reg-wrap">
             <div class="i-login-form mr-auto">
-                <h2 class="i-form-title">注册</h2>
+                <h2 class="i-form-title">{{$t('message.header_register')}}</h2>
                 <div class="i-form-field">
-                    <input type="text" v-model="reg.mobile" placeholder="手机号">
+                    <input type="text" v-model="reg.mobile" :placeholder="$t('message.mobile_text')">
                 </div>
                 <div class="i-form-field">
-                    <input type="password" v-model="reg.password" placeholder="创建登录密码">
+                    <input type="password" v-model="reg.password" :placeholder="$t('message.pwd_text')">
                 </div>
                 <div class="i-form-field">
-                    <input type="password" v-model="reg.cfmpwd" placeholder="确认登录密码">
+                    <input type="password" v-model="reg.cfmpwd" :placeholder="$t('message.repwd_text')">
                 </div>
                 <div class="i-form-field fix">
-                    <input class="small-input l" type="text" v-model="reg.imgcode" placeholder="图形验证码">
+                    <input class="small-input l" type="text" v-model="reg.imgcode" :placeholder="$t('message.verificationCode_text1')">
                     <div class="right-wrap r" @click="refresh">
                         <img class="verify-img" :src="reg.imgsrc" alt="">
                     </div>
                 </div>
                 <div class="i-form-field fix">
-                    <input type="text" class="small-input l" v-model="reg.mcode" placeholder="短信验证码">
+                    <input type="text" class="small-input l" v-model="reg.mcode" :placeholder="$t('message.verificationCode_text2')">
                     <div class="right-wrap r">
-                        <span v-if="sendMsgDisabled" class="send-btn disable center">{{ time+'秒后获取' }}</span>
-                        <span v-if="!sendMsgDisabled" class="send-btn center" @click="sendSmsCode">发送验证码</span>
+                        <span v-if="sendMsgDisabled" class="send-btn disable center">{{ time }}&nbsp{{$t('message.smscodetime_text')}}</span>
+                        <span v-if="!sendMsgDisabled" class="send-btn center" @click="sendSmsCode">{{$t('message.sendsmscode_text')}}</span>
                     </div>
                 </div>
                 <div class="i-form-field txt-fff center" style="padding-top: 4px;">
-                    <span>-注册即表示同意ICOUNIT</span>
+                    <span>-注册即表示同意</span>
                     <a class="a-line" href="">使用条款</a>
                     <span>-</span>
                 </div>
                 <div class="i-form-field">
-                    <button class="login-btn" @click="regist">注册</button>
+                    <button class="login-btn" @click="regist">{{$t('message.header_register')}}</button>
                     </div>
                     <div class="i-form-field txt-fff center" style="padding-top: 4px;">
-                        <span>已有账号？&nbsp;&nbsp;</span>
-                        <span class="a-line" @click="$to({path:'/sign/login'})">点此登录</span>
+                        <span>{{$t('message.have_account_text')}}&nbsp;&nbsp;</span>
+                        <span class="a-line" @click="$to({path:'/sign/login'})">{{$t('message.sign_in_text')}}</span>
                     </div>
                 </div>
             </div>

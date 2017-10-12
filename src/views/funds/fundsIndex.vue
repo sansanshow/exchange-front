@@ -50,7 +50,6 @@ export default {
         }
     },
     created(){
-        console.log(this.$route);
         this.initTabIndex(); // 刷新初始化tab
     },
     methods: {
@@ -110,7 +109,7 @@ export default {
 .funds{
     .main{
         .step{
-            height: 295px;
+            height: 303px;
             .item{
                 .icon-1{
                     background-image: url('../../assets/images/icon-notify.png');

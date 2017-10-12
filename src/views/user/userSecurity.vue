@@ -87,7 +87,7 @@
           <span>邮箱认证</span>
         </div>
         <div class="content">
-          <span v-if="isemail" class="no-auth">已认证</span>
+          <span v-if="isemail">{{email}}</span>
           <span v-else class="no-auth">未认证</span>
         </div>
         <div class="btn-wrap">
@@ -144,6 +144,7 @@ export default {
           googleActive:false,
           emailActive:false,  //css样式活动标志
           mobile:'',
+          email:'',
           headOptions:{
             title: '资产安全',
             sub: '请不要透露短信和谷歌验证码给任何人，包括我们的客服。'
@@ -159,24 +160,28 @@ export default {
     methods: {
       init(){
         let _this = this;
-        let userInfo =  JSON.parse(_this.store.getStore("userInfo"));
-        _this.mobile = userInfo.mobile.substr(0,3)+"****"+userInfo.mobile.substr(7);
-        if(userInfo.validationGoogle=="1"){
-          _this.isgoogle=true;
-          _this.googleActive=true;
-        }
-        if(userInfo.validationEmail=="1"){
-          _this.isemail=true;
-          _this.emailActive=true;
-        }
-        if(userInfo.validationMobile=="1"){
-          _this.ismobile=true;
-          _this.mobileActive=true;
-        }
-        if(userInfo.payPassword!=null){
-          _this.ispay=true,
-          _this.payActive=true;
-        }
+        this.$http('getInfo').then(res =>{
+           if(res.status == 0){ 
+              if(res.dataWrapper.validationGoogle=="1"){
+                _this.isgoogle=true;
+                _this.googleActive=true;
+              }
+              if(res.dataWrapper.validationEmail=="1"){
+                _this.email = res.dataWrapper.email.substr(0,3)+"****"+res.dataWrapper.email.substr(6);
+                _this.isemail=true;
+                _this.emailActive=true;
+              }
+              if(res.dataWrapper.validationMobile=="1"){
+                _this.mobile = res.dataWrapper.mobile.substr(0,3)+"****"+res.dataWrapper.mobile.substr(7);
+                _this.ismobile=true;
+                _this.mobileActive=true;
+              }
+              if(res.dataWrapper.payPassword!=null){
+                _this.ispay=true,
+              _this.payActive=true;
+            }
+           }
+        })
       },
       backE(){
         console.log("userIndex");

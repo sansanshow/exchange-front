@@ -60,7 +60,7 @@
                     <p class="title red">买入{{$store.state.assets[tabArgs.subTab].name || ''}}</p>
                     <div class="tabs flex">
                         <div class="tab flex-1" :class="{'on': tabArgs.tabTwo.left == 0}" @click="onTabTwo('left',0)">限价买入</div>
-                        <div class="tab flex-1" :class="{'on': tabArgs.tabTwo.left == 1}" @click="onTabTwo('left',1)">计划买入</div>
+                        <div class="tab flex-1" :class="{'on': tabArgs.tabTwo.left == 1}" @click="onTabTwo('left',1)">市价买入</div>
                     </div>
                     <div class="line">
                         <span class="line-head">买入价(CNY)</span>
@@ -94,7 +94,7 @@
                     <p class="title green">卖出{{$store.state.assets[tabArgs.subTab].name || ''}}</p>
                     <div class="tabs flex">
                         <div class="tab flex-1" :class="{'on': tabArgs.tabTwo.right == 0}" @click="onTabTwo('right',0)">限价卖出</div>
-                        <div class="tab flex-1" :class="{'on': tabArgs.tabTwo.right == 1}" @click="onTabTwo('right',1)">计划卖出</div>
+                        <div class="tab flex-1" :class="{'on': tabArgs.tabTwo.right == 1}" @click="onTabTwo('right',1)">市价卖出</div>
                     </div>
                     <div class="line">
                         <span class="line-head">卖出价(CNY)</span>
@@ -163,7 +163,7 @@
             <div class="head flex">
                 <div class="tabs hand flex">
                     <div class="tab flex-1" :class="{on: list.tab == 'list'}" @click="onTabList('list')">限价委托</div>
-                    <div class="tab flex-1" :class="{on: list.tab == 'record'}" @click="onTabList('record')">计划委托</div>
+                    <div class="tab flex-1" :class="{on: list.tab == 'record'}" @click="onTabList('record')">历史委托</div>
                 </div>
                 <div class="flex-1 t_r">
                     <span class="more hand">更多记录</span>
@@ -200,7 +200,7 @@
                                 </template>
                                 <tr v-else class="no-login">
                                     <td colspan="7">
-                                        还没有限价委托记录~
+                                        还没有历史委托记录~
                                     </td>
                                 </tr>
                             </template>
@@ -218,7 +218,7 @@
                                 </template>
                                 <tr v-else class="no-login">
                                     <td colspan="7">
-                                        还没有计划委托记录~
+                                        还没有历史委托记录~
                                     </td>
                                 </tr>
                             </template>

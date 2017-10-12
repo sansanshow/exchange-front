@@ -1,5 +1,5 @@
 <template>
-  <div class="mwrap">
+  <div class="mwrap" @click="rootClick">
     <g-header v-if="header"></g-header>
     <router-view>
 
@@ -26,8 +26,15 @@
     },
     methods: {
       ...mapActions([
-        'updateSocketData'
+        'updateSocketData',
+        'changeIdCountryList'
       ]),
+      rootClick(){ // 根上面的事件
+        if(this.$store.state.rootClick.countryShow){ // 隐藏国家选择
+          this.changeIdCountryList(false);
+        }
+        
+      },
       init(){
         let _this = this ;
 

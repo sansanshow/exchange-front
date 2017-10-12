@@ -253,6 +253,7 @@ let router = new Router({
 })
 //路由跳转钱操作
 router.beforeEach((to, form, next) => {
+  window.scrollTo(0, 0);
   if(to.meta.title){
     document.title = to.meta.title;
   }
