@@ -148,6 +148,7 @@ export default {
                 
                 this.$i18n.locale = locale;
             }
+            this.store.setCookie('locale',locale);
             //更新vuex->langType
             this.langList.forEach( (value, index, array) =>{
                 // ...
@@ -234,9 +235,11 @@ export default {
         selectLang(code,index){
             this.$i18n.locale=code;
             this.store.setStore('locale',code);
+            this.store.setCookie('locale',code);
             // this.langSelectIndex = index;
             this.updateLangType(index);
             this.langShow = false;
+            location.reload();
         },
         initTabIndex(){
             let path = this.$route.path;

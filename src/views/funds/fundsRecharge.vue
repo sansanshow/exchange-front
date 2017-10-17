@@ -3,10 +3,10 @@
         <ui-head :options="headOptions"></ui-head>
         <div class="main">
             <div class="coin-list">
-                <div class="coin-item" :class="{select: coinType == -1}" :key="-1" @click="onCoinTab(-1)">
+                <div class="coin-item" :class="{select: coinType == -1}" :key="-1" @click="onCoinTab(-1,'cny')">
                     人民币
                 </div>
-                <div class="coin-item" :class="{select: coinType == index}" v-for="(item, index) in $store.state.assets" :key="index" @click="onCoinTab(index)">
+                <div class="coin-item" :class="{select: coinType == index}" v-for="(item, index) in $store.state.assets" :key="index" @click="onCoinTab(index,item.code)">
                     {{item.name}}
                 </div>
             </div>
@@ -22,10 +22,11 @@
                 </template>
                 <template v-if="$store.state.userInfo.isAuth == 1"> 
                     <div v-if="type==2" class="sec-wallet">
-                        钱包地址：1MmwBeaSwL4TnDM73P2GYzuYj1prFCut1Y
+                        钱包地址：{{wallet.address}}
                         <span class="link">复制钱包地址</span>
+                        
                         <div class="qrcode">
-                            <img src="../../assets/images/temp/img-qrcode.png" alt="">
+                            <canvas id="canvas"></canvas>
                         </div>
                         <div class="btn-wrap">
                             <div class="btn">立即认证</div>
@@ -159,28 +160,30 @@
                     </div>
                 </template>
             </div>
-            <div class="records" v-if="type==1 || type==2">
+            <div class="records" v-if="$store.state.userInfo.isAuth == 1">
                 <table>
                     <thead> 
                         <tr>
                             <td style="width: 226px;">时间</td>
-                            <td>流水号</td>
-                            <td>金额</td>
+                            <td>充值地址</td>
+                            <td>{{param.assetCode=='cny'?'金额(RMB)':'充值数量('+param.assetCode+')'}}</td>
                             <td>充值方式</td>
                             <td>状态</td>
                             <td>操作</td>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="i in 6" :key="i">
-                            <td>2017-09-25 11:22:18</td>
-                            <td>网页端登录</td>
-                            <td><span class="ip">192.168.0.1</span><span class="area">上海</span></td>
-                            <td>成功</td>
-                            <td>成功</td>
-                            <td>成功</td>
-                        </tr>
-                        <tr>
+                        <template v-if="list.depositrecordList.length > 0">
+                            <tr v-for="(item,index) in list.depositrecordList" :key="'deposit'+index">
+                                <td>{{item.orderTime}}</td>
+                                <td>{{item.account}}</td>
+                                <td>{{item.assetAmt}}</td>
+                                <td>{{item.depositType=='bankCard'?'银行卡充值':''}}</td>
+                                <td>{{item.depositStatus=='0'?'充值中':'充值失败'}}</td>
+                                <td>--</td>
+                            </tr>
+                        </template>
+                        <tr v-else>
                             <td colspan="6">
                                 暂无操作记录
                             </td>
@@ -194,6 +197,7 @@
 </template>
 <script>
 import UiHead from '../../components/UiHead';
+import QRCode from 'qrcode'
 import { mapActions } from 'vuex';
 export default {
     components:{
@@ -217,32 +221,90 @@ export default {
                 bankProvince: '云南',
                 bankCity: '昆明',
                 isAuth: 1 
-            }
+            },
+            list: {
+                tab:'',
+                depositrecordList: [], // 充值记录列表
+            },
+            param:{
+                assetCode:'',
+            },
+            wallet:{
+                address:'',
+            },
+            isAuth:'',
         }
     },
     created(){
-
+        this.init();
     },
     mounted(){
-
+        
     },
     methods: {
-        
         ...mapActions([
             'toggleAccountList'
         ]),
-        onCoinTab(index){
+        onCoinTab(index,type){
             this.coinType = index;
+            if(this.isAuth=='1'){
+                this.getRecord(type);
+            }
             if(index > -1){
                 this.type = 2
+                if(this.isAuth=='1'){
+                    this.getWalletInfo(type);
+                }
             }else{
-                this.type = 3 
+                this.type = 4;
             }
+        },
+        init(){//初始化方法
+            this.getAuth();
+        },
+        //获取登录会员安全级别
+        getAuth(){
+            this.$http('auth').then(res =>{
+                this.isAuth = res.dataWrapper.isAuth;
+                if(this.isAuth=='1'){//判断用户是否实名认证
+                    this.getRecord('cny');//实名认证 获取充值历史纪录
+                }
+            })
+        },
+        //获取充值历史纪录
+        getRecord(type){
+            this.param.assetCode = type;
+            this.$http('depositRecord',this.param).then(res =>{
+                if(res.status==0){
+                    this.list.depositrecordList = res.dataWrapper.list.resultList;
+                }
+            })
+        },
+        //获取钱包充值信息
+        getWalletInfo(type){
+            let param = {
+                assetCode : type,
+                type:'rechange',//类型：充值
+                pageSize:5,
+            }
+            this.$http('getWalletInfo',param).then(res =>{
+                if(res.status==0){
+                   this.wallet.address = res.dataWrapper.walletAddress;
+                   this.getQrcodeImg();
+                }
+            })
+        },
+        //钱包地址二维码生成
+        getQrcodeImg() {
+            let canvas = document.getElementById('canvas')
+            QRCode.toCanvas(canvas, this.wallet.address, function(error) {
+                if (error) console.error("qrcode failed");
+            })
         },
         // 添加银行卡
         addBankCard(){           
             this.$http('addBankCard',this.bankInfoParam).then(res => {
-
+                
             });
         },
         onClickAddBankCard(){
@@ -441,9 +503,7 @@ export default {
         
     }
 }
-.records{
-    // margin-top: 140px;
-}
+
 </style>
 
 

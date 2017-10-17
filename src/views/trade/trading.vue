@@ -2,16 +2,17 @@
    <div class="container trade">
         <div class="w1200 part p1">
             <ul class="tab-top fix hand">
-                <li class="tab" :class="{'on': tabArgs.topTab==0}" @click="onTab(0, 0, 0)">主板交易区</li>
-                <li class="tab" :class="{'on': tabArgs.topTab==1}" @click="onTab(1, 0, 0)">创新板交易区</li>
+                <li class="tab" :class="{'on': tabArgs.topTab==0}" @click="onTab(0, 0, 0)">{{$t('message.trading_top_title1')}}</li>
+                <li class="tab" :class="{'on': tabArgs.topTab==1}" @click="onTab(1, 0, 0)">{{$t('message.trading_top_title2')}}</li>
             </ul>
             <div class="content">
                 <div class="head">
+                    <!-- 放开支持币币交易
                     <ul class="coin-nav fix">
-                        <li class="nav"><span class="name hand" :class="{'on': tabArgs.coinTab==0}" @click="onTab(tabArgs.topTab, 0, 0)">对CNY交易区</span></li>
-                        <li class="nav"><span class="name hand" :class="{'on': tabArgs.coinTab==1}" @click="onTab(tabArgs.topTab, 1, 0)">对BTC交易区</span></li>
-                        <li class="nav"><span class="name hand" :class="{'on': tabArgs.coinTab==2}" @click="onTab(tabArgs.topTab, 2, 0)">对ETH交易区</span></li>
-                    </ul>
+                        <li class="nav"><span class="name hand" :class="{'on': tabArgs.coinTab==0}" @click="onTab(tabArgs.topTab, 0, 0)">{{$t('message.trading_tab_title1')}}</span></li>
+                        <li class="nav"><span class="name hand" :class="{'on': tabArgs.coinTab==1}" @click="onTab(tabArgs.topTab, 1, 0)">{{$t('message.trading_tab_title2')}}</span></li>
+                        <li class="nav"><span class="name hand" :class="{'on': tabArgs.coinTab==2}" @click="onTab(tabArgs.topTab, 2, 0)">{{$t('message.trading_tab_title3')}}</span></li>
+                    </ul>-->
                     <div class="sub-nav flex">
                         <div class="sub-nav-item hand" @click="onTab(tabArgs.topTab, tabArgs.coinTab, index)" :class="{'t-left': (index % 8 == 1),'on': index==tabArgs.subTab}"  v-for="(item,index) in $store.state.assets" :key="index">{{ item.name }}</div>
                         <span class="open"><span>收起</span><img class="arrows" src="../../assets/images/i-arrows.png" alt=""></span>
@@ -20,33 +21,33 @@
                 </div>
                 <div class="main">
                     <div class="info">
-                        <span class="item">全球行情</span>
-                        <span class="item">币种资料</span>
-                        <span class="item">K线交易</span>
+                        <span class="item">{{$t('message.trading_link_text1')}}</span>
+                        <span class="item">{{$t('message.trading_link_text2')}}</span>
+                        <span class="item">{{$t('message.trading_link_text3')}}</span>
                     </div>
                     <div class="data flex">
                         <div class="flex-1">
-                            <div class="big">￥{{ tabArgs.code ? $store.state.socketData[tabArgs.code].price : '--'}}</div>
+                            <div class="big">{{$t('message.money_symbol')}}{{ tabArgs.code ? $store.state.socketData[tabArgs.code].price : '--'}}</div>
                             <div class="num">
-                                <span>高：</span><span class="inb">￥{{ tabArgs.code ? $store.state.socketData[tabArgs.code].maxPrice : '--'}}</span>
-                                <span>低：</span><span>￥{{ tabArgs.code ? $store.state.socketData[tabArgs.code].minPrice : '--'}}</span>
-                                <span>量：</span><span>{{ tabArgs.code ? $store.state.socketData[tabArgs.code].volume : '--'}}</span>
+                                <span>{{$t('message.high')}}：</span><span class="inb">{{$t('message.money_symbol')}}{{ tabArgs.code ? $store.state.socketData[tabArgs.code].maxPrice : '--'}}</span>
+                                <span>{{$t('message.low')}}：</span><span>{{$t('message.money_symbol')}}{{ tabArgs.code ? $store.state.socketData[tabArgs.code].minPrice : '--'}}</span>
+                                <span>{{$t('message.volume')}}：</span><span>{{ tabArgs.code ? $store.state.socketData[tabArgs.code].volume : '--'}}</span>
                             </div>
                         </div>
                         <div class="flex-1">
                             <div class="can">
-                                <span>可用:</span><span>{{ $store.state.socketData.cny.usable || '--' }}</span><span> CNY</span>
+                                <span>{{$t('message.usable')}}:</span><span>{{ $store.state.socketData.cny.usable || '--' }}</span><span> {{$t('message.money_code')}}</span>
                             </div>
                             <div class="can">
-                                <span>可买:</span><span>{{ $store.state.socketData.cny.usable || 0 | calDivision($store.state.socketData[tabArgs.code].price) }}</span><span> {{ $store.state.assets[tabArgs.subTab]['name']}}</span>
+                                <span>{{$t('message.usable_buy')}}:</span><span>{{ $store.state.socketData.cny.usable || 0 | calDivision($store.state.socketData[tabArgs.code].price) }}</span><span> {{ $store.state.assets[tabArgs.subTab]['name']}}</span>
                             </div>
                         </div>
                         <div class="flex-1">
                             <div class="can">
-                                <span>可用:</span><span>{{$store.state.socketData[tabArgs.code].usable || '--'}}</span><span>{{ $store.state.assets[tabArgs.subTab]['name']}}</span>
+                                <span>{{$t('message.usable')}}:</span><span>{{$store.state.socketData[tabArgs.code].usable || '--'}}</span><span>{{ $store.state.assets[tabArgs.subTab]['name']}}</span>
                             </div>
                             <div class="can">
-                                <span>可卖:</span><span>{{ $store.state.socketData[tabArgs.code].usable || 0 | calMulti($store.state.socketData[tabArgs.code].price)}}</span><span>CNY</span>
+                                <span>{{$t('message.usable_sell')}}:</span><span>{{ $store.state.socketData[tabArgs.code].usable || 0 | calMulti($store.state.socketData[tabArgs.code].price)}}</span><span>CNY</span>
                             </div>
                         </div>
 
@@ -57,18 +58,23 @@
         <div class="w1200 part p2 flex">
             <div class="left flex ">
                 <div class="card">
-                    <p class="title red">买入{{$store.state.assets[tabArgs.subTab].name || ''}}</p>
+                    <p class="title red">{{$t('message.buy_text')}}{{$store.state.assets[tabArgs.subTab].name || ''}}</p>
                     <div class="tabs flex">
-                        <div class="tab flex-1" :class="{'on': tabArgs.tabTwo.left == 0}" @click="onTabTwo('left',0)">限价买入</div>
-                        <div class="tab flex-1" :class="{'on': tabArgs.tabTwo.left == 1}" @click="onTabTwo('left',1)">市价买入</div>
+                        <div class="tab flex-1" :class="{'on': tabArgs.tabTwo.left == 0}" @click="onTabTwo('left',0)">{{$t('message.limit_buy_text')}}</div>
+                        <div class="tab flex-1" :class="{'on': tabArgs.tabTwo.left == 1}" @click="onTabTwo('left',1)">{{$t('message.market_buy_text')}}</div>
                     </div>
-                    <div class="line">
-                        <span class="line-head">买入价(CNY)</span>
+                    <div class="line" v-if="tabArgs.tabTwo.left==0">
+                        <span class="line-head">{{$t('message.buy_price')}}({{$t('message.money_code')}})</span>
                         <!-- <span class="line-body red">277706.3</span> -->
                         <input type="text" class="line-body red" v-model="orderInfo.buy.price"/>
                     </div>
-                    <div class="line">
-                        <span class="line-head">买入量({{$store.state.assets[tabArgs.subTab].name || ''}})</span>
+                    <div class="line" v-if="tabArgs.tabTwo.left==1">
+                        <span class="line-head">{{$t('message.market_buy_price')}}({{$t('message.money_code')}})</span>
+                        <!-- <span class="line-body red">277706.3</span> -->
+                        <input type="text" class="line-body red" v-model="orderInfo.buy_market.amount"/>
+                    </div>
+                    <div class="line" v-if="tabArgs.tabTwo.left==0">
+                        <span class="line-head">{{$t('message.buy_volume')}}({{$store.state.assets[tabArgs.subTab].name || ''}})</span>
                         <!-- <span class="line-body red">277706.3</span> -->
                         <input type="text" class="line-body red" v-model="orderInfo.buy.quantity"/>
                     </div>
@@ -79,32 +85,40 @@
                         <span class="r percent">50%</span>
                     </div>
                     <div class="willtrade">
-                        <span>预计交易额:</span><span class="num red">{{ buyTotal | formatNum }}</span> <span>CNY</span>
+                        <span>{{$t('message.expect_turnover')}}</span><span class="num red">{{ buyTotal | formatNum }}</span> <span>{{$t('message.money_code')}}</span>
                     </div>
                     <div class="line" v-if="validMap['trade'].securityId != 6">
-                        <span class="line-head">资金密码</span>
+                        <span class="line-head">{{$t('message.admin_password')}}</span>
                         <!-- <span class="line-body red">277706.3</span> -->
-                        <input type="password" class="line-body"/>
+                        <input type="password" class="line-body" v-model="buyPayPwd"/>
                     </div>
-                    <div class="btn bg-red" @click="createOrder('buy')">
-                        立即买入
+                    <div v-if="tabArgs.tabTwo.left==1" class="btn bg-red" @click="createOrder('buy_market')">
+                        {{$t('message.confirm_buy_text')}}
+                    </div>
+                    <div v-else class="btn bg-red" @click="createOrder('buy')">
+                        {{$t('message.confirm_buy_text')}}
                     </div>
                 </div>
                 <div class="card">
-                    <p class="title green">卖出{{$store.state.assets[tabArgs.subTab].name || ''}}</p>
+                    <p class="title green">{{$t('message.sell_text')}}{{$store.state.assets[tabArgs.subTab].name || ''}}</p>
                     <div class="tabs flex">
-                        <div class="tab flex-1" :class="{'on': tabArgs.tabTwo.right == 0}" @click="onTabTwo('right',0)">限价卖出</div>
-                        <div class="tab flex-1" :class="{'on': tabArgs.tabTwo.right == 1}" @click="onTabTwo('right',1)">市价卖出</div>
+                        <div class="tab flex-1" :class="{'on': tabArgs.tabTwo.right == 0}" @click="onTabTwo('right',0)">{{$t('message.limit_sell_text')}}</div>
+                        <div class="tab flex-1" :class="{'on': tabArgs.tabTwo.right == 1}" @click="onTabTwo('right',1)">{{$t('message.market_sell_text')}}</div>
                     </div>
-                    <div class="line">
-                        <span class="line-head">卖出价(CNY)</span>
+                    <div class="line" v-if="tabArgs.tabTwo.right==0">
+                        <span class="line-head">{{$t('message.sell_price')}}({{$t('message.money_code')}})</span>
                         <!-- <span class="line-body green">277706.3</span> -->
                         <input type="text" class="line-body green" v-model="orderInfo.sell.price"/>
                     </div>
-                    <div class="line">
-                        <span class="line-head">卖出量({{$store.state.assets[tabArgs.subTab].name || ''}})</span>
+                    <div class="line" v-if="tabArgs.tabTwo.right==0">
+                        <span class="line-head">{{$t('message.sell_volume')}}({{$store.state.assets[tabArgs.subTab].name || ''}})</span>
                         <!-- <span class="line-body green">277706.3</span> -->
                         <input type="text" class="line-body green" v-model="orderInfo.sell.quantity"/>
+                    </div>
+                    <div class="line" v-if="tabArgs.tabTwo.right==1">
+                        <span class="line-head">{{$t('message.market_sell_volume')}}({{$store.state.assets[tabArgs.subTab].name || ''}})</span>
+                        <!-- <span class="line-body green">277706.3</span> -->
+                        <input type="text" class="line-body green" v-model="orderInfo.sell_market.quantity"/>
                     </div>
                     <div class="fix progress-wrap">
                         <div class="progress">
@@ -113,22 +127,25 @@
                         <span class="r percent">50%</span>
                     </div>
                     <div class="willtrade">
-                        <span>预计交易额:</span><span class="num green">{{ sellTotal | formatNum }}</span> <span>CNY</span>
+                        <span>{{$t('message.expect_turnover')}}</span><span class="num green">{{ sellTotal | formatNum }}</span> <span>{{$t('message.money_code')}}</span>
                     </div>
                     <div class="line" v-if="validMap['trade'].securityId != 6">
-                        <span class="line-head">资金密码</span>
+                        <span class="line-head">{{$t('message.admin_password')}}</span>
                         <!-- <span class="line-body red">277706.3</span> -->
-                        <input type="password" class="line-body"/>
+                        <input type="password" class="line-body" v-model="sellPayPwd"/>
                     </div>
-                    <div class="btn bg-green" @click="createOrder('sell')">
-                        立即卖出
+                    <div v-if="tabArgs.tabTwo.right==1" class="btn bg-green" @click="createOrder('sell_market')">
+                        {{$t('message.confirm_sell_text')}}
+                    </div>
+                    <div v-else class="btn bg-green" @click="createOrder('sell')">
+                        {{$t('message.confirm_sell_text')}}
                     </div>
                 </div>
             </div>
             <div class="right flex-1">
                 <div class="tabs flex">
-                    <div class="tab on flex-1">默认档位</div>
-                    <div class="tab flex-1">默认深度</div>
+                    <div class="tab on flex-1">{{$t('message.default_stall_text')}}</div>
+                    <div class="tab flex-1">{{$t('message.default_depth_text')}}</div>
                 </div>
                 <div class="data">
                     <div class="block">
@@ -162,8 +179,8 @@
         <div class="w1200 part p3">
             <div class="head flex">
                 <div class="tabs hand flex">
-                    <div class="tab flex-1" :class="{on: list.tab == 'list'}" @click="onTabList('list')">限价委托</div>
-                    <div class="tab flex-1" :class="{on: list.tab == 'record'}" @click="onTabList('record')">历史委托</div>
+                    <div class="tab flex-1" :class="{on: list.tab == 'list'}" @click="onTabList('list')">{{$t('message.limit_orders')}}</div>
+                    <div class="tab flex-1" :class="{on: list.tab == 'record'}" @click="onTabList('record')">{{$t('message.history_orders')}}</div>
                 </div>
                 <div class="flex-1 t_r">
                     <span class="more hand">更多记录</span>
@@ -174,13 +191,13 @@
                 <table>
                     <thead>
                         <tr>
-                            <td class="t_l">委托时间</td>
-                            <td>委托量/已成交(LTC)</td>
-                            <td>委托价格/成交均价(CNY)</td>
-                            <td>成交总额(CNY)</td>
-                            <td>状态</td>
+                            <td class="t_l">{{$t('message.orders_time')}}</td>
+                            <td>{{$t('message.orders_amount')}}({{$store.state.assets[tabArgs.subTab].name || ''}})</td>
+                            <td>{{$t('message.orders_price')}}({{$t('message.money_code')}})</td>
+                            <td>{{$t('message.orders_total_price')}}({{$t('message.money_code')}})</td>
+                            <td>{{$t('message.orders_status')}}</td>
                             <!-- <td>订单来源</td> -->
-                            <td class="t_r">操作<span class="bitch">[批量撤单]</span></td>
+                            <td class="t_r">{{$t('message.operation_text')}}<span class="bitch">[批量撤单]</span></td>
                         </tr>
 
                     </thead>
@@ -189,10 +206,10 @@
                             <template v-if="list.tab == 'list'">
                                 <template v-if="list.hisList.length > 0">
                                     <tr v-for="(item,index) in list.hisList" :key="'list'+index">
-                                        <td class="t_l">{{ item.ordertime }}</td>
-                                        <td>{{ item.freezeAmt }} / {{ item.realAmount }}</td>
+                                        <td class="t_l">{{ item.spotOrderTime }}</td>
+                                        <td>{{ item.amount }} / {{ item.realAmount }}</td>
                                         <td>{{ item.price }} / {{ item.avgPrice }}</td>
-                                        <td>{{ item.avgPrice * item.realAmount }}(CNY)</td>
+                                        <td>{{ item.avgPrice * item.realAmount }}</td>
                                         <td>{{ item.orderStatus }}</td>
                                         <!-- <td>网页</td> -->
                                         <td class="t_r">操作<span>[批量撤单]</span></td>
@@ -207,12 +224,11 @@
                             <template v-if="list.tab == 'record'">
                                 <template v-if="list.recordList.length > 0">
                                     <tr v-for="(item,index) in list.recordList" :key="'record'+index">
-                                        <td class="t_l">2017-09-29 14:02:28</td>
-                                        <td>计划100</td>
-                                        <td>1500(CNY)</td>
-                                        <td>item.price(CNY)</td>
-                                        <td>等待</td>
-                                        <td>网页</td>
+                                        <td class="t_l">{{ item.spotOrderTime }}</td>
+                                        <td>{{ item.amount }} / {{ item.realAmount }}</td>
+                                        <td>{{ item.price }} / {{ item.avgPrice }}</td>
+                                        <td>{{ item.avgPrice * item.realAmount }}</td>
+                                        <td>{{ item.orderStatus }}</td>
                                         <td class="t_r">操作<span>[批量撤单]</span></td>
                                     </tr>
                                 </template>
@@ -252,6 +268,8 @@ export default {
                 }
             },
             validMap: null,
+            buyPayPwd:null,
+            sellPayPwd:null,
             orderInfo: {
                 'buy': {
                     price: null,
@@ -262,6 +280,14 @@ export default {
                     price: null,
                     quantity: null,
                     typ: 'sell'
+                },
+                'buy_market': {
+                    amount: null,
+                    typ: 'buy_marketbuy'
+                },
+                'sell_market': {
+                    quantity: null,
+                    typ: 'sell_market'
                 }
             },
             // 限价委托、计划委托
@@ -277,7 +303,7 @@ export default {
         this.tabArgs.code = this.$store.state.assets[0] ? this.$store.state.assets[0]['code'] : null;
         this.init();
         this.initList('list',1);        
-        this.initList('record',1);
+        // this.initList('record',1);
     },
     methods: {
         init(){
@@ -291,10 +317,16 @@ export default {
         },
         initList(type,page){
             let _this = this;
+            let toAsset = 'cny';
+            if(_this.tabArgs.coinTab==1){
+                toAsset='btc';//对btc交易区
+            }else if(_this.tabArgs.coinTab==2){
+                toAsset = 'eth';//对eth交易区
+            }
             let param = {
                 pageSize: 5,
                 pageNo: page,
-                category: _this.$store.state.assets[_this.tabArgs.subTab]['code'] + '_' + 'cny',
+                category: _this.$store.state.assets[_this.tabArgs.subTab]['code'] + '_' + toAsset,
             };
             this.$http(type == 'record' ? 'orderRecordList' : 'orderList',param).then(res => {
                 if(type == 'record'){
@@ -309,12 +341,19 @@ export default {
             this.tabArgs.coinTab = coinTab;
             this.tabArgs.subTab = subTab;
             this.tabArgs.code = this.$store.state.assets[subTab] ? this.$store.state.assets[subTab]['code'] : null;
+            this.list.tab='list';//default limit orders
             this.resetOrderInfo(subTab);
+            this.initList('list',1); 
         },
         onTabTwo(type,index){
             this.tabArgs['tabTwo'][type] = index;
         },
         onTabList(type){
+            if(type=='record'){
+                this.initList('record',1);
+            }else if(type=='list'){
+                this.initList('list',1);
+            }
              this.list.tab = type || 'list';
         },
         resetOrderInfo(subTab){
@@ -328,22 +367,42 @@ export default {
                     price: null,
                     quantity: null,
                     typ: 'sell'
+                },
+                'buy_market': {
+                    price: null,
+                    typ: 'buy_market'
+                },
+                'sell_market': {
+                    quantity: null,
+                    typ: 'sell_market'
                 }
             }
         },
         // 挂单order/createorder
-        createOrder(type){ 
+        createOrder(type){
             let _this = this;
+            let toAsset = 'cny';
+            if(_this.tabArgs.coinTab==1){
+                toAsset='btc';//对btc交易区
+            }else if(_this.tabArgs.coinTab==2){
+                toAsset = 'eth';//对eth交易区
+            }
+            let _paypwd = null ;
+            if(type.indexOf('buy')>-1){
+                _paypwd = _this.buyPayPwd;
+            }else if(type.indexOf('sell')>-1){
+                _paypwd = _this.sellPayPwd;
+            }
             let param = {
-                category: _this.$store.state.assets[_this.tabArgs.subTab]['code'] + '_' + 'cny',
+                category: _this.$store.state.assets[_this.tabArgs.subTab]['code'] + '_' + toAsset,
                 price: _this.orderInfo[type].price,
+                amount: _this.orderInfo[type].amount,
                 quantity: _this.orderInfo[type].quantity,
                 type: type,
-                paypwd: null,
-                _token: null
+                paypwd: _paypwd
             }
             this.$http('createorder', param).then(res => {
-                 alert(res.data.msg);
+                 alert(res.msg);
             });
         }
     },

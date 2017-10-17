@@ -27,7 +27,7 @@
                 <span class="title">账单明细</span>
                 <span class="arrows"></span>
             </div>
-            <div class="item" :class="{'on': tab==5}" @click="tab=5;$to({name:'fundsAudit'})">
+            <div v-if="hided" class="item" :class="{'on': tab==5}" @click="tab=5;$to({name:'fundsAudit'})">
                 <span class="icon icon-5"></span>
                 <span class="title">资产审计</span>
                 <span class="arrows"></span>
@@ -46,7 +46,8 @@ export default {
     },
     data(){
         return {
-            tab:1
+            tab:1,
+            hided:false
         }
     },
     created(){

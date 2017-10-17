@@ -158,8 +158,10 @@ export default {
       this.init();
     },
     methods: {
+      //res.dataWrapper.policyList[0].userid
       init(){
         let _this = this;
+
         this.$http('getInfo').then(res =>{
            if(res.status == 0){ 
               if(res.dataWrapper.validationGoogle=="1"){
@@ -282,9 +284,6 @@ export default {
     }
     .ip{
       color: #ff0500;
-    }
-    .area{
-
     }
 }
 </style>

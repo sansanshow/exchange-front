@@ -116,6 +116,21 @@ const serviceModule = {
         url: prefix+'bankInfo/add',
         method:'post'
     },
+    setStrategy: {
+        name: ' 安全策略设置',
+        url: prefix+'account/setstrategy',
+        method:'post'
+    },
+    depositRecord:{
+        name: '充值历史纪录查询',
+        url: prefix+'depositOrder/depositRecord',
+        method:'post'
+    },
+    getWalletInfo:{
+        name:'获取充币地址',
+        url:prefix + 'walletInfo/getByType',
+        method:'post'
+    }
 }
 const API = {...serviceModule }
 export default API;

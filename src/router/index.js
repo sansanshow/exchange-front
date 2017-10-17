@@ -2,9 +2,12 @@ import Vue from 'vue'
 import store from '../mixin/store'
 import Router from 'vue-router'
 import Main from '@/views/main'
-import Index from '@/views/index'
-import Sign from '@/views/sign'
-import Trade from '@/views/trade/trading'
+const Index = () => import('@/views/index')
+const Sign = () => import('@/views/sign')
+const Trade = () => import('@/views/trade/trading')
+// import Index from '@/views/index'
+// import Sign from '@/views/sign'
+// import Trade from '@/views/trade/trading'
 
 import fundsIndex from '@/views/funds/fundsIndex'
 import fundsTotal from '@/views/funds/fundsTotal'

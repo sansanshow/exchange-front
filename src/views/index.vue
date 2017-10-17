@@ -49,7 +49,7 @@
                         <input type="text" v-model="loginParam.username" :placeholder="$t('message.mobile_text')">
                     </div>
                     <div class="i-form-field">
-                        <input type="text" v-model="loginParam.password" :placeholder="$t('message.pwd_text')">
+                        <input type="password" v-model="loginParam.password" :placeholder="$t('message.pwd_text')">
                     </div>
                     <div class="i-form-field fix" style="padding-top: 6px;">
                         <!--<a class="l" href="">验证码登录</a>-->

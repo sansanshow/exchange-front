@@ -52,8 +52,8 @@
           </div>
           <div class="row-field">
             <div class="upload">
-              <input type="file" accept="image/png,image/gif,image/jpeg" name="pic" id="sfz1" class="file-upload" @change="upLoad($event,1)">
-              <img class="preview" src="" alt="">
+              <input type="file" accept="image/png,image/gif,image/jpeg" name="pic" id="sfz1" class="file-upload" @change="upLoad($event,'H')">
+              <img class="preview" :src="imgSrc.hand" alt="">
               <span class="add"></span>
               <div class="desc">手持身份证正面</div>
             </div>
@@ -75,7 +75,8 @@
           </div>
           <div class="row-field">
             <div class="upload">
-              <input type="file" id="sfz2" name="pic" class="file-upload">
+              <input type="file" id="sfz2" name="pic" class="file-upload" @change="upLoad($event,'F')">
+              <img class="preview" :src="imgSrc.front" alt="">
               <span class="add"></span>
               <div class="desc">身份证正面</div>
             </div>
@@ -97,7 +98,8 @@
           </div>
           <div class="row-field">
             <div class="upload">
-              <input type="file" id="sfz3" name="pic" class="file-upload">
+              <input type="file" id="sfz3" name="pic" class="file-upload" @change="upLoad($event,'B')">
+              <img class="preview" :src="imgSrc.back" alt="">
               <span class="add"></span>
               <div class="desc">身份证反面</div>
             </div>
@@ -154,11 +156,21 @@ export default {
             type: 'idcard',
             code:''
           },
+          param:{
+            frontPhoto:'',
+            backPhoto:'',
+            handPhoto:''
+          },
           countryList: country,
           countrySelect: {
             name: '--请选择国籍--',
             code: 0,
             show: false
+          },
+          imgSrc:{
+            front:'',
+            hand:'',
+            back:''
           }
         }
     },
@@ -177,23 +189,38 @@ export default {
         let file = e.target.files[0];     
         let param = new FormData(); //创建form对象
         param.append('file',file);//通过append向form对象添加数据
+        param.append('type',type);
         // param.append('chunk','0');//添加form表单中其他数据
         // console.log(param.get('file')); //FormData私有类对象，访问不到，可以通过get判断值是否传进去
         let config = {
           // headers:{'Content-Type':'multipart/form-data'}
         };  //添加请求头
         this.$http('fileUpload', param).then(res => {
-
+            if(res.status==0){
+              if(type=='F'){
+                this.param.frontPhoto = res.dataWrapper.filePathName;
+                //this.imgSrc.front=res.dataWrapper.filePathName; //上传后图片显示
+              }else if(type=='H'){
+                this.param.handPhoto = res.dataWrapper.filePathName;
+                //this.imgSrc.hand=res.dataWrapper.filePathName; //上传后图片显示
+              }else if(type=='B'){
+                this.param.backPhoto = res.dataWrapper.filePathName;
+                //this.imgSrc.back=res.dataWrapper.filePathName; //上传后图片显示
+              }
+            }
         });
       },
       onSubmit(){
         let param = {
           realname: this.page.realname || '',
           type: 'idcard',
-          code: this.page.code || ''
+          code: this.page.code || '',
+          photoBack:this.param.backPhoto,
+          photoFront:this.param.frontPhoto,
+          photoHand:this.param.handPhoto,
         }
         this.$http('identify',param).then(res => {
-
+            console.log(res);
         });
       },
       onClickSelect(){
